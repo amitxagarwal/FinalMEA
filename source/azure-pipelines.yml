@@ -1,6 +1,11 @@
 trigger:
-- master
-- dev
+  branches:
+    include:
+    - master
+    - dev
+  paths:
+    include:
+    - source/*
 
 stages:
 - stage: Build
