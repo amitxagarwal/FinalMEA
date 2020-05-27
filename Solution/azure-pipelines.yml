@@ -1,6 +1,11 @@
 trigger:
-- master
-- dev
+  branches:
+    include:
+    - master
+    - dev
+  paths:
+    include:
+    - Solution/*
 
 stages:
 - stage: Build
@@ -20,8 +25,10 @@ stages:
       inputs:
         packageType: 'sdk'
         useGlobalJson: true
+        workingDirectory: "$(Pipeline.Workspace)/s/Solution/"
+
     - task: NuGetAuthenticate@0
-    - pwsh: ./build.ps1 -PublishArtifactsToAzureDevOps:(("$(imageName)" -eq "windows-2019")) -ArtifactsStagingPath "$(Build.ArtifactStagingDirectory)" -McaClientId "$(McaClientId)" -McaClientSecret "$(McaClientSecret)" -McaApiUri "$(McaApiUri)" -McaScope "$(McaScope)" -Environment "Build" -MeaClientId "$(MeaClientId)" -MeaClientSecret "$(MeaClientSecret)" -MeaScope "$(MeaScope)" -MeaAuthorizationAudience $(PhoenixMeaAuthorizationAudience)
+    - pwsh: ./Solution/build.ps1 -PublishArtifactsToAzureDevOps:(("$(imageName)" -eq "windows-2019")) -ArtifactsStagingPath "$(Build.ArtifactStagingDirectory)" -McaClientId "$(McaClientId)" -McaClientSecret "$(McaClientSecret)" -McaApiUri "$(McaApiUri)" -McaScope "$(McaScope)" -Environment "Build" -MeaClientId "$(MeaClientId)" -MeaClientSecret "$(MeaClientSecret)" -MeaScope "$(MeaScope)" -MeaAuthorizationAudience $(PhoenixMeaAuthorizationAudience)
       displayName: run build.ps1
       failOnStderr: true
       env:
