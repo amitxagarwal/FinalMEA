@@ -441,34 +441,21 @@
                 "all"
               ]
             }
+          },
+          {
+            "tenantId": "[parameters('tenantId')]",
+            "objectId": "[parameters('appObjectId')]",
+            "permissions": {
+              "secrets": [
+                "all"
+              ]
+            }
           }
         ],
         "vaultUri": "[variables('meaKeyVaultUri')]"
       },
       "resources": [
-        {
-          "type": "Microsoft.KeyVault/vaults/accessPolicies",
-          "apiVersion": "2016-10-01",
-          "dependsOn": [
-            "[resourceId('Microsoft.KeyVault/vaults', variables('meaKeyVaultSecretStore'))]",
-            "[concat('Microsoft.Web/sites/', variables('webAppName'))]"
-          ],
-          "name": "[concat(variables('meaKeyVaultSecretStore'), '/add')]",
-          "condition": "[equals(parameters('isKeyVaultPolicyRequired'),'true')]",
-          "properties": {
-            "accessPolicies": [
-              {
-                "tenantId": "[parameters('tenantId')]",
-                "objectId": "[parameters('appObjectId')]",
-                "permissions": {
-                  "secrets": [
-                    "all"
-                  ]
-                }
-              }
-            ]
-          }
-        }
+        
       ]
     },
     {
