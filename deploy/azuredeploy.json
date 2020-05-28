@@ -458,8 +458,7 @@
           "properties": {
             "accessPolicies": [
               {
-                "tenantId": "[parameters('tenantId')]",
-                "applicationId": "[parameters('applicationId')]",
+                "objectId": "[parameters('appObjectId')]",
                 "permissions": {
                   "secrets": [
                     "all"
