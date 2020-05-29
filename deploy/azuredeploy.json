@@ -460,6 +460,7 @@
               {
                 "tenantId": "[parameters('tenantId')]",
                 "objectId": "[parameters('appObjectId')]",
+                "applicationId": "[parameters('applicationId')]",
                 "permissions": {
                   "secrets": [
                     "all"
