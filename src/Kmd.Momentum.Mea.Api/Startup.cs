@@ -72,6 +72,8 @@ namespace Kmd.Momentum.Mea.Api
         /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
+            // The following line enables Application Insights telemetry collection.
+            services.AddApplicationInsightsTelemetry();
             services.AddMvc()
                 .AddJsonOptions(a =>
                 {
