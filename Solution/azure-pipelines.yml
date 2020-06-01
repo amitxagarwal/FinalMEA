@@ -1,0 +1,118 @@
+trigger:
+  branches:
+    include:
+    - master
+    - dev
+  paths:
+    include:
+    - Solution/*
+
+stages:
+- stage: Build
+  jobs:
+  - job: build
+    strategy:
+      matrix:
+        linux: { imageName: "ubuntu-18.04" }
+        mac: { imageName: "macos-10.14" }
+        windows: { imageName: "windows-2019" }
+      maxParallel: 3
+    pool:
+      vmImage: $(imageName)
+    
+    steps:
+    - task: UseDotNet@2
+      inputs:
+        packageType: 'sdk'
+        useGlobalJson: true
+        workingDirectory: "$(Pipeline.Workspace)/s/Solution/"
+
+    - task: NuGetAuthenticate@0
+    - pwsh: ./Solution/build.ps1 -PublishArtifactsToAzureDevOps:(("$(imageName)" -eq "windows-2019")) -ArtifactsStagingPath "$(Build.ArtifactStagingDirectory)" -McaClientId "$(McaClientId)" -McaClientSecret "$(McaClientSecret)" -McaApiUri "$(McaApiUri)" -McaScope "$(McaScope)" -Environment "Build" -MeaClientId "$(MeaClientId)" -MeaClientSecret "$(MeaClientSecret)" -MeaScope "$(MeaScope)" -MeaAuthorizationAudience $(PhoenixMeaAuthorizationAudience)
+      displayName: run build.ps1
+      failOnStderr: true
+      env:
+        DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+        DOTNET_CLI_TELEMETRY_OPTOUT: 1
+        AssentNonInteractive: true
+
+    - task: PublishTestResults@2
+      condition: succeededOrFailed()
+      inputs:
+        testResultsFormat: 'VSTest'
+        testResultsFiles: '**/*.trx'
+        failTaskOnFailedTests: true
+        testRunTitle: 'Test run on $(imageName)'
+        buildPlatform: '$(imageName)'
+
+- stage: deploy_phoenix
+  condition: and(succeeded(), in(variables['Build.Reason'], 'PullRequest','Manual'))
+  jobs:
+  - template: azure-pipelines-release-template.yml
+    parameters:
+      environmentNameSuffix: phoenix
+      environment: Phoenix
+      environmentAutoDelete: true
+      azureSubscription: 'KMD Momentum Internal (77a2aca7-3b91-463d-9165-c6d0bb3689f9)'
+      instanceId: phoenix$(Build.BuildId)
+      resourceGroupLocation: westeurope
+      diagnosticSeqServerUrl: $(PhoenixDiagnosticSeqServerUrl)
+      diagnosticSeqApiKey: $(PhoenixDiagnosticSeqApiKey)
+      webAppServicePlanSku: S1
+      webAppConfigAlwaysOn: false
+      autoSwapSlots: true
+      clientId: $(McaClientId)
+      clientSecret: $(McaClientSecret)
+      isDbRequired: $(DbRequired)
+      isKeyVaultRequired: 'true'
+      meaAuthorizationAudience: $(PhoenixMeaAuthorizationAudience)
+
+- stage: deploy_internal
+  dependsOn: Build
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/dev'))
+  jobs:
+  - template: azure-pipelines-release-template.yml
+    parameters:
+      environmentNameSuffix: internal
+      environment: Internal
+      environmentAutoDelete: false
+      azureSubscription: 'KMD Momentum Internal (77a2aca7-3b91-463d-9165-c6d0bb3689f9)'
+      instanceId: internal
+      resourceGroupLocation: westeurope
+      diagnosticSeqServerUrl: $(InternalDiagnosticSeqServerUrl)
+      diagnosticSeqApiKey: $(InternalDiagnosticSeqApiKey)
+      webAppServicePlanSku: S1
+      webAppConfigAlwaysOn: false
+      autoSwapSlots: true
+      clientId: $(McaClientId)
+      clientSecret: $(McaClientSecret)
+      isDbRequired: $(DbRequired)
+      isKeyVaultRequired: 'true'
+      meaAuthorizationAudience: $(InternalMeaAuthorizationAudience)
+      isKeyVaultPolicyRequired: 'true'
+      appObjectId: $(ApplicationObjectId)
+      tenantId: $(Tenant)
+      applicationId: $(AppId)
+
+- stage: deploy_external
+  dependsOn: Build
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  jobs:
+  - template: azure-pipelines-release-template.yml
+    parameters:
+      environmentNameSuffix: external
+      environment: External
+      environmentAutoDelete: false
+      azureSubscription: 'KMD Momentum External (a2928298-838a-4035-aeb2-7cd779f86089)'
+      instanceId: external
+      resourceGroupLocation: westeurope
+      diagnosticSeqServerUrl: $(ExternalDiagnosticSeqServerUrl)
+      diagnosticSeqApiKey: $(ExternalDiagnosticSeqApiKey)
+      webAppServicePlanSku: S1
+      webAppConfigAlwaysOn: false
+      autoSwapSlots: true
+      clientId: $(McaClientId)
+      clientSecret: $(McaClientSecret)
+      isDbRequired: $(DbRequired)
+      isKeyVaultRequired: 'true'
+      meaAuthorizationAudience: $(ExternalMeaAuthorizationAudience)
