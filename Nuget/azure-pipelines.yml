@@ -27,7 +27,7 @@ stages:
       inputs:
         packageType: 'sdk'
         useGlobalJson: true
-        workingDirectory: "$(Pipeline.Workspace)/s/kmd-momentum-mea-client/"
+        workingDirectory: "$(Pipeline.Workspace)/s/Nuget/"
 
     - task: DotNetCoreCLI@2
       displayName: "Build Solution"
@@ -37,13 +37,13 @@ stages:
         DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
       inputs:
         command: build
-        projects: './kmd-momentum-mea-client/Kmd-Momentum-Mea-Client.sln'
+        projects: './Nuget/Kmd-Momentum-Mea-Client.sln'
 
     - task: CopyFiles@2
       displayName: "Copy Project"
       condition: and(succeeded(),eq(variables['imageName'],'ubuntu-18.04'))
       inputs:
-        SourceFolder: './kmd-momentum-mea-client/src/kmd.momentum.mea.client'
+        SourceFolder: './Nuget/src/kmd.momentum.mea.client'
         contents: |
           **/*.csproj
           **/*.png
@@ -83,6 +83,6 @@ stages:
   jobs:
   - template: azure-pipelines-release-template.yml
     parameters:
-      environment: external1
+      environment: external
       isDynamicVersion: false
       feedType: internal # value must be "internal" or 'external' only
