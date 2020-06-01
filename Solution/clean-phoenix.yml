@@ -4,7 +4,6 @@ schedules:
     branches:
       include:
       - dev
-
 trigger: none
 pool:
   vmImage: 'windows-2019'
