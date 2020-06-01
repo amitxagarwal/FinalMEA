@@ -43,5 +43,7 @@ namespace Kmd.Momentum.Mea.Client.Sample
         public string TaskAction { get; set; }
 
         public string TaskContext { get; set; }
+
+        public string LogicApiKey { get; set; }
     }
 }
