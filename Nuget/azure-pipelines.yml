@@ -5,7 +5,7 @@ trigger:
     - dev
   paths:
     include:
-    - kmd-momentum-mea-client/*
+    - Nuget/*
 
 stages:
 - stage: Build
