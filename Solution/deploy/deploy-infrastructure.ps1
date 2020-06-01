@@ -108,11 +108,7 @@ Param
 
   [Parameter(Mandatory=$true)]
   [string]  
-  $TenantId,
-
-  [Parameter(Mandatory=$true)]
-  [string]  
-  $ApplicationId
+  $TenantId
 )
 
 Push-Location $PSScriptRoot
@@ -183,7 +179,6 @@ try
     isKeyVaultPolicyRequired = $IsKeyVaultPolicyRequired;
     appObjectId = $AppObjectId;
     tenantId = $TenantId;
-    applicationId= $ApplicationId;
     }
 
     Write-Host "Create or update ResourceGroup Tag"

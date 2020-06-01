@@ -1,9 +1,9 @@
 schedules:
   - cron: "0 * * * *"
+    always: true
     branches:
       include:
       - dev
-    always: true
 trigger: none
 pool:
   vmImage: 'windows-2019'
