@@ -7,6 +7,7 @@ using Xunit;
 using System.Net.Http.Headers;
 using Kmd.Momentum.Mea.TaskApi.Model;
 using System.Linq;
+using System;
 
 namespace Kmd.Momentum.Mea.Integration.Tests.Caseworker
 {
@@ -53,7 +54,7 @@ namespace Kmd.Momentum.Mea.Integration.Tests.Caseworker
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
             //Act
-            var response = await client.GetAsync(requestUri).ConfigureAwait(false);            
+            var response = await client.GetAsync(requestUri).ConfigureAwait(false);
 
             //Assert
             response.StatusCode.Should().Be((HttpStatusCode.NotFound));
@@ -82,7 +83,7 @@ namespace Kmd.Momentum.Mea.Integration.Tests.Caseworker
 
             //Act
             var response = await client.GetAsync(requestUri).ConfigureAwait(false);
-            
+
             //Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             var responseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -106,36 +107,12 @@ namespace Kmd.Momentum.Mea.Integration.Tests.Caseworker
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
             //Act
-            var response = await client.GetAsync(requestUri).ConfigureAwait(false);            
+            var response = await client.GetAsync(requestUri).ConfigureAwait(false);
 
             //Assert
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);
             var result = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
             var error = "[\"An error occured while fetching the record(s) from Core Api\"]";
-            result.Should().BeEquivalentTo(error);
-        }
-
-        [SkipLocalFact]
-        public async Task GetCaseworkerByCaseworkerIdFailsDueToInvalidReq()
-        {
-            //Arrange
-            var caseworkerId = "0b328744-77ef-493f-abf4-295bb824a52bdfvsdgvdrgbd";
-            var requestUri = $"/caseworkers/kss/{caseworkerId}";
-
-            var client = _factory.CreateClient();
-
-            var tokenHelper = new TokenGenerator();
-            var accessToken = await tokenHelper.GetToken().ConfigureAwait(false);
-
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-
-            //Act
-            var response = await client.GetAsync(requestUri).ConfigureAwait(false);
-            
-            //Assert
-            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-            var result = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-            var error = "[\"{\\\"message\\\":\\\"The request is invalid.\\\"}\"]";
             result.Should().BeEquivalentTo(error);
         }
 
@@ -159,7 +136,7 @@ namespace Kmd.Momentum.Mea.Integration.Tests.Caseworker
 
             //Act
             var response = await client.GetAsync(requestUri).ConfigureAwait(false);
-            
+
             //Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             var responseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
@@ -182,7 +159,7 @@ namespace Kmd.Momentum.Mea.Integration.Tests.Caseworker
 
             //Act
             var response = await client.GetAsync(requestUri).ConfigureAwait(false);
-            
+
             //Assert
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);
             var responseBody = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
