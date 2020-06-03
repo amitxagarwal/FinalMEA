@@ -56,7 +56,7 @@ namespace Kmd.Momentum.Mea.Caseworker
             return new ResultOrHttpError<CaseworkerList, Error>(response.Result);
         }
 
-        public async Task<ResultOrHttpError<CaseworkerDataResponseModel, Error>> GetCaseworkerByIdAsync(string id)
+        public async Task<ResultOrHttpError<CaseworkerDataResponseModel, Error>> GetCaseworkerByIdAsync(Guid id)
         {
             var response = await _caseworkerHttpClient.GetCaseworkerDataByCaseworkerIdFromMomentumCoreAsync($"employees/{id}").ConfigureAwait(false);
 
@@ -85,7 +85,7 @@ namespace Kmd.Momentum.Mea.Caseworker
             return new ResultOrHttpError<CaseworkerDataResponseModel, Error>(dataToReturn);
         }
 
-        public async Task<ResultOrHttpError<TaskList, Error>> GetAllTasksForCaseworkerIdAsync(string caseworkerId, int pageNumber)
+        public async Task<ResultOrHttpError<TaskList, Error>> GetAllTasksForCaseworkerIdAsync(Guid caseworkerId, int pageNumber)
         {
             var response = await _caseworkerHttpClient.GetAllTasksByCaseworkerIdFromMomentumCoreAsync
                ("/tasks/filtered", pageNumber, caseworkerId).ConfigureAwait(false);

@@ -83,7 +83,7 @@ namespace Kmd.Momentum.Mea.Integration.Tests.Citizens
             //Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             actualResponse.Should().NotBeNull();
-            actualResponse.CitizenId.Should().NotBeNullOrEmpty();
+            actualResponse.CitizenId.Should().NotBeEmpty();
         }
 
         [SkipLocalFact]
@@ -139,7 +139,7 @@ namespace Kmd.Momentum.Mea.Integration.Tests.Citizens
             //Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             actualResponse.Should().NotBeNull();
-            actualResponse.CitizenId.Should().BeEquivalentTo(citizenId);
+            actualResponse.CitizenId.Should().Equals(citizenId);
         }
 
         [SkipLocalFact]

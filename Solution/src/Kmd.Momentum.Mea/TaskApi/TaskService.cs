@@ -24,7 +24,7 @@ namespace Kmd.Momentum.Mea.TaskApi
             _clientId = httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "azp").Value;
         }
 
-       public async Task<ResultOrHttpError<TaskDataResponseModel, Error>> UpdateTaskStatusByIdAsync(string taskId, TaskUpdateStatus taskUpdateStatus)
+       public async Task<ResultOrHttpError<TaskDataResponseModel, Error>> UpdateTaskStatusByIdAsync(Guid taskId, TaskUpdateStatus taskUpdateStatus)
         {
             var taskStateValue = (int)taskUpdateStatus.TaskAction;
             var response = await _taskHttpClient.UpdateTaskStatusByTaskIdFromMomentumCoreAsync($"/tasks/{taskId}/{taskStateValue}?applicationContext={taskUpdateStatus.TaskContext}").ConfigureAwait(false);

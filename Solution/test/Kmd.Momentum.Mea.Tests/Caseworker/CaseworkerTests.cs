@@ -159,7 +159,7 @@ namespace Kmd.Momentum.Mea.Tests.Caseworker
         {
             //Arrange
             var helperHttpClientMoq = new Mock<ICaseworkerHttpClientHelper>();
-            var id = It.IsAny<string>();
+            var id = It.IsAny<Guid>();
             var context = GetContext();
             var _config = GetConifg();
 
@@ -186,7 +186,7 @@ namespace Kmd.Momentum.Mea.Tests.Caseworker
         {
             //Arrange
             var helperHttpClientMoq = new Mock<ICaseworkerHttpClientHelper>();
-            var id = It.IsAny<string>();
+            var id = It.IsAny<Guid>();
             var context = GetContext();
             var _config = GetConifg();
 
@@ -214,7 +214,7 @@ namespace Kmd.Momentum.Mea.Tests.Caseworker
             var helperHttpClientMoq = new Mock<ICaseworkerHttpClientHelper>();
             var id = It.IsAny<Guid>();
             var pageNumber = 1;
-            var caseworkerId = It.IsAny<string>();
+            var caseworkerId = It.IsAny<Guid>();
             var context = GetContext();
             var _config = GetConifg();
 
@@ -251,9 +251,9 @@ namespace Kmd.Momentum.Mea.Tests.Caseworker
         {
             //Arrange
             var helperHttpClientMoq = new Mock<ICaseworkerHttpClientHelper>();
-            var id = It.IsAny<string>();
+            var id = It.IsAny<Guid>();
             var pageNumber = 1;
-            var caseworkerId = It.IsAny<string>();
+            var caseworkerId = It.IsAny<Guid>();
             var context = GetContext();
             var _config = GetConifg();
 
