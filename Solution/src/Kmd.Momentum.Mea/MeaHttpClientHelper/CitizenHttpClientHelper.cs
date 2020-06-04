@@ -66,7 +66,7 @@ namespace Kmd.Momentum.Mea.MeaHttpClientHelper
 
             foreach (var item in totalRecords)
             {
-                var scrambledData = await _filterData.ScrambleData(item, typeof(CitizenDataResponseModel)).ConfigureAwait(false);
+                var scrambledData = _filterData.ScrambleData(item, typeof(CitizenDataResponseModel));
 
                 var jsonToReturn = JsonConvert.SerializeObject(new
                 {
@@ -106,7 +106,7 @@ namespace Kmd.Momentum.Mea.MeaHttpClientHelper
             var content = response.Result;
 
             var parseContent = JToken.Parse(content);
-            var scrambledData = await _filterData.ScrambleData(parseContent, typeof(CitizenDataResponseModel)).ConfigureAwait(false);
+            var scrambledData = _filterData.ScrambleData(parseContent, typeof(CitizenDataResponseModel));
 
             return new ResultOrHttpError<CitizenDataResponseModel, Error>(JsonConvert.DeserializeObject<CitizenDataResponseModel>(scrambledData.ToString()));
         }

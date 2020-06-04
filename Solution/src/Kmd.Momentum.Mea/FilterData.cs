@@ -1,18 +1,13 @@
 ﻿using Kmd.Momentum.Mea.Attributes;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Kmd.Momentum.Mea
 {
     public class FilterData : IFilterData
     {       
-        public async Task<JToken> ScrambleData(JToken result, Type type)
+        public JToken ScrambleData(JToken result, Type type)
         {
             var propertyList = type.GetProperties()
                         .Where(
