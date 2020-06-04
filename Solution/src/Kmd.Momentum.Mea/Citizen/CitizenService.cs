@@ -23,6 +23,7 @@ namespace Kmd.Momentum.Mea.Citizen
             _citizenHttpClient = citizenHttpClient;
             _correlationId = httpContextAccessor.HttpContext.TraceIdentifier;
             _clientId = httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "azp").Value;
+            
         }
 
         public async Task<ResultOrHttpError<CitizenList, Error>> GetAllActiveCitizensAsync(int pageNumber)
@@ -73,9 +74,8 @@ namespace Kmd.Momentum.Mea.Citizen
                 .Error("An error occured while retrieving citizen data by cpr" + error);
                 return new ResultOrHttpError<CitizenDataResponseModel, Error>(response.Error, response.StatusCode.Value);
             }
-
-            var json = JObject.Parse(response.Result);
-            var citizenData = JsonConvert.DeserializeObject<CitizenDataResponseModel>(json.ToString());
+                        
+            var citizenData = response.Result;
 
             Log.ForContext("CorrelationId", _correlationId)
                 .ForContext("CitizenId", citizenData.CitizenId)
@@ -99,8 +99,7 @@ namespace Kmd.Momentum.Mea.Citizen
                 return new ResultOrHttpError<CitizenDataResponseModel, Error>(response.Error, response.StatusCode.Value);
             }
 
-            var json = JObject.Parse(response.Result);
-            var citizenData = JsonConvert.DeserializeObject<CitizenDataResponseModel>(json.ToString());
+            var citizenData = response.Result;
 
             Log.ForContext("CorrelationId", _correlationId)
                 .ForContext("Client", _clientId)

@@ -1,4 +1,5 @@
 using CorrelationId;
+using Kmd.Momentum.Mea.Attributes;
 using Kmd.Momentum.Mea.Common.Authorization;
 using Kmd.Momentum.Mea.Common.Authorization.Caseworker;
 using Kmd.Momentum.Mea.Common.Authorization.Citizen;
@@ -72,7 +73,9 @@ namespace Kmd.Momentum.Mea.Api
         /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
-            // The following line enables Application Insights telemetry collection.
+            // The following line enables Application Insights telemetry collection
+
+            services.AddScoped<IFilterData, FilterData>();
             services.AddApplicationInsightsTelemetry();
             services.AddMvc()
                 .AddJsonOptions(a =>

@@ -22,10 +22,13 @@ namespace Kmd.Momentum.Mea.MeaHttpClientHelper
         private readonly string _correlationId;
         private readonly string _clientId;
 
-        public CitizenHttpClientHelper(IMeaClient meaClient, IHttpContextAccessor httpContextAccessor)
+        private readonly IFilterData _filterData;
+
+        public CitizenHttpClientHelper(IMeaClient meaClient, IHttpContextAccessor httpContextAccessor, IFilterData filterData)
         {
             _meaClient = meaClient;
             _correlationId = httpContextAccessor.HttpContext.TraceIdentifier;
+            _filterData = filterData;
         }
 
         public async Task<ResultOrHttpError<CitizenList, Error>> GetAllActiveCitizenDataFromMomentumCoreAsync(string path, int pageNumber)
@@ -56,24 +59,26 @@ namespace Kmd.Momentum.Mea.MeaHttpClientHelper
                 .Error("No Records are available for entered page number");
                 return new ResultOrHttpError<CitizenList, Error>(error, HttpStatusCode.BadRequest);
             }
-
-            var jsonArray = JArray.Parse(JObject.Parse(content)["results"].ToString());
+                 
+            var jsonArray = JArray.Parse(JObject.Parse(content)["results"].ToString());           
 
             totalRecords.AddRange(jsonArray.Children());
 
             foreach (var item in totalRecords)
             {
+                var scrambledData = await _filterData.ScrambleData(item, typeof(CitizenDataResponseModel)).ConfigureAwait(false);
+
                 var jsonToReturn = JsonConvert.SerializeObject(new
                 {
-                    citizenId = item["id"],
-                    displayName = item["name"],
+                    citizenId = scrambledData["id"],
+                    displayName = scrambledData["name"],
                     givenName = (string)null,
                     middleName = (string)null,
                     initials = (string)null,
                     address = (string)null,
                     number = (string)null,
                     caseworkerIdentifier = (string)null,
-                    description = item["description"],
+                    description = scrambledData["description"],
                     isBookable = true,
                     isActive = true
                 });
@@ -89,17 +94,21 @@ namespace Kmd.Momentum.Mea.MeaHttpClientHelper
             return new ResultOrHttpError<CitizenList, Error>(citizenList);
         }
 
-        public async Task<ResultOrHttpError<string, Error>> GetCitizenDataByCprOrCitizenIdFromMomentumCoreAsync(string path)
+        public async Task<ResultOrHttpError<CitizenDataResponseModel, Error>> GetCitizenDataByCprOrCitizenIdFromMomentumCoreAsync(string path)
         {
             var response = await _meaClient.GetAsync(path).ConfigureAwait(false);
 
             if (response.IsError)
             {
-                return new ResultOrHttpError<string, Error>(response.Error, response.StatusCode.Value);
+                return new ResultOrHttpError<CitizenDataResponseModel, Error>(response.Error, response.StatusCode.Value);
             }
 
             var content = response.Result;
-            return new ResultOrHttpError<string, Error>(content);
+
+            var parseContent = JToken.Parse(content);
+            var scrambledData = await _filterData.ScrambleData(parseContent, typeof(CitizenDataResponseModel)).ConfigureAwait(false);
+
+            return new ResultOrHttpError<CitizenDataResponseModel, Error>(JsonConvert.DeserializeObject<CitizenDataResponseModel>(scrambledData.ToString()));
         }
 
         public async Task<ResultOrHttpError<string, Error>> CreateJournalNoteInMomentumCoreAsync(string path, string momentumCitizenId, JournalNoteRequestModel requestModel)
@@ -111,7 +120,7 @@ namespace Kmd.Momentum.Mea.MeaHttpClientHelper
                 foreach (var doc in requestModel.Documents)
                 {
 
-                    if (!isValidDocument(doc))
+                    if (!IsValidDocument(doc))
                     {
                         var error = new Error(_correlationId, new string[] { "Invalid document type" }, "Mea");
                         return new ResultOrHttpError<string, Error>(error, HttpStatusCode.BadRequest);
@@ -154,7 +163,7 @@ namespace Kmd.Momentum.Mea.MeaHttpClientHelper
             return new ResultOrHttpError<string, Error>(content);
         }
 
-        private Boolean isValidDocument(JournalNoteDocumentRequestModel document)
+        private Boolean IsValidDocument(JournalNoteDocumentRequestModel document)
         {
             var regx = new Regex(@"([a-zA-Z0-9\s_\\.\-\(\)])+(.doc|.docx|.pdf|.txt|.htm|.html|.msg)$", RegexOptions.IgnoreCase);
 

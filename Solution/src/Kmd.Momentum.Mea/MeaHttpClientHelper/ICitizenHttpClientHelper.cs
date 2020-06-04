@@ -8,7 +8,7 @@ namespace Kmd.Momentum.Mea.MeaHttpClientHelper
     {
         Task<ResultOrHttpError<CitizenList, Error>> GetAllActiveCitizenDataFromMomentumCoreAsync(string path, int pageNumber);
 
-        Task<ResultOrHttpError<string, Error>> GetCitizenDataByCprOrCitizenIdFromMomentumCoreAsync(string path);
+        Task<ResultOrHttpError<CitizenDataResponseModel, Error>> GetCitizenDataByCprOrCitizenIdFromMomentumCoreAsync(string path);
 
         Task<ResultOrHttpError<string, Error>> CreateJournalNoteInMomentumCoreAsync(string path, string momentumCitizenId, JournalNoteRequestModel requestModel);
     }

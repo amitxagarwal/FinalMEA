@@ -1,6 +1,7 @@
 ﻿using Kmd.Momentum.Mea.Common.Framework.PollyOptions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 using Polly;
 using Polly.Extensions.Http;
@@ -66,5 +67,15 @@ namespace Kmd.Momentum.Mea.Common.Framework
                 .AddHttpMessageHandler<CorrelationIdDelegatingHandler>()
                 .AddHttpMessageHandler<UserAgentDelegatingHandler>()
                 .Services;
+
+        public static IServiceCollection AddConfiguration<TConfiguration>(this IServiceCollection services, IConfiguration configuration, string sectionName, bool optional = false)
+            where TConfiguration : class, new()
+        {
+            var config = configuration.GetSection<TConfiguration>(sectionName, optional);
+
+            services.TryAddSingleton(config);
+
+            return services;
+        }
     }
 }
