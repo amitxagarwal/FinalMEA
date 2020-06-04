@@ -1,4 +1,5 @@
 ﻿using CorrelationId;
+using Kmd.Momentum.Mea.Common.Attributes;
 using Kmd.Momentum.Mea.Common.Authorization;
 using Kmd.Momentum.Mea.Common.Authorization.Caseworker;
 using Kmd.Momentum.Mea.Common.Authorization.Citizen;
@@ -22,6 +23,7 @@ namespace Kmd.Momentum.Mea.Common.Modules
             services.AddSingleton<IAuthorizationHandler, MeaCaseworkerClaimHandler>();
             services.AddSingleton<IAuthorizationHandler, MeaJournalClaimHandler>();
             services.AddSingleton<IAuthorizationHandler, MeaTaskClaimHandler>();
+            services.AddScoped<IPropertyDiscoverer, PropertyDiscoverer>();
             services
                 .AddPolicies(configuration)
                 .AddHttpClient<IMeaClient, MeaClient, MeaClientOptions>(
