@@ -70,14 +70,14 @@ namespace Kmd.Momentum.Mea.MeaHttpClientHelper
             return new ResultOrHttpError<string, Error>(content);
         }
 
-        public async Task<ResultOrHttpError<TaskList, Error>> GetAllTasksByCaseworkerIdFromMomentumCoreAsync(string path, int pageNumber, string caseworkerId)
+        public async Task<ResultOrHttpError<TaskList, Error>> GetAllTasksByCaseworkerIdFromMomentumCoreAsync(string path, int pageNumber, Guid caseworkerId)
         {
             var pageSize = 100;
             pageNumber = pageNumber == 0 ? 1 : pageNumber;
             List<TaskDataResponseModel> totalRecords = new List<TaskDataResponseModel>();
             var Result = new TaskSearchQuery()
             {
-                AssignedActors = new List<string>() { caseworkerId },
+                AssignedActors = new List<string>() { caseworkerId.ToString() },
                 Types = new List<TaskType>() { },
             };
             string serializedRequest = JsonConvert.SerializeObject(Result);

@@ -60,7 +60,7 @@ namespace Kmd.Momentum.Mea.Tests.Tasks
             var taskService = new TaskService(helperHttpClientMoq.Object, context.Object);
 
             //Act
-            var result = await taskService.UpdateTaskStatusByIdAsync(taskId.ToString(), taskUpdateStatus).ConfigureAwait(false);
+            var result = await taskService.UpdateTaskStatusByIdAsync(taskId, taskUpdateStatus).ConfigureAwait(false);
 
             //Asert
             result.Should().NotBeNull();
@@ -97,7 +97,7 @@ namespace Kmd.Momentum.Mea.Tests.Tasks
             var taskService = new TaskService(helperHttpClientMoq.Object, context.Object);
 
             //Act
-            var result = await taskService.UpdateTaskStatusByIdAsync(taskId.ToString(), taskUpdateStatus).ConfigureAwait(false);
+            var result = await taskService.UpdateTaskStatusByIdAsync(taskId, taskUpdateStatus).ConfigureAwait(false);
 
             //Asert
             result.IsError.Should().BeTrue();
