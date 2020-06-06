@@ -39,19 +39,15 @@ namespace Kmd.Momentum.Mea.MeaHttpClientHelper
             }
 
             var content = response.Result;
-            //var parseContent = JToken.Parse(content);
             var caseworkerDataObj = JsonConvert.DeserializeObject<PUnitData>(content);
             var records = caseworkerDataObj.Data;
 
             foreach (var item in records)
             {
-
-
                 var dataToReturn = new CaseworkerDataResponseModel(item.Id, item.DisplayName, item.GivenName, item.MiddleName, item.Initials,
                item.Email?.Address, item.Phone?.Number, item.CaseworkerIdentifier, item.Description, item.IsActive, item.IsBookable);
                 var scrambledData = _filterData.ScrambleData(JsonConvert.DeserializeObject<JToken>(JsonConvert.SerializeObject(dataToReturn)), typeof(CaseworkerDataResponseModel));
                 totalRecords.Add(JsonConvert.DeserializeObject<CaseworkerDataResponseModel>(JsonConvert.SerializeObject(scrambledData)));
-
             }
 
             var responseData = new CaseworkerList()
@@ -78,7 +74,6 @@ namespace Kmd.Momentum.Mea.MeaHttpClientHelper
             var item = JsonConvert.DeserializeObject<CaseworkerData>(content);
             var model = new CaseworkerDataResponseModel(item.Id, item.DisplayName, item.GivenName, item.MiddleName, item.Initials,
                item.Email?.Address, item.Phone?.Number, item.CaseworkerIdentifier, item.Description, item.IsActive, item.IsBookable);
-            // CaseworkerDataResponseModel data = (CaseworkerDataResponseModel)JsonConvert.DeserializeObject(content);
             var parseContent = (JsonConvert.DeserializeObject<JToken>(JsonConvert.SerializeObject(model)));
             var scrambledData = _filterData.ScrambleData(parseContent, typeof(CaseworkerDataResponseModel));
             return new ResultOrHttpError<string, Error>(scrambledData.ToString());

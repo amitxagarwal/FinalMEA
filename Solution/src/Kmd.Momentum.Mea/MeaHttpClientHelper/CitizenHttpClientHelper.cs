@@ -36,25 +36,20 @@ namespace Kmd.Momentum.Mea.MeaHttpClientHelper
             List<JToken> totalRecords = new List<JToken>();
             List<string> JsonStringList = new List<string>();
 
-
             var pageNo = pageNumber;
             var size = 100;
             var skip = (pageNo - 1) * size;
 
-
             var queryStringParams = $"term=Citizen&size={size}&skip={skip}&isActive=true";
             var response = await _meaClient.GetAsync(path + "?" + queryStringParams).ConfigureAwait(false);
-
 
             if (response.IsError)
             {
                 return new ResultOrHttpError<CitizenList, Error>(response.Error, response.StatusCode.Value);
             }
 
-
             var content = response.Result;
             int.TryParse(JObject.Parse(content)["totalCount"].ToString(), out int totalCount);
-
 
             if (pageNumber > (totalCount / size) + 1)
             {
@@ -67,14 +62,10 @@ namespace Kmd.Momentum.Mea.MeaHttpClientHelper
 
             var jsonArray = JArray.Parse(JObject.Parse(content)["results"].ToString());
 
-
             totalRecords.AddRange(jsonArray.Children());
-
 
             foreach (var item in totalRecords)
             {
-
-
                 var jsonToReturn = JsonConvert.SerializeObject(new
                 {
                     citizenId = item["id"],
@@ -93,15 +84,11 @@ namespace Kmd.Momentum.Mea.MeaHttpClientHelper
                 JsonStringList.Add(JsonConvert.SerializeObject(scrambledData));
             }
 
-
             var totalPages = (totalCount / size) + 1;
-
 
             var data = JsonStringList.Select(x => JsonConvert.DeserializeObject<CitizenDataResponseModel>(x));
 
-
             var citizenList = new CitizenList(totalPages, totalCount, pageNo, data.ToList());
-
 
             return new ResultOrHttpError<CitizenList, Error>(citizenList);
         }
@@ -116,12 +103,12 @@ namespace Kmd.Momentum.Mea.MeaHttpClientHelper
             }
 
             var content = response.Result;
-            var item = JsonConvert.DeserializeObject<CitizenDataResponseModel>(content);
-            var model = new CitizenDataResponseModel(item.CitizenId, item.DisplayName, item.GivenName, item.MiddleName, item.Initials,
-               item.Email, item.Phone, item.CaseworkerIdentifier, item.Description, item.IsActive, item.IsBookable);
+            var item = JsonConvert.DeserializeObject<CitizenData>(content);
+            var model = new CitizenDataResponseModel(item.Id, item.DisplayName, item.GivenName, item.MiddleName, item.Initials,
+               item.Email?.Address, item.Phone?.Number, item.CaseworkerIdentifier, item.Description, item.IsActive, item.IsBookable);
             var parseContent = (JsonConvert.DeserializeObject<JToken>(JsonConvert.SerializeObject(model)));
             var scrambledData = _filterData.ScrambleData(parseContent, typeof(CitizenDataResponseModel));
-            return new ResultOrHttpError<CitizenDataResponseModel, Error>(JsonConvert.DeserializeObject<CitizenDataResponseModel>( scrambledData.ToString()));
+            return new ResultOrHttpError<CitizenDataResponseModel, Error>(JsonConvert.DeserializeObject<CitizenDataResponseModel>(scrambledData.ToString()));
         }
 
         public async Task<ResultOrHttpError<string, Error>> CreateJournalNoteInMomentumCoreAsync(string path, Guid momentumCitizenId, JournalNoteRequestModel requestModel)

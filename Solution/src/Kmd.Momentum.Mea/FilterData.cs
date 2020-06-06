@@ -29,7 +29,7 @@ namespace Kmd.Momentum.Mea
                             {
                                 data = data.Substring(0, data.Length - 3);
                                 data = data + "FFF";
-                                if(property.Name.ToLower() == "caseworkerid")
+                                if(property.PropertyType == typeof(Guid))
                                 {
                                     Guid Id = new Guid(data);
                                     ((JProperty)item).Value = Id;
