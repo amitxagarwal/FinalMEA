@@ -3,6 +3,7 @@ using Kmd.Momentum.Mea.Common.Exceptions;
 using Kmd.Momentum.Mea.Common.MeaHttpClient;
 using Kmd.Momentum.Mea.TaskApi.Model;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -14,10 +15,12 @@ namespace Kmd.Momentum.Mea.MeaHttpClientHelper
     public class CaseworkerHttpClientHelper : ICaseworkerHttpClientHelper
     {
         private readonly IMeaClient _meaClient;
+        private readonly IFilterData _filterData;
 
-        public CaseworkerHttpClientHelper(IMeaClient meaClient)
+        public CaseworkerHttpClientHelper(IMeaClient meaClient, IFilterData filterData)
         {
             _meaClient = meaClient ?? throw new ArgumentNullException(nameof(meaClient));
+            _filterData = filterData;
         }
 
         public async Task<ResultOrHttpError<CaseworkerList, Error>> GetAllCaseworkerDataFromMomentumCoreAsync(string path, int pageNumber)
@@ -36,14 +39,19 @@ namespace Kmd.Momentum.Mea.MeaHttpClientHelper
             }
 
             var content = response.Result;
+            //var parseContent = JToken.Parse(content);
             var caseworkerDataObj = JsonConvert.DeserializeObject<PUnitData>(content);
             var records = caseworkerDataObj.Data;
 
             foreach (var item in records)
             {
+
+
                 var dataToReturn = new CaseworkerDataResponseModel(item.Id, item.DisplayName, item.GivenName, item.MiddleName, item.Initials,
                item.Email?.Address, item.Phone?.Number, item.CaseworkerIdentifier, item.Description, item.IsActive, item.IsBookable);
-                totalRecords.Add(dataToReturn);
+                var scrambledData = _filterData.ScrambleData(JsonConvert.DeserializeObject<JToken>(JsonConvert.SerializeObject(dataToReturn)), typeof(CaseworkerDataResponseModel));
+                totalRecords.Add(JsonConvert.DeserializeObject<CaseworkerDataResponseModel>(JsonConvert.SerializeObject(scrambledData)));
+
             }
 
             var responseData = new CaseworkerList()
@@ -67,7 +75,13 @@ namespace Kmd.Momentum.Mea.MeaHttpClientHelper
             }
 
             var content = response.Result;
-            return new ResultOrHttpError<string, Error>(content);
+            var item = JsonConvert.DeserializeObject<CaseworkerData>(content);
+            var model = new CaseworkerDataResponseModel(item.Id, item.DisplayName, item.GivenName, item.MiddleName, item.Initials,
+               item.Email?.Address, item.Phone?.Number, item.CaseworkerIdentifier, item.Description, item.IsActive, item.IsBookable);
+            // CaseworkerDataResponseModel data = (CaseworkerDataResponseModel)JsonConvert.DeserializeObject(content);
+            var parseContent = (JsonConvert.DeserializeObject<JToken>(JsonConvert.SerializeObject(model)));
+            var scrambledData = _filterData.ScrambleData(parseContent, typeof(CaseworkerDataResponseModel));
+            return new ResultOrHttpError<string, Error>(scrambledData.ToString());
         }
 
         public async Task<ResultOrHttpError<TaskList, Error>> GetAllTasksByCaseworkerIdFromMomentumCoreAsync(string path, int pageNumber, Guid caseworkerId)

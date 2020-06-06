@@ -36,20 +36,25 @@ namespace Kmd.Momentum.Mea.MeaHttpClientHelper
             List<JToken> totalRecords = new List<JToken>();
             List<string> JsonStringList = new List<string>();
 
+
             var pageNo = pageNumber;
             var size = 100;
             var skip = (pageNo - 1) * size;
 
+
             var queryStringParams = $"term=Citizen&size={size}&skip={skip}&isActive=true";
             var response = await _meaClient.GetAsync(path + "?" + queryStringParams).ConfigureAwait(false);
+
 
             if (response.IsError)
             {
                 return new ResultOrHttpError<CitizenList, Error>(response.Error, response.StatusCode.Value);
             }
 
+
             var content = response.Result;
             int.TryParse(JObject.Parse(content)["totalCount"].ToString(), out int totalCount);
+
 
             if (pageNumber > (totalCount / size) + 1)
             {
@@ -59,37 +64,44 @@ namespace Kmd.Momentum.Mea.MeaHttpClientHelper
                 .Error("No Records are available for entered page number");
                 return new ResultOrHttpError<CitizenList, Error>(error, HttpStatusCode.BadRequest);
             }
-                 
-            var jsonArray = JArray.Parse(JObject.Parse(content)["results"].ToString());           
+
+            var jsonArray = JArray.Parse(JObject.Parse(content)["results"].ToString());
+
 
             totalRecords.AddRange(jsonArray.Children());
 
+
             foreach (var item in totalRecords)
             {
-                var scrambledData = _filterData.ScrambleData(item, typeof(CitizenDataResponseModel));
+
 
                 var jsonToReturn = JsonConvert.SerializeObject(new
                 {
-                    citizenId = scrambledData["id"],
-                    displayName = scrambledData["name"],
+                    citizenId = item["id"],
+                    displayName = item["name"],
                     givenName = (string)null,
                     middleName = (string)null,
                     initials = (string)null,
                     address = (string)null,
                     number = (string)null,
                     caseworkerIdentifier = (string)null,
-                    description = scrambledData["description"],
+                    description = item["description"],
                     isBookable = true,
                     isActive = true
                 });
-                JsonStringList.Add(jsonToReturn);
+                var scrambledData = _filterData.ScrambleData(JsonConvert.DeserializeObject<JToken>(jsonToReturn), typeof(CitizenDataResponseModel));
+                JsonStringList.Add(JsonConvert.SerializeObject(scrambledData));
             }
+
 
             var totalPages = (totalCount / size) + 1;
 
+
             var data = JsonStringList.Select(x => JsonConvert.DeserializeObject<CitizenDataResponseModel>(x));
 
+
             var citizenList = new CitizenList(totalPages, totalCount, pageNo, data.ToList());
+
 
             return new ResultOrHttpError<CitizenList, Error>(citizenList);
         }
@@ -104,11 +116,12 @@ namespace Kmd.Momentum.Mea.MeaHttpClientHelper
             }
 
             var content = response.Result;
-
-            var parseContent = JToken.Parse(content);
+            var item = JsonConvert.DeserializeObject<CitizenDataResponseModel>(content);
+            var model = new CitizenDataResponseModel(item.CitizenId, item.DisplayName, item.GivenName, item.MiddleName, item.Initials,
+               item.Email, item.Phone, item.CaseworkerIdentifier, item.Description, item.IsActive, item.IsBookable);
+            var parseContent = (JsonConvert.DeserializeObject<JToken>(JsonConvert.SerializeObject(model)));
             var scrambledData = _filterData.ScrambleData(parseContent, typeof(CitizenDataResponseModel));
-
-            return new ResultOrHttpError<CitizenDataResponseModel, Error>(JsonConvert.DeserializeObject<CitizenDataResponseModel>(scrambledData.ToString()));
+            return new ResultOrHttpError<CitizenDataResponseModel, Error>(JsonConvert.DeserializeObject<CitizenDataResponseModel>( scrambledData.ToString()));
         }
 
         public async Task<ResultOrHttpError<string, Error>> CreateJournalNoteInMomentumCoreAsync(string path, Guid momentumCitizenId, JournalNoteRequestModel requestModel)
@@ -174,7 +187,7 @@ namespace Kmd.Momentum.Mea.MeaHttpClientHelper
                 .Error("Invalid document type: " + document.Name);
                 return false;
             }
-            return true;            
+            return true;
         }
     }
 }

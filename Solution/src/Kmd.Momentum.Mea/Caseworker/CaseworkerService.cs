@@ -72,8 +72,10 @@ namespace Kmd.Momentum.Mea.Caseworker
 
             var content = response.Result;
             var caseworkerDataObj = JsonConvert.DeserializeObject<CaseworkerData>(content);
+            var caseworkerDataObj1 = JsonConvert.DeserializeObject<CaseworkerDataResponseModel>(content);
 
-            var dataToReturn = new CaseworkerDataResponseModel(caseworkerDataObj.Id, caseworkerDataObj.DisplayName, caseworkerDataObj.GivenName,
+
+            var dataToReturn = new CaseworkerDataResponseModel(caseworkerDataObj1.CaseworkerId, caseworkerDataObj.DisplayName, caseworkerDataObj.GivenName,
                 caseworkerDataObj.MiddleName, caseworkerDataObj.Initials, caseworkerDataObj.Email?.Address, caseworkerDataObj.Phone?.Number, caseworkerDataObj.CaseworkerIdentifier,
                 caseworkerDataObj.Description, caseworkerDataObj.IsActive, caseworkerDataObj.IsBookable);
 
