@@ -1,14 +1,16 @@
-﻿using System;
+﻿using Kmd.Momentum.Mea.Attributes;
+using System;
 using System.Collections.Generic;
 
 namespace Kmd.Momentum.Mea.TaskApi.Model
 {
     public class TaskDataResponseModel
     {
+        [ScrambleData]
         public Guid TaskId { get; }
-
+        [ScrambleData]
         public string Title { get; }
-
+        [ScrambleData]
         public string Description { get; }
 
         public DateTime Deadline { get; }

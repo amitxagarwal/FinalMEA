@@ -114,7 +114,8 @@ namespace Kmd.Momentum.Mea.MeaHttpClientHelper
             {
                 var dataToReturn = new TaskDataResponseModel(item.Id, item.Title, item.Description, item.Deadline, item.CreatedAt,
                item.StateChangedAt, item.State, (IReadOnlyList<AssignedActors>)item.AssignedActors, item.Reference);
-                totalRecords.Add(dataToReturn);
+                var scrambledData = _filterData.ScrambleData(JsonConvert.DeserializeObject<JToken>(JsonConvert.SerializeObject(dataToReturn)), typeof(TaskDataResponseModel));
+                totalRecords.Add(JsonConvert.DeserializeObject<TaskDataResponseModel>(JsonConvert.SerializeObject(scrambledData)));
             }
 
             var responseData = new TaskList()

@@ -41,8 +41,9 @@ namespace Kmd.Momentum.Mea.TaskApi
 
             var content = response.Result;
             var taskDataObj = JsonConvert.DeserializeObject<TaskData>(content);
+            var taskDataObj1 = JsonConvert.DeserializeObject<TaskDataResponseModel>(content);
 
-            var dataToReturn = new TaskDataResponseModel(taskDataObj.Id, taskDataObj.Title, taskDataObj.Description, taskDataObj.Deadline, taskDataObj.CreatedAt,
+            var dataToReturn = new TaskDataResponseModel(taskDataObj1.TaskId, taskDataObj.Title, taskDataObj.Description, taskDataObj.Deadline, taskDataObj.CreatedAt,
                taskDataObj.StateChangedAt, taskDataObj.State, (IReadOnlyList<AssignedActors>)taskDataObj.AssignedActors, taskDataObj.Reference);
 
             Log.ForContext("CorrelationId", _correlationId)
