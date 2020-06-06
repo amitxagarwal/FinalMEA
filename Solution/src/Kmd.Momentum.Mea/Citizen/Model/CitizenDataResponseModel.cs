@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Kmd.Momentum.Mea.Attributes;
+using Newtonsoft.Json;
 using System;
 
 namespace Kmd.Momentum.Mea.Citizen.Model
@@ -12,6 +13,7 @@ namespace Kmd.Momentum.Mea.Citizen.Model
         public string DisplayName { get; }
 
         [JsonProperty("givenName")]
+        [ScrambleData]
         public string GivenName { get; }
 
         [JsonProperty("middleName")]

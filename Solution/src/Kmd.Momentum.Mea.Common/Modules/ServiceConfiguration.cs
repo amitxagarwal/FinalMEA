@@ -22,6 +22,7 @@ namespace Kmd.Momentum.Mea.Common.Modules
             services.AddSingleton<IAuthorizationHandler, MeaCaseworkerClaimHandler>();
             services.AddSingleton<IAuthorizationHandler, MeaJournalClaimHandler>();
             services.AddSingleton<IAuthorizationHandler, MeaTaskClaimHandler>();
+
             services
                 .AddPolicies(configuration)
                 .AddHttpClient<IMeaClient, MeaClient, MeaClientOptions>(
