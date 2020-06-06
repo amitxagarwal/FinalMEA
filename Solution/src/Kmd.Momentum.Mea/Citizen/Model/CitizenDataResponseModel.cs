@@ -6,11 +6,12 @@ namespace Kmd.Momentum.Mea.Citizen.Model
 {
     public class CitizenDataResponseModel
     {
-        [JsonProperty("id")]
+        [JsonProperty("citizenId")]
         [ScrambleData]
         public Guid CitizenId { get; }
 
-        [JsonProperty("name")]
+        [JsonProperty("displayName")]
+        [ScrambleData]
         public string DisplayName { get; }
 
         [JsonProperty("givenName")]
