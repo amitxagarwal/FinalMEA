@@ -59,7 +59,7 @@ namespace Kmd.Momentum.Mea.Integration.Tests.Tasks
 
             //Assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            actualResponse.TaskState.Should().BeEquivalentTo(TaskState.Started);
+            actualResponse.TaskState.Should().BeEquivalentTo(TaskState.Active);
         }
 
         [SkipLocalFact]
