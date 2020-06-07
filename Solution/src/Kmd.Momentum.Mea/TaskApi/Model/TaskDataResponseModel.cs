@@ -8,8 +8,10 @@ namespace Kmd.Momentum.Mea.TaskApi.Model
     {
         [ScrambleData]
         public Guid TaskId { get; }
+
         [ScrambleData]
         public string Title { get; }
+
         [ScrambleData]
         public string Description { get; }
 

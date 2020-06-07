@@ -80,7 +80,9 @@ namespace Kmd.Momentum.Mea.MeaHttpClientHelper
                     isBookable = true,
                     isActive = true
                 });
+                
                 var scrambledData = _filterData.ScrambleData(JsonConvert.DeserializeObject<JToken>(jsonToReturn), typeof(CitizenDataResponseModel));
+                
                 JsonStringList.Add(JsonConvert.SerializeObject(scrambledData));
             }
 
@@ -104,10 +106,14 @@ namespace Kmd.Momentum.Mea.MeaHttpClientHelper
 
             var content = response.Result;
             var item = JsonConvert.DeserializeObject<CitizenData>(content);
+            
             var model = new CitizenDataResponseModel(item.Id, item.DisplayName, item.GivenName, item.MiddleName, item.Initials,
-               item.Email?.Address, item.Phone?.Number, item.CaseworkerIdentifier, item.Description, item.IsActive, item.IsBookable);
+                item.Email?.Address, item.Phone?.Number, item.CaseworkerIdentifier, item.Description, item.IsActive, item.IsBookable);
+            
             var parseContent = (JsonConvert.DeserializeObject<JToken>(JsonConvert.SerializeObject(model)));
+            
             var scrambledData = _filterData.ScrambleData(parseContent, typeof(CitizenDataResponseModel));
+            
             return new ResultOrHttpError<CitizenDataResponseModel, Error>(JsonConvert.DeserializeObject<CitizenDataResponseModel>(scrambledData.ToString()));
         }
 

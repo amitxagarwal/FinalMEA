@@ -45,8 +45,10 @@ namespace Kmd.Momentum.Mea.MeaHttpClientHelper
             foreach (var item in records)
             {
                 var dataToReturn = new CaseworkerDataResponseModel(item.Id, item.DisplayName, item.GivenName, item.MiddleName, item.Initials,
-               item.Email?.Address, item.Phone?.Number, item.CaseworkerIdentifier, item.Description, item.IsActive, item.IsBookable);
+                    item.Email?.Address, item.Phone?.Number, item.CaseworkerIdentifier, item.Description, item.IsActive, item.IsBookable);
+
                 var scrambledData = _filterData.ScrambleData(JsonConvert.DeserializeObject<JToken>(JsonConvert.SerializeObject(dataToReturn)), typeof(CaseworkerDataResponseModel));
+
                 totalRecords.Add(JsonConvert.DeserializeObject<CaseworkerDataResponseModel>(JsonConvert.SerializeObject(scrambledData)));
             }
 
@@ -72,10 +74,14 @@ namespace Kmd.Momentum.Mea.MeaHttpClientHelper
 
             var content = response.Result;
             var item = JsonConvert.DeserializeObject<CaseworkerData>(content);
+
             var model = new CaseworkerDataResponseModel(item.Id, item.DisplayName, item.GivenName, item.MiddleName, item.Initials,
                item.Email?.Address, item.Phone?.Number, item.CaseworkerIdentifier, item.Description, item.IsActive, item.IsBookable);
+
             var parseContent = (JsonConvert.DeserializeObject<JToken>(JsonConvert.SerializeObject(model)));
+
             var scrambledData = _filterData.ScrambleData(parseContent, typeof(CaseworkerDataResponseModel));
+
             return new ResultOrHttpError<string, Error>(scrambledData.ToString());
         }
 
@@ -108,8 +114,10 @@ namespace Kmd.Momentum.Mea.MeaHttpClientHelper
             foreach (var item in records)
             {
                 var dataToReturn = new TaskDataResponseModel(item.Id, item.Title, item.Description, item.Deadline, item.CreatedAt,
-               item.StateChangedAt, item.State, (IReadOnlyList<AssignedActors>)item.AssignedActors, item.Reference);
+                    item.StateChangedAt, item.State, (IReadOnlyList<AssignedActors>)item.AssignedActors, item.Reference);
+                
                 var scrambledData = _filterData.ScrambleData(JsonConvert.DeserializeObject<JToken>(JsonConvert.SerializeObject(dataToReturn)), typeof(TaskDataResponseModel));
+                
                 totalRecords.Add(JsonConvert.DeserializeObject<TaskDataResponseModel>(JsonConvert.SerializeObject(scrambledData)));
             }
 

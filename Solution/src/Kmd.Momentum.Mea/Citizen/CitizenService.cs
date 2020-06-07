@@ -18,13 +18,12 @@ namespace Kmd.Momentum.Mea.Citizen
         private readonly string _correlationId;
         private readonly string _clientId;
 
-        public CitizenService(ICitizenHttpClientHelper citizenHttpClient, IConfiguration config,
+        public CitizenService(ICitizenHttpClientHelper citizenHttpClient,
             IHttpContextAccessor httpContextAccessor)
         {
             _citizenHttpClient = citizenHttpClient;
             _correlationId = httpContextAccessor.HttpContext.TraceIdentifier;
-            _clientId = httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "azp").Value;
-            
+            _clientId = httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "azp").Value;            
         }
 
         public async Task<ResultOrHttpError<CitizenList, Error>> GetAllActiveCitizensAsync(int pageNumber)

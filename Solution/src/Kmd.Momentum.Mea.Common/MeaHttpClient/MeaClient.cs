@@ -24,8 +24,7 @@ namespace Kmd.Momentum.Mea.Common.MeaHttpClient
         private readonly string _tenant;
         private readonly MeaAuthorization _mcaConfig;
 
-        public MeaClient(IConfiguration config, HttpClient httpClient, IHttpContextAccessor httpContextAccessor, IMeaSecretStore meaSecretStore
-          )
+        public MeaClient(IConfiguration config, HttpClient httpClient, IHttpContextAccessor httpContextAccessor, IMeaSecretStore meaSecretStore)
         {
             _config = config;
             _httpClient = httpClient;
@@ -33,7 +32,6 @@ namespace Kmd.Momentum.Mea.Common.MeaHttpClient
             _correlationId = httpContextAccessor.HttpContext.TraceIdentifier;
             _tenant = httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "tenant").Value;
             _mcaConfig = config.GetSection("MeaAuthorization").Get<IReadOnlyList<MeaAuthorization>>().FirstOrDefault(x => x.KommuneId == _tenant);
-            
         }
 
         public async Task<ResultOrHttpError<string, Error>> GetAsync(string path)
@@ -88,9 +86,7 @@ namespace Kmd.Momentum.Mea.Common.MeaHttpClient
                 }
             }
 
-            var result = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-
-            return new ResultOrHttpError<string, Error>(result);
+            return new ResultOrHttpError<string, Error>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
         }
 
         public async Task<ResultOrHttpError<string, Error>> PostAsync(string path, StringContent stringContent)
@@ -277,7 +273,5 @@ namespace Kmd.Momentum.Mea.Common.MeaHttpClient
                 return new ResultOrHttpError<HttpResponseMessage, string>("Couldn't fetch the configuration data to access Momentum Core System", System.Net.HttpStatusCode.Unauthorized);
             }
         }
-
-        
     }
 }

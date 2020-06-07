@@ -7,6 +7,7 @@ namespace Kmd.Momentum.Mea.Caseworker.Model
     {
         [ScrambleData]
         public Guid CaseworkerId { get; }
+
         [ScrambleData]
         public string DisplayName { get; }
 

@@ -30,12 +30,15 @@ namespace Kmd.Momentum.Mea.MeaHttpClientHelper
             }
 
             var content = response.Result;
-            //return new ResultOrHttpError<string, Error>(content);
+            
             var item = JsonConvert.DeserializeObject<TaskData>(content);
             var model = new TaskDataResponseModel(item.Id, item.Title, item.Description, item.Deadline, item.CreatedAt,
-               item.StateChangedAt, item.State, (IReadOnlyList<AssignedActors>)item.AssignedActors, item.Reference);
+                item.StateChangedAt, item.State, (IReadOnlyList<AssignedActors>)item.AssignedActors, item.Reference);
+            
             var parseContent = (JsonConvert.DeserializeObject<JToken>(JsonConvert.SerializeObject(model)));
+            
             var scrambledData = _filterData.ScrambleData(parseContent, typeof(TaskDataResponseModel));
+            
             return new ResultOrHttpError<string, Error>(scrambledData.ToString());
         }
     }

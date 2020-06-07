@@ -33,10 +33,12 @@ namespace Kmd.Momentum.Mea
                         if (property.Name.ToLower() == ((JProperty)item).Name.ToLower())
                         {
                             var data = ((JProperty)item).Value.ToString();
+                            
                             if (!string.IsNullOrEmpty(data) && data.Length > 3)
                             {
                                 data = data.Substring(0, data.Length - 3);
                                 data = data + "FFF";
+                                
                                 if(property.PropertyType == typeof(Guid))
                                 {
                                     Guid Id = new Guid(data);
@@ -50,9 +52,7 @@ namespace Kmd.Momentum.Mea
                                 break;
                             }
                         }
-
                     }
-
                 }
             }
 
