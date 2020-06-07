@@ -57,7 +57,7 @@ namespace Kmd.Momentum.Mea.Tests.Citizen
             helperHttpClientMoq.Setup(x => x.GetAllActiveCitizenDataFromMomentumCoreAsync("/search", pageNumber))
                 .Returns(Task.FromResult(new ResultOrHttpError<CitizenList, Error>(citizenList)));
 
-            var citizenService = new CitizenService(helperHttpClientMoq.Object, configurationMoq.Object, context.Object);
+            var citizenService = new CitizenService(helperHttpClientMoq.Object, context.Object);
 
             //Act
             var result = await citizenService.GetAllActiveCitizensAsync(pageNumber).ConfigureAwait(false);
@@ -82,7 +82,7 @@ namespace Kmd.Momentum.Mea.Tests.Citizen
             helperHttpClientMoq.Setup(x => x.GetAllActiveCitizenDataFromMomentumCoreAsync("/search", pageNumber))
                 .Returns(Task.FromResult(new ResultOrHttpError<CitizenList, Error>(error, HttpStatusCode.BadRequest)));
 
-            var citizenService = new CitizenService(helperHttpClientMoq.Object, configurationMoq.Object, context.Object);
+            var citizenService = new CitizenService(helperHttpClientMoq.Object, context.Object);
 
             //Act
             var result = await citizenService.GetAllActiveCitizensAsync(pageNumber).ConfigureAwait(false);
@@ -101,14 +101,12 @@ namespace Kmd.Momentum.Mea.Tests.Citizen
             var helperHttpClientMoq = new Mock<ICitizenHttpClientHelper>();
             var context = GetContext();
 
-            var configurationMoq = new Mock<IConfiguration>();
-
             var error = new Error("123456", new string[] { "PageNumber cannot be less than or equal to zero" }, "MEA");
 
             helperHttpClientMoq.Setup(x => x.GetAllActiveCitizenDataFromMomentumCoreAsync("/search", pageNumber))
                 .Returns(Task.FromResult(new ResultOrHttpError<CitizenList, Error>(error, HttpStatusCode.BadRequest)));
 
-            var citizenService = new CitizenService(helperHttpClientMoq.Object, configurationMoq.Object, context.Object);
+            var citizenService = new CitizenService(helperHttpClientMoq.Object, context.Object);
 
             //Act
             var result = await citizenService.GetAllActiveCitizensAsync(pageNumber).ConfigureAwait(false);
@@ -126,14 +124,13 @@ namespace Kmd.Momentum.Mea.Tests.Citizen
             int pageNumber = 45;
             var helperHttpClientMoq = new Mock<ICitizenHttpClientHelper>();
             var context = GetContext();
-            var configurationMoq = new Mock<IConfiguration>();
 
             var error = new Error("123456", new string[] { "No Records are available for entered page number" }, "MEA");
 
             helperHttpClientMoq.Setup(x => x.GetAllActiveCitizenDataFromMomentumCoreAsync("/search", pageNumber))
                 .Returns(Task.FromResult(new ResultOrHttpError<CitizenList, Error>(error, HttpStatusCode.BadRequest)));
 
-            var citizenService = new CitizenService(helperHttpClientMoq.Object, configurationMoq.Object, context.Object);
+            var citizenService = new CitizenService(helperHttpClientMoq.Object, context.Object);
 
             //Act
             var result = await citizenService.GetAllActiveCitizensAsync(pageNumber).ConfigureAwait(false);
@@ -151,7 +148,6 @@ namespace Kmd.Momentum.Mea.Tests.Citizen
             var helperHttpClientMoq = new Mock<ICitizenHttpClientHelper>();
             var context = GetContext();
             var cpr = "1234567890";
-            var configurationMoq = new Mock<IConfiguration>();
 
             var citizenData = new CitizenDataResponseModelBuilder().Build();
 
@@ -160,7 +156,7 @@ namespace Kmd.Momentum.Mea.Tests.Citizen
             helperHttpClientMoq.Setup(x => x.GetCitizenDataByCprOrCitizenIdFromMomentumCoreAsync($"citizens/{cpr}"))
                 .Returns(Task.FromResult(new ResultOrHttpError<CitizenDataResponseModel, Error>(httpClientCitizenDataResponse)));
 
-            var citizenService = new CitizenService(helperHttpClientMoq.Object, configurationMoq.Object, context.Object);
+            var citizenService = new CitizenService(helperHttpClientMoq.Object, context.Object);
 
             //Act
             var result = await citizenService.GetCitizenByCprAsync(cpr).ConfigureAwait(false);
@@ -178,7 +174,6 @@ namespace Kmd.Momentum.Mea.Tests.Citizen
             var helperHttpClientMoq = new Mock<ICitizenHttpClientHelper>();
             var context = GetContext();
             var cpr = "1234567890";
-            var configurationMoq = new Mock<IConfiguration>();
 
             var citizenData = new CitizenDataResponseModelBuilder().Build();
 
@@ -187,7 +182,7 @@ namespace Kmd.Momentum.Mea.Tests.Citizen
             helperHttpClientMoq.Setup(x => x.GetCitizenDataByCprOrCitizenIdFromMomentumCoreAsync($"citizens/{cpr}"))
                 .Returns(Task.FromResult(new ResultOrHttpError<CitizenDataResponseModel, Error>(error, HttpStatusCode.BadRequest)));
 
-            var citizenService = new CitizenService(helperHttpClientMoq.Object, configurationMoq.Object, context.Object);
+            var citizenService = new CitizenService(helperHttpClientMoq.Object, context.Object);
 
             //Act
             var result = await citizenService.GetCitizenByCprAsync(cpr).ConfigureAwait(false);
@@ -204,7 +199,6 @@ namespace Kmd.Momentum.Mea.Tests.Citizen
             var helperHttpClientMoq = new Mock<ICitizenHttpClientHelper>();
             var context = GetContext();
             var citizenId = It.IsAny<Guid>();
-            var configurationMoq = new Mock<IConfiguration>();
 
             var citizenData = new CitizenDataResponseModelBuilder().Build();
 
@@ -213,7 +207,7 @@ namespace Kmd.Momentum.Mea.Tests.Citizen
             helperHttpClientMoq.Setup(x => x.GetCitizenDataByCprOrCitizenIdFromMomentumCoreAsync($"citizens/{citizenId}"))
                 .Returns(Task.FromResult(new ResultOrHttpError<CitizenDataResponseModel, Error>(httpClientCitizenDataResponse)));
 
-            var citizenService = new CitizenService(helperHttpClientMoq.Object, configurationMoq.Object, context.Object);
+            var citizenService = new CitizenService(helperHttpClientMoq.Object, context.Object);
 
             //Act
             var result = await citizenService.GetCitizenByIdAsync(citizenId).ConfigureAwait(false);
@@ -232,7 +226,6 @@ namespace Kmd.Momentum.Mea.Tests.Citizen
             var helperHttpClientMoq = new Mock<ICitizenHttpClientHelper>();
             var context = GetContext();
             var citizenId = It.IsAny<Guid>();
-            var configurationMoq = new Mock<IConfiguration>();
 
             var citizenData = new CitizenDataResponseModelBuilder().Build();
 
@@ -241,7 +234,7 @@ namespace Kmd.Momentum.Mea.Tests.Citizen
             helperHttpClientMoq.Setup(x => x.GetCitizenDataByCprOrCitizenIdFromMomentumCoreAsync($"citizens/{citizenId}"))
                 .Returns(Task.FromResult(new ResultOrHttpError<CitizenDataResponseModel, Error>(error, HttpStatusCode.BadRequest)));
 
-            var citizenService = new CitizenService(helperHttpClientMoq.Object, configurationMoq.Object, context.Object);
+            var citizenService = new CitizenService(helperHttpClientMoq.Object, context.Object);
 
             //Act
             var result = await citizenService.GetCitizenByIdAsync(citizenId).ConfigureAwait(false);
@@ -258,14 +251,13 @@ namespace Kmd.Momentum.Mea.Tests.Citizen
             var helperHttpClientMoq = new Mock<ICitizenHttpClientHelper>();
             var context = GetContext();
             var momentumCitizenId = It.IsAny<Guid>();
-            var configurationMoq = new Mock<IConfiguration>();
 
             var requestModel = new JournalNoteResponseBuilder().Build();
 
             helperHttpClientMoq.Setup(x => x.CreateJournalNoteInMomentumCoreAsync("journals/note", momentumCitizenId, requestModel))
                 .Returns(Task.FromResult(new ResultOrHttpError<string, Error>("")));
 
-            var citizenService = new CitizenService(helperHttpClientMoq.Object, configurationMoq.Object, context.Object);
+            var citizenService = new CitizenService(helperHttpClientMoq.Object, context.Object);
 
             //Act
             var result = await citizenService.CreateJournalNoteAsync(momentumCitizenId, requestModel).ConfigureAwait(false);
@@ -283,7 +275,6 @@ namespace Kmd.Momentum.Mea.Tests.Citizen
             var helperHttpClientMoq = new Mock<ICitizenHttpClientHelper>();
             var context = GetContext();
             var momentumCitizenId = It.IsAny<Guid>();
-            var configurationMoq = new Mock<IConfiguration>();
 
             var requestModel = new JournalNoteResponseBuilder().Build();
 
@@ -292,7 +283,7 @@ namespace Kmd.Momentum.Mea.Tests.Citizen
             helperHttpClientMoq.Setup(x => x.CreateJournalNoteInMomentumCoreAsync("journals/note", momentumCitizenId, requestModel))
                 .Returns(Task.FromResult(new ResultOrHttpError<string, Error>(error, HttpStatusCode.BadRequest)));
 
-            var citizenService = new CitizenService(helperHttpClientMoq.Object, configurationMoq.Object, context.Object);
+            var citizenService = new CitizenService(helperHttpClientMoq.Object, context.Object);
 
             //Act
             var result = await citizenService.CreateJournalNoteAsync(momentumCitizenId, requestModel).ConfigureAwait(false);

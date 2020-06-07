@@ -62,6 +62,7 @@ namespace Kmd.Momentum.Mea.Tests.Caseworker
             var memoryStream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(_meaObj)));
 
             IConfiguration _config = new ConfigurationBuilder().AddJsonStream(memoryStream).Build();
+            memoryStream.Dispose();
 
             return _config;
 

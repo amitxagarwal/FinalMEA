@@ -29,6 +29,7 @@ namespace Kmd.Momentum.Mea.MeaHttpClientHelper
             _meaClient = meaClient;
             _correlationId = httpContextAccessor.HttpContext.TraceIdentifier;
             _filterData = filterData;
+            _clientId = httpContextAccessor.HttpContext.User.Claims.First(x => x.Type == "azp").Value;
         }
 
         public async Task<ResultOrHttpError<CitizenList, Error>> GetAllActiveCitizenDataFromMomentumCoreAsync(string path, int pageNumber)
