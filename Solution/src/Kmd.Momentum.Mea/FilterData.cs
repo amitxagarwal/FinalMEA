@@ -7,8 +7,16 @@ namespace Kmd.Momentum.Mea
 {
     public class FilterData : IFilterData
     {
+        public static string GetEnvironmentName() =>
+           Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
+
         public JToken ScrambleData(JToken result, Type type)
         {
+            if(GetEnvironmentName() == "Build")
+            {
+                return result;
+            }
+
             var propertyList = type.GetProperties()
                         .Where(
                             p =>
