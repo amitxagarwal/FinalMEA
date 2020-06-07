@@ -4,7 +4,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <RootNamespace>kmd_momentum_mea_client</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <VersionPrefix>1.0.1</VersionPrefix>
+    <VersionPrefix>1.0.2</VersionPrefix>
     <PackageId>Kmd.Momentum.Mea.Client.Test</PackageId>
     <PackageIcon>icon.png</PackageIcon>
   </PropertyGroup>
