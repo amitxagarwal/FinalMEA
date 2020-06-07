@@ -155,10 +155,10 @@ namespace Kmd.Momentum.Mea.Tests.Citizen
 
             var citizenData = new CitizenDataResponseModelBuilder().Build();
 
-            var httpClientCitizenDataResponse = JsonConvert.SerializeObject(citizenData);
+            var httpClientCitizenDataResponse = citizenData;
 
             helperHttpClientMoq.Setup(x => x.GetCitizenDataByCprOrCitizenIdFromMomentumCoreAsync($"citizens/{cpr}"))
-                .Returns(Task.FromResult(new ResultOrHttpError<string, Error>(httpClientCitizenDataResponse)));
+                .Returns(Task.FromResult(new ResultOrHttpError<CitizenDataResponseModel, Error>(httpClientCitizenDataResponse)));
 
             var citizenService = new CitizenService(helperHttpClientMoq.Object, configurationMoq.Object, context.Object);
 
@@ -185,7 +185,7 @@ namespace Kmd.Momentum.Mea.Tests.Citizen
             var error = new Error("123456", new string[] { "Citizen with the supplied cpr no is not found" }, "MCA");
 
             helperHttpClientMoq.Setup(x => x.GetCitizenDataByCprOrCitizenIdFromMomentumCoreAsync($"citizens/{cpr}"))
-                .Returns(Task.FromResult(new ResultOrHttpError<string, Error>(error, HttpStatusCode.BadRequest)));
+                .Returns(Task.FromResult(new ResultOrHttpError<CitizenDataResponseModel, Error>(error, HttpStatusCode.BadRequest)));
 
             var citizenService = new CitizenService(helperHttpClientMoq.Object, configurationMoq.Object, context.Object);
 
@@ -208,10 +208,10 @@ namespace Kmd.Momentum.Mea.Tests.Citizen
 
             var citizenData = new CitizenDataResponseModelBuilder().Build();
 
-            var httpClientCitizenDataResponse = JsonConvert.SerializeObject(citizenData);
+            var httpClientCitizenDataResponse = citizenData;
 
             helperHttpClientMoq.Setup(x => x.GetCitizenDataByCprOrCitizenIdFromMomentumCoreAsync($"citizens/{citizenId}"))
-                .Returns(Task.FromResult(new ResultOrHttpError<string, Error>(httpClientCitizenDataResponse)));
+                .Returns(Task.FromResult(new ResultOrHttpError<CitizenDataResponseModel, Error>(httpClientCitizenDataResponse)));
 
             var citizenService = new CitizenService(helperHttpClientMoq.Object, configurationMoq.Object, context.Object);
 
@@ -239,7 +239,7 @@ namespace Kmd.Momentum.Mea.Tests.Citizen
             var error = new Error("123456", new string[] { "Citizen with the supplied cpr no is not found" }, "MCA");
 
             helperHttpClientMoq.Setup(x => x.GetCitizenDataByCprOrCitizenIdFromMomentumCoreAsync($"citizens/{citizenId}"))
-                .Returns(Task.FromResult(new ResultOrHttpError<string, Error>(error, HttpStatusCode.BadRequest)));
+                .Returns(Task.FromResult(new ResultOrHttpError<CitizenDataResponseModel, Error>(error, HttpStatusCode.BadRequest)));
 
             var citizenService = new CitizenService(helperHttpClientMoq.Object, configurationMoq.Object, context.Object);
 
