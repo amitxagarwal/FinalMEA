@@ -1,0 +1,88 @@
+trigger:
+  branches:
+    include:
+    - master
+    - dev
+  paths:
+    include:
+    - Nuget/*
+
+stages:
+- stage: Build
+  jobs:
+  - job: build
+    strategy:
+      matrix:
+        linux: { imageName: "ubuntu-18.04" }
+        mac: { imageName: "macos-10.14" }        
+      maxParallel: 3
+    pool:
+      vmImage: $(imageName)
+
+    workspace:
+      clean: all
+
+    steps:
+    - task: UseDotNet@2
+      inputs:
+        packageType: 'sdk'
+        useGlobalJson: true
+        workingDirectory: "$(Pipeline.Workspace)/s/Nuget/"
+
+    - task: DotNetCoreCLI@2
+      displayName: "Build Solution"
+      condition: succeeded()
+      env:
+        DOTNET_CLI_TELEMETRY_OPTOUT: 1
+        DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+      inputs:
+        command: build
+        projects: './Nuget/Kmd-Momentum-Mea-Client.sln'
+
+    - task: CopyFiles@2
+      displayName: "Copy Project"
+      condition: and(succeeded(),eq(variables['imageName'],'ubuntu-18.04'))
+      inputs:
+        SourceFolder: './Nuget/src/kmd.momentum.mea.client'
+        contents: |
+          **/*.csproj
+          **/*.png
+          **/bin/Debug/**
+        targetFolder: '$(Build.ArtifactStagingDirectory)/project'
+
+    - task: PublishBuildArtifacts@1
+      displayName: "Publish Artifacts"
+      condition: and(succeeded(),eq(variables['imageName'],'ubuntu-18.04'))
+      inputs:
+        pathToPublish: '$(Build.ArtifactStagingDirectory)/project'
+        artifactName: project
+
+- stage: deploy_phoenix
+  condition: and(succeeded(), in(variables['Build.Reason'], 'PullRequest','Manual'))
+  dependsOn: Build
+  jobs:
+  - template: azure-pipelines-release-template.yml
+    parameters:
+      environment: phoenix
+      isDynamicVersion: true
+      feedType: internal # value must be "internal" or 'external' only
+
+- stage: deploy_internal
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/dev'))
+  dependsOn: Build
+  jobs:
+  - template: azure-pipelines-release-template.yml
+    parameters:
+      environment: internal
+      isDynamicVersion: true
+      feedType: internal # value must be "internal" or 'external' only
+
+- stage: deploy_external
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  dependsOn: Build
+  jobs:
+  - template: azure-pipelines-release-template.yml
+    parameters:
+      environment: external
+      isDynamicVersion: false
+      feedType: internal # value must be "internal" or 'external' only
