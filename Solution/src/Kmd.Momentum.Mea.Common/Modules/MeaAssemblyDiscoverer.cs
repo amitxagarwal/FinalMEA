@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Kmd.Momentum.Mea.Common.Attributes;
+using Baseline;
 
 namespace Kmd.Momentum.Mea.Common.Modules
 {
@@ -12,10 +14,22 @@ namespace Kmd.Momentum.Mea.Common.Modules
     {
         private readonly List<(Assembly assembly, string productPathName, string openApiProductName, Version apiVersion)> _openApiProducts;
 
+        private IReadOnlyCollection<(Assembly assembly, string productPathName, Type type, Version
+                apiVersion)> _modelListWithScrambleProperties;
+
         public MeaAssemblyDiscoverer(IReadOnlyCollection<(Assembly assembly, string productPathName, string openApiProductName, Version apiVersion)> meaParts) :
             base(meaParts.Select(p => p.assembly))
         {
             _openApiProducts = meaParts.ToList();
+         
+        }
+
+        public MeaAssemblyDiscoverer(IReadOnlyCollection<(Assembly assembly, string productPathName, Type type, Version
+                apiVersion)> meaAssemblyTypesParts) :
+            base(meaAssemblyTypesParts.Select(p => p.assembly))
+        {
+            _modelListWithScrambleProperties = (IReadOnlyCollection<(Assembly assembly, string productPathName, Type type, Version
+                apiVersion)>)meaAssemblyTypesParts;
         }
 
         public IReadOnlyCollection<(Type type, AutoScopedDIAttribute attr)> DiscoverScopedDITypes() => Assemblies
@@ -40,6 +54,20 @@ namespace Kmd.Momentum.Mea.Common.Modules
            .SelectMany(x => x.GetTypes())
            .Where(x => typeof(IDocumentBase).IsAssignableFrom(x) && x.IsClass && !x.IsAbstract)
            .ToList();
+
+        public IReadOnlyCollection<(Type type, IReadOnlyCollection<PropertyInfo> attr)> DiscoverScrambleDataProperties()
+        {
+            var list = new List<(Type type, IReadOnlyCollection<PropertyInfo> attr)>();
+            foreach(var part in _modelListWithScrambleProperties)
+            {
+                list.Add((part.type, part.type.GetProperties().Where(
+                            p =>
+                                p.CustomAttributes.ToList().Where(q=>q.AttributeType.Name == "ScrambleDataAttribute").Any()
+                            ).ToList()));
+            }
+
+            return list;
+        }
 
         public void ConfigureDiscoveredServices(IServiceCollection services, IConfiguration configuration)
         {

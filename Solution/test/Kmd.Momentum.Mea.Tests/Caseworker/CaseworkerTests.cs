@@ -64,8 +64,7 @@ namespace Kmd.Momentum.Mea.Tests.Caseworker
             IConfiguration _config = new ConfigurationBuilder().AddJsonStream(memoryStream).Build();
             memoryStream.Dispose();
 
-            return _config;
-
+            return _config; 
         }
 
         [Fact]

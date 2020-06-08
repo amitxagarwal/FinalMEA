@@ -1,12 +1,16 @@
 using CorrelationId;
 using Kmd.Momentum.Mea.Attributes;
+using Kmd.Momentum.Mea.Caseworker.Model;
+using Kmd.Momentum.Mea.Citizen.Model;
 using Kmd.Momentum.Mea.Common.Authorization;
 using Kmd.Momentum.Mea.Common.Authorization.Caseworker;
 using Kmd.Momentum.Mea.Common.Authorization.Citizen;
 using Kmd.Momentum.Mea.Common.Authorization.Journal;
 using Kmd.Momentum.Mea.Common.Authorization.Tasks;
 using Kmd.Momentum.Mea.Common.DatabaseStore;
+using Kmd.Momentum.Mea.Common.Middleware;
 using Kmd.Momentum.Mea.Common.Modules;
+using Kmd.Momentum.Mea.TaskApi.Model;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -59,11 +63,28 @@ namespace Kmd.Momentum.Mea.Api
                 (typeof(Kmd.Momentum.Mea.Modules.MeaAssemblyPart).Assembly, productPathName: "Mea", openApiProductName: "Mea", new Version("0.0.1"))
             };
 
+        private static
+            IReadOnlyCollection<(Assembly assembly, string productPathName, Type type, Version
+                apiVersion)> MeaAssemblyTypesPartsToScramble
+        { get; } =
+            new List<(Assembly assembly, string productPathName, Type type, Version apiVersion)>
+            {
+                (typeof(Kmd.Momentum.Mea.Modules.MeaAssemblyPart).Assembly, productPathName: "Mea", typeof(CitizenDataResponseModel), new Version("0.0.1")),
+                (typeof(Kmd.Momentum.Mea.Modules.MeaAssemblyPart).Assembly, productPathName: "Mea", typeof(CaseworkerDataResponseModel), new Version("0.0.1")),
+                (typeof(Kmd.Momentum.Mea.Modules.MeaAssemblyPart).Assembly, productPathName: "Mea", typeof(TaskDataResponseModel), new Version("0.0.1"))
+            };
+
         /// <summary>
         /// Discovers all the assemblies and add to this collection.
         /// </summary>
         public static MeaAssemblyDiscoverer MeaAssemblyDiscoverer { get; } =
             new MeaAssemblyDiscoverer(MeaAssemblyParts);
+
+        /// <summary>
+        /// Discovers all the classes to scramble data and add to this collection.
+        /// </summary>
+        public static MeaAssemblyDiscoverer MeaAssemblyTypesDiscoverer { get; } =
+            new MeaAssemblyDiscoverer(MeaAssemblyTypesPartsToScramble);
 
 #pragma warning disable CA1822
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -87,6 +108,7 @@ namespace Kmd.Momentum.Mea.Api
             services.AddDocumentStore(MeaAssemblyDiscoverer);
             services.AddControllers();
             services.AddSingleton<IMeaAssemblyDiscoverer>(MeaAssemblyDiscoverer);
+            services.AddSingleton<IMeaAssemblyDiscoverer>(MeaAssemblyTypesDiscoverer);
 
             MeaAssemblyDiscoverer.ConfigureDiscoveredServices(services, _configuration);
 
@@ -258,11 +280,14 @@ namespace Kmd.Momentum.Mea.Api
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseMiddleware<ScrambleDataMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+
+            
         }
     }
 #pragma warning restore CA1822
