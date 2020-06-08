@@ -71,16 +71,15 @@ namespace Kmd.Momentum.Mea.Caseworker
             }
 
             var content = response.Result;
-            var caseworkerDataObj = JsonConvert.DeserializeObject<CaseworkerData>(content);
-            var caseworkerDataResponseModelObj = JsonConvert.DeserializeObject<CaseworkerDataResponseModel>(content);
+            var caseworkerDataObj = JsonConvert.DeserializeObject<CaseworkerDataResponseModel>(content);
 
-            var dataToReturn = new CaseworkerDataResponseModel(caseworkerDataResponseModelObj.CaseworkerId, caseworkerDataObj.DisplayName, caseworkerDataObj.GivenName,
-                caseworkerDataObj.MiddleName, caseworkerDataObj.Initials, caseworkerDataObj.Email?.Address, caseworkerDataObj.Phone?.Number, caseworkerDataObj.CaseworkerIdentifier,
+            var dataToReturn = new CaseworkerDataResponseModel(caseworkerDataObj.CaseworkerId, caseworkerDataObj.DisplayName, caseworkerDataObj.GivenName,
+                caseworkerDataObj.MiddleName, caseworkerDataObj.Initials, caseworkerDataObj.Email, caseworkerDataObj.Phone, caseworkerDataObj.CaseworkerIdentifier,
                 caseworkerDataObj.Description, caseworkerDataObj.IsActive, caseworkerDataObj.IsBookable);
 
             Log.ForContext("CorrelationId", _correlationId)
                 .ForContext("Client", _clientId)
-                .ForContext("CaseworkerId", caseworkerDataObj.Id)
+                .ForContext("CaseworkerId", caseworkerDataObj.CaseworkerId)
                 .Information("The caseworker details by CaseworkerId has been returned successfully");
 
             return new ResultOrHttpError<CaseworkerDataResponseModel, Error>(dataToReturn);
