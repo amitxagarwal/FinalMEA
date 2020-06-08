@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -32,7 +33,15 @@ namespace Kmd.Momentum.Mea.Common.Middleware
             {
                 using (Serilog.Context.LogContext.PushProperty("RequestId", httpContext.TraceIdentifier))
                 {
-                    await _next(httpContext).ConfigureAwait(false);
+                    var bodyStream = httpContext.Response.Body;
+
+                    var responseBodyStream = new MemoryStream();
+                    httpContext.Response.Body = responseBodyStream;
+
+                    await _next(httpContext);
+
+                    responseBodyStream.Seek(0, SeekOrigin.Begin);
+                    var responseBody = new StreamReader(responseBodyStream).ReadToEnd();
                 }
 
                 var type = httpContext.Response;
