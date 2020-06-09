@@ -31,27 +31,33 @@ namespace Kmd.Momentum.Mea.Common.Middleware
         {            
             try
             {
+                var bodyStream = httpContext.Response.Body;
+
+                var responseBodyStream = new MemoryStream();
+
                 using (Serilog.Context.LogContext.PushProperty("RequestId", httpContext.TraceIdentifier))
                 {
-                    var bodyStream = httpContext.Response.Body;
-
-                    var responseBodyStream = new MemoryStream();
+                    
                     httpContext.Response.Body = responseBodyStream;
 
-                    await _next(httpContext);
-
-                    responseBodyStream.Seek(0, SeekOrigin.Begin);
-                    var responseBody = new StreamReader(responseBodyStream).ReadToEnd();
+                    await _next(httpContext);                    
                 }
 
-                var type = httpContext.Response;
-                var jsonObject = JsonConvert.DeserializeObject<JObject>(JsonConvert.DeserializeObject<string>(type.ToString()));
+                responseBodyStream.Seek(0, SeekOrigin.Begin);
+                var responseBody = new StreamReader(responseBodyStream).ReadToEnd();
+
+                var jsonObject = JsonConvert.DeserializeObject<JObject>(JsonConvert.DeserializeObject<string>(responseBody));
 
 
                 foreach (var assembly in meaAssemblyDiscoverer.DiscoverScrambleDataProperties())
                 {
-                    
+                   var item =  ((IReadOnlyCollection<System.Reflection.PropertyInfo>)assembly.attr).GetEnumerator().Current;
+                    // jotoken - object data
+                    // loop for no of fields
+                    // fields to scramble
+                    // call method of filter data with jtoken, field to scramble
                 }
+
             }
             catch (Exception ex)
             {
