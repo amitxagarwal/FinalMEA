@@ -163,7 +163,7 @@ namespace Kmd.Momentum.Mea.Common.Middleware
                 }
 
             }
-            throw new Exception();
+            return new List<PropertyInfo>();
         }
     }
 }
