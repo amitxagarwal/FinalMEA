@@ -17,7 +17,6 @@ namespace Kmd.Momentum.Mea.Common.Middleware
     {
         readonly RequestDelegate _next;
 
-
         public ScrambleDataMiddleware(RequestDelegate next)
         {
             _next = next ?? throw new ArgumentNullException(nameof(next));
@@ -60,14 +59,14 @@ namespace Kmd.Momentum.Mea.Common.Middleware
                         case "Kmd.Momentum.Mea.Caseworker.Model.CaseworkerList":
                             scrambleCaseworkerList(meaAssemblyDiscoverer, _obj);
                             break;
-                        case "Kmd.Momentum.Mea.Caseworker.Model.CaseworkerData":
-                            scrambleCaseworkerData(meaAssemblyDiscoverer, _obj);
-                            break;
                         case "Kmd.Momentum.Mea.Citizen.Model.CitizenList":
                             scrambleCitizenList(meaAssemblyDiscoverer, _obj);
                             break;
+                        default:
+                            var _attrArray = getScrambledAssembly(meaAssemblyDiscoverer, _model);
+                            getScrambleData(_obj, _attrArray);
+                            break;
                     }
-
                 }
 
 
@@ -103,17 +102,6 @@ namespace Kmd.Momentum.Mea.Common.Middleware
             {
                 getScrambleData(_data, _attrArray);
             }
-        }
-
-
-        private void scrambleCaseworkerData(IMeaAssemblyDiscoverer meaAssemblyDiscoverer, JToken _obj)
-        {
-            var _attrArray = getScrambledAssembly(meaAssemblyDiscoverer, "Kmd.Momentum.Mea.Caseworker.Model.CaseworkerData");
-            if (_attrArray.Count == 0)
-            {
-                return;
-            }
-            getScrambleData(_obj, _attrArray);
         }
 
         private void scrambleCitizenList(IMeaAssemblyDiscoverer meaAssemblyDiscoverer, JToken _obj)
@@ -161,7 +149,6 @@ namespace Kmd.Momentum.Mea.Common.Middleware
                 {
                     return assembly.attr;
                 }
-
             }
             return new List<PropertyInfo>();
         }
