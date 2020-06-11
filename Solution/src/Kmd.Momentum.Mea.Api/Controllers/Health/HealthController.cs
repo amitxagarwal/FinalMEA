@@ -59,5 +59,16 @@ namespace Kmd.Momentum.Mea.Api.Controllers.Health
 
             return report.Status == HealthStatus.Healthy ? Ok(report) : StatusCode((int)HttpStatusCode.ServiceUnavailable, report);
         }
+
+        [HttpGet]
+        [ProducesResponseType(typeof(HealthReport), (int)HttpStatusCode.OK)]
+        [SwaggerOperation(OperationId = "HealthLiveDemo")]
+        // [Authorize(Scopes.Access)]
+        public async Task<IActionResult> LiveDemo()
+        {
+            var report = await _healthCheckService.CheckHealthAsync().ConfigureAwait(true);
+
+            return report.Status == HealthStatus.Healthy ? Ok(report) : StatusCode((int)HttpStatusCode.ServiceUnavailable, report);
+        }
     }
 }
