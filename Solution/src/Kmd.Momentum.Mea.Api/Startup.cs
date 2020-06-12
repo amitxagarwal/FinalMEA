@@ -71,8 +71,7 @@ namespace Kmd.Momentum.Mea.Api
             {
                 (typeof(Kmd.Momentum.Mea.Modules.MeaAssemblyPart).Assembly, productPathName: "Mea", typeof(CitizenDataResponseModel), new Version("0.0.1")),
                 (typeof(Kmd.Momentum.Mea.Modules.MeaAssemblyPart).Assembly, productPathName: "Mea", typeof(CaseworkerDataResponseModel), new Version("0.0.1")),
-                (typeof(Kmd.Momentum.Mea.Modules.MeaAssemblyPart).Assembly, productPathName: "Mea", typeof(TaskDataResponseModel), new Version("0.0.1")),
-                (typeof(Kmd.Momentum.Mea.Modules.MeaAssemblyPart).Assembly, productPathName: "Mea", typeof(CaseworkerData), new Version("0.0.1"))
+                (typeof(Kmd.Momentum.Mea.Modules.MeaAssemblyPart).Assembly, productPathName: "Mea", typeof(TaskDataResponseModel), new Version("0.0.1"))
                 
             };
 

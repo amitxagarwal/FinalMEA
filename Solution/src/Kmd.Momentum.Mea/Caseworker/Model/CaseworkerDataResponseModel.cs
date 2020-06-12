@@ -1,4 +1,4 @@
-﻿using Kmd.Momentum.Mea.Attributes;
+﻿using Kmd.Momentum.Mea.Common.Attributes;
 using System;
 
 namespace Kmd.Momentum.Mea.Caseworker.Model

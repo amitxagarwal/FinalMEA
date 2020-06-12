@@ -62,6 +62,9 @@ namespace Kmd.Momentum.Mea.Common.Middleware
                         case "Kmd.Momentum.Mea.Citizen.Model.CitizenList":
                             scrambleCitizenList(meaAssemblyDiscoverer, _obj);
                             break;
+                        case "Kmd.Momentum.Mea.TaskApi.Model.TaskList":
+                            scrambleCaseworkerTaskList(meaAssemblyDiscoverer, _obj);
+                            break;
                         default:
                             var _attrArray = getScrambledAssembly(meaAssemblyDiscoverer, _model);
                             getScrambleData(_obj, _attrArray);
@@ -107,6 +110,20 @@ namespace Kmd.Momentum.Mea.Common.Middleware
         private void scrambleCitizenList(IMeaAssemblyDiscoverer meaAssemblyDiscoverer, JToken _obj)
         {
             var _attrArray = getScrambledAssembly(meaAssemblyDiscoverer, "Kmd.Momentum.Mea.Citizen.Model.CitizenDataResponseModel");
+            if (_attrArray.Count == 0)
+            {
+                return;
+            }
+            var _dataArray = _obj["result"];
+            foreach (var _data in _dataArray)
+            {
+                getScrambleData(_data, _attrArray);
+            }
+        }
+
+        private void scrambleCaseworkerTaskList(IMeaAssemblyDiscoverer meaAssemblyDiscoverer, JToken _obj)
+        {
+            var _attrArray = getScrambledAssembly(meaAssemblyDiscoverer, "Kmd.Momentum.Mea.TaskApi.Model.TaskDataResponseModel");
             if (_attrArray.Count == 0)
             {
                 return;
