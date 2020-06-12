@@ -121,6 +121,19 @@ namespace Kmd.Momentum.Mea.Common.Middleware
             }
         }
 
+        private void scrambleCaseworkerTaskList(IMeaAssemblyDiscoverer meaAssemblyDiscoverer, JToken _obj)
+        {
+            var _attrArray = meaAssemblyDiscoverer.DiscoverScrambleDataProperties("Kmd.Momentum.Mea.TaskApi.Model.TaskDataResponseModel");
+            if (_attrArray.Count == 0)
+            {
+                return;
+            }
+            var _dataArray = _obj["result"];
+            foreach (var _data in _dataArray)
+            {
+                getScrambleData(_data, _attrArray);
+            }
+        }
         private void getScrambleData(JToken data, IReadOnlyCollection<PropertyInfo> attrArray)
         {
             foreach (var attr in attrArray)
