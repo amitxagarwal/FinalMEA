@@ -9,5 +9,8 @@ namespace Kmd.Momentum.Mea.Common.Modules
     public interface IMeaAssemblyDiscoverer : IDocumentStoreAssemblyDiscoverer
     {
         IReadOnlyCollection<(Type type, IReadOnlyCollection<PropertyInfo> attr)> DiscoverScrambleDataProperties();
+
+        IReadOnlyCollection<PropertyInfo> DiscoverScrambleDataProperties(string assembly);
+
     }
 }
