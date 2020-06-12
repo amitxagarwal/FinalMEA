@@ -14,8 +14,9 @@ namespace Kmd.Momentum.Mea.Api.Controllers.Tasks
     /// <summary>
     /// Controller to handle all the task related API requests
     /// </summary>
+    [ApiVersion("1")]
     [ApiController]
-    [Route("tasks")]
+    [Route("v{version:apiVersion}/tasks")]
     [Produces("application/json", "text/json")]
     [Authorize(MeaCustomClaimAttributes.TaskRole)]
     public class TasksController : ControllerBase

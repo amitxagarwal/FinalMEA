@@ -1,4 +1,6 @@
 using CorrelationId;
+using Kmd.Momentum.Mea.Caseworker.Model;
+using Kmd.Momentum.Mea.Citizen.Model;
 using Kmd.Momentum.Mea.Common.Authorization;
 using Kmd.Momentum.Mea.Common.Authorization.Caseworker;
 using Kmd.Momentum.Mea.Common.Authorization.Citizen;
@@ -6,9 +8,11 @@ using Kmd.Momentum.Mea.Common.Authorization.Journal;
 using Kmd.Momentum.Mea.Common.Authorization.Tasks;
 using Kmd.Momentum.Mea.Common.DatabaseStore;
 using Kmd.Momentum.Mea.Common.Modules;
+using Kmd.Momentum.Mea.TaskApi.Model;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -18,6 +22,7 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
+using Swashbuckle.AspNetCore.SwaggerGen;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using System;
 using System.Collections.Generic;
@@ -58,6 +63,17 @@ namespace Kmd.Momentum.Mea.Api
                 (typeof(Kmd.Momentum.Mea.Modules.MeaAssemblyPart).Assembly, productPathName: "Mea", openApiProductName: "Mea", new Version("0.0.1"))
             };
 
+        private static
+            IReadOnlyCollection<(Assembly assembly, string productPathName, Type type, Version
+                apiVersion)> MeaAssemblyTypesPartsToScramble
+        { get; } =
+            new List<(Assembly assembly, string productPathName, Type type, Version apiVersion)>
+            {
+                (typeof(Kmd.Momentum.Mea.Modules.MeaAssemblyPart).Assembly, productPathName: "Mea", typeof(CitizenDataResponseModel), new Version("0.0.1")),
+                (typeof(Kmd.Momentum.Mea.Modules.MeaAssemblyPart).Assembly, productPathName: "Mea", typeof(CaseworkerDataResponseModel), new Version("0.0.1")),
+                (typeof(Kmd.Momentum.Mea.Modules.MeaAssemblyPart).Assembly, productPathName: "Mea", typeof(TaskDataResponseModel), new Version("0.0.1"))
+            };
+
         /// <summary>
         /// Discovers all the assemblies and add to this collection.
         /// </summary>
@@ -72,7 +88,8 @@ namespace Kmd.Momentum.Mea.Api
         /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
-            // The following line enables Application Insights telemetry collection.
+            // The following line enables Application Insights telemetry collection
+
             services.AddApplicationInsightsTelemetry();
             services.AddMvc()
                 .AddJsonOptions(a =>
@@ -95,7 +112,7 @@ namespace Kmd.Momentum.Mea.Api
             var azureAdB2C = _configuration.GetSection("AzureAdB2C");
             services.AddSingleton(azureAdB2C);
             var azureAd = _configuration.GetSection("AzureAd");
-            services.AddSingleton(azureAd);          
+            services.AddSingleton(azureAd);
 
             services.AddHttpContextAccessor();
 
@@ -138,15 +155,25 @@ namespace Kmd.Momentum.Mea.Api
                    MeaCustomClaimAttributes.TenantClaimTypeName,
                    MeaCustomClaimAttributes.ScopeClaimTypeName)));
             });
+            services.AddApiVersioning();
+            services.AddApiVersioning(o =>
+            {
+                o.AssumeDefaultVersionWhenUnspecified = true;
+                o.DefaultApiVersion = new ApiVersion(1, 0);
+            });
 
             services.AddSwaggerGen(c =>
             {
                 c.DescribeAllParametersInCamelCase();
-                c.SwaggerDoc("v1", new OpenApiInfo
-                {
-                    Version = "v1",
-                    Title = "Kmd Momentum External Api",
-                });
+                // Add a SwaggerDoc for v1
+                c.SwaggerDoc("v1",
+                    new OpenApiInfo
+                    {
+                        Version = "v1",
+                        Title = "Kmd Momentum External Api",
+                        Description = "Kmd Momentum External Api - v1",
+                    });
+
                 var securityScheme = new OpenApiSecurityScheme
                 {
                     In = ParameterLocation.Header,
@@ -165,19 +192,40 @@ namespace Kmd.Momentum.Mea.Api
                 securityRequirement.Add(securityScheme, new[] { "Bearer" });
                 c.AddSecurityRequirement(securityRequirement);
                 c.EnableAnnotations();
-                
+
                 var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
                 //var commentsFileName = Assembly.GetExecutingAssembly().GetName().Name + ".XML";
                 var xmlFileName = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlFile = Path.Combine(baseDirectory, xmlFileName);
 
-                c.IncludeXmlComments(xmlFile);                
-            });
+                c.IncludeXmlComments(xmlFile);
+                c.OperationFilter<RemoveVersionFromParameter>();
+                c.DocumentFilter<ReplaceVersionWithExactValueInPath>();
+                c.DocInclusionPredicate((version, desc) =>
+                {
+                    if (!desc.TryGetMethodInfo(out MethodInfo methodInfo))
+                        return false;
 
-            services.AddHealthChecks().AddCheck("basic_readiness_check", () => new HealthCheckResult(status: HealthStatus.Healthy), new[] { "ready" });
-            services.Configure<HealthCheckPublisherOptions>(options =>
-            {
-                options.Predicate = (check) => check.Tags.Contains("ready");
+                    var versions = methodInfo.DeclaringType
+                    .GetCustomAttributes(true)
+                    .OfType<ApiVersionAttribute>()
+                    .SelectMany(attr => attr.Versions);
+
+                    var maps = methodInfo
+                    .GetCustomAttributes(true)
+                    .OfType<MapToApiVersionAttribute>()
+                    .SelectMany(attr => attr.Versions)
+                    .ToArray();
+
+                    return versions.Any(v => $"v{v.ToString()}" == version)
+                    && (!maps.Any() || maps.Any(v => $"v{v.ToString()}" == version));
+                });
+
+                services.AddHealthChecks().AddCheck("basic_readiness_check", () => new HealthCheckResult(status: HealthStatus.Healthy), new[] { "ready" });
+                services.Configure<HealthCheckPublisherOptions>(options =>
+                {
+                    options.Predicate = (check) => check.Tags.Contains("ready");
+                });
             });
         }
 
@@ -241,7 +289,7 @@ namespace Kmd.Momentum.Mea.Api
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Kmd Momentum External Api");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Kmd Momentum External Api - v1");
                 //    c.SwaggerEndpoint($"/swagger/case/swagger.json", $"KMD Case Service API");
                 //    c.InjectStylesheet("https://fonts.googleapis.com/css?family=Roboto");
                 //    c.InjectStylesheet("/swagger-ui/custom.css");
@@ -260,7 +308,7 @@ namespace Kmd.Momentum.Mea.Api
             {
                 endpoints.MapControllers();
             });
+
         }
     }
-#pragma warning restore CA1822
 }
