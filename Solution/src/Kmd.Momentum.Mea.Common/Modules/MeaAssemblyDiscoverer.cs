@@ -21,7 +21,7 @@ namespace Kmd.Momentum.Mea.Common.Modules
             base(meaParts.Select(p => p.assembly))
         {
             _openApiProducts = meaParts.ToList();
-         
+
         }
 
         public MeaAssemblyDiscoverer(IReadOnlyCollection<(Assembly assembly, string productPathName, Type type, Version
@@ -58,16 +58,27 @@ namespace Kmd.Momentum.Mea.Common.Modules
         public IReadOnlyCollection<(Type type, IReadOnlyCollection<PropertyInfo> attr)> DiscoverScrambleDataProperties()
         {
             var list = new List<(Type type, IReadOnlyCollection<PropertyInfo> attr)>();
-            foreach(var part in _modelListWithScrambleProperties)
+            foreach (var part in _modelListWithScrambleProperties)
             {
                 list.Add((part.type, part.type.GetProperties().Where(
                             p =>
-                                p.CustomAttributes.ToList().Where(q=>q.AttributeType.Name == "ScrambleDataAttribute").Any()
+                                p.CustomAttributes.ToList().Where(q => q.AttributeType.Name == "ScrambleDataAttribute").Any()
                             ).ToList()));
             }
 
             return list;
         }
+
+        public IReadOnlyCollection<PropertyInfo> DiscoverScrambleDataProperties(string _assemblyType)
+        {            
+            var assembly = _modelListWithScrambleProperties.Where(p => p.type.FullName.ToString() == _assemblyType).FirstOrDefault();
+            if (assembly.type != null)
+            {
+                return assembly.type.GetProperties().Where(p => p.CustomAttributes.ToList().Where(q => q.AttributeType.Name == "ScrambleDataAttribute").Any()).ToList();
+            }
+            return new List<PropertyInfo>();
+        }
+
 
         public void ConfigureDiscoveredServices(IServiceCollection services, IConfiguration configuration)
         {

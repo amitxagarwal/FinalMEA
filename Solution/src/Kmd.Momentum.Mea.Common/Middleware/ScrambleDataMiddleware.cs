@@ -66,7 +66,7 @@ namespace Kmd.Momentum.Mea.Common.Middleware
                             scrambleCaseworkerTaskList(meaAssemblyDiscoverer, _obj);
                             break;
                         default:
-                            var _attrArray = getScrambledAssembly(meaAssemblyDiscoverer, _model);
+                            var _attrArray =meaAssemblyDiscoverer.DiscoverScrambleDataProperties(_model); 
                             getScrambleData(_obj, _attrArray);
                             break;
                     }
@@ -95,7 +95,7 @@ namespace Kmd.Momentum.Mea.Common.Middleware
 
         private void scrambleCaseworkerList(IMeaAssemblyDiscoverer meaAssemblyDiscoverer, JToken _obj)
         {
-            var _attrArray = getScrambledAssembly(meaAssemblyDiscoverer, "Kmd.Momentum.Mea.Caseworker.Model.CaseworkerDataResponseModel");
+            var _attrArray = meaAssemblyDiscoverer.DiscoverScrambleDataProperties("Kmd.Momentum.Mea.Caseworker.Model.CaseworkerDataResponseModel");
             if (_attrArray.Count == 0)
             {
                 return;
@@ -109,7 +109,7 @@ namespace Kmd.Momentum.Mea.Common.Middleware
 
         private void scrambleCitizenList(IMeaAssemblyDiscoverer meaAssemblyDiscoverer, JToken _obj)
         {
-            var _attrArray = getScrambledAssembly(meaAssemblyDiscoverer, "Kmd.Momentum.Mea.Citizen.Model.CitizenDataResponseModel");
+            var _attrArray = meaAssemblyDiscoverer.DiscoverScrambleDataProperties("Kmd.Momentum.Mea.Citizen.Model.CitizenDataResponseModel");
             if (_attrArray.Count == 0)
             {
                 return;
@@ -121,19 +121,6 @@ namespace Kmd.Momentum.Mea.Common.Middleware
             }
         }
 
-        private void scrambleCaseworkerTaskList(IMeaAssemblyDiscoverer meaAssemblyDiscoverer, JToken _obj)
-        {
-            var _attrArray = getScrambledAssembly(meaAssemblyDiscoverer, "Kmd.Momentum.Mea.TaskApi.Model.TaskDataResponseModel");
-            if (_attrArray.Count == 0)
-            {
-                return;
-            }
-            var _dataArray = _obj["result"];
-            foreach (var _data in _dataArray)
-            {
-                getScrambleData(_data, _attrArray);
-            }
-        }
         private void getScrambleData(JToken data, IReadOnlyCollection<PropertyInfo> attrArray)
         {
             foreach (var attr in attrArray)
@@ -156,18 +143,6 @@ namespace Kmd.Momentum.Mea.Common.Middleware
                     }
                 }
             }
-        }
-
-        private IReadOnlyCollection<PropertyInfo> getScrambledAssembly(IMeaAssemblyDiscoverer meaAssemblyDiscoverer, string _assemblyName)
-        {
-            foreach (var assembly in meaAssemblyDiscoverer.DiscoverScrambleDataProperties())
-            {
-                if (assembly.type.FullName.ToString() == _assemblyName)
-                {
-                    return assembly.attr;
-                }
-            }
-            return new List<PropertyInfo>();
         }
     }
 }
