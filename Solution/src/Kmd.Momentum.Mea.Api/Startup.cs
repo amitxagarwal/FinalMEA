@@ -63,17 +63,6 @@ namespace Kmd.Momentum.Mea.Api
                 (typeof(Kmd.Momentum.Mea.Modules.MeaAssemblyPart).Assembly, productPathName: "Mea", openApiProductName: "Mea", new Version("0.0.1"))
             };
 
-        private static
-            IReadOnlyCollection<(Assembly assembly, string productPathName, Type type, Version
-                apiVersion)> MeaAssemblyTypesPartsToScramble
-        { get; } =
-            new List<(Assembly assembly, string productPathName, Type type, Version apiVersion)>
-            {
-                (typeof(Kmd.Momentum.Mea.Modules.MeaAssemblyPart).Assembly, productPathName: "Mea", typeof(CitizenDataResponseModel), new Version("0.0.1")),
-                (typeof(Kmd.Momentum.Mea.Modules.MeaAssemblyPart).Assembly, productPathName: "Mea", typeof(CaseworkerDataResponseModel), new Version("0.0.1")),
-                (typeof(Kmd.Momentum.Mea.Modules.MeaAssemblyPart).Assembly, productPathName: "Mea", typeof(TaskDataResponseModel), new Version("0.0.1"))
-            };
-
         /// <summary>
         /// Discovers all the assemblies and add to this collection.
         /// </summary>
