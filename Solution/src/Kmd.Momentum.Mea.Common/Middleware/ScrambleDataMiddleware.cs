@@ -139,20 +139,23 @@ namespace Kmd.Momentum.Mea.Common.Middleware
             foreach (var attr in attrArray)
             {
                 var key = Char.ToLowerInvariant(attr.Name[0]) + attr.Name.Substring(1);
-                var val = data[key].ToString();
-                if (!string.IsNullOrEmpty(val) && val.Length > 3)
+                if (data[key] != null)
                 {
-                    val = val.Substring(0, val.Length - 3);
-                    val = val + "AAA";
+                    var val = data[key].ToString();
+                    if (!string.IsNullOrEmpty(val) && val.Length > 3)
+                    {
+                        val = val.Substring(0, val.Length - 3);
+                        val = val + "AAA";
 
-                    if (attr.PropertyType == typeof(Guid))
-                    {
-                        Guid Id = new Guid(val);
-                        data[key] = Id;
-                    }
-                    else
-                    {
-                        data[key] = val;
+                        if (attr.PropertyType == typeof(Guid))
+                        {
+                            Guid Id = new Guid(val);
+                            data[key] = Id;
+                        }
+                        else
+                        {
+                            data[key] = val;
+                        }
                     }
                 }
             }
