@@ -25,7 +25,7 @@ namespace Kmd.Momentum.Mea.Integration.Tests.Caseworker
         {
             //Arrange       
             var client = _factory.CreateClient();
-            var requestUri = "/caseworkers?pageNumber=1";
+            var requestUri = "v1/caseworkers?pageNumber=1";
             var tokenHelper = new TokenGenerator();
             var accessToken = await tokenHelper.GetToken().ConfigureAwait(false);
 
@@ -47,7 +47,7 @@ namespace Kmd.Momentum.Mea.Integration.Tests.Caseworker
         {
             //Arrange       
             var client = _factory.CreateClient();
-            var requestUri = "/caseworker?pageNumber=1";
+            var requestUri = "v1/caseworker?pageNumber=1";
             var tokenHelper = new TokenGenerator();
             var accessToken = await tokenHelper.GetToken().ConfigureAwait(false);
 
@@ -74,12 +74,12 @@ namespace Kmd.Momentum.Mea.Integration.Tests.Caseworker
             var accessToken = await tokenHelper.GetToken().ConfigureAwait(false);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
-            var dataToGetCaseworkerId = await client.GetAsync("/caseworkers?pageNumber=1").ConfigureAwait(false);
+            var dataToGetCaseworkerId = await client.GetAsync("v1/caseworkers?pageNumber=1").ConfigureAwait(false);
             var dataBody = await dataToGetCaseworkerId.Content.ReadAsStringAsync().ConfigureAwait(false);
             var actualData = JsonConvert.DeserializeObject<CaseworkerList>(dataBody);
             var caseworkerId = actualData.Result.Select(x => x.CaseworkerId).FirstOrDefault();
 
-            var requestUri = $"/caseworkers/kss/{caseworkerId}";
+            var requestUri = $"v1/caseworkers/kss/{caseworkerId}";
 
             //Act
             var response = await client.GetAsync(requestUri).ConfigureAwait(false);
@@ -97,7 +97,7 @@ namespace Kmd.Momentum.Mea.Integration.Tests.Caseworker
         {
             //Arrange
             var caseworkerId = "70375a2b-14d2-4774-a9a2-ab123ebd2ff6";
-            var requestUri = $"/caseworkers/kss/{caseworkerId}";
+            var requestUri = $"v1/caseworkers/kss/{caseworkerId}";
 
             var client = _factory.CreateClient();
 
@@ -127,12 +127,12 @@ namespace Kmd.Momentum.Mea.Integration.Tests.Caseworker
 
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
-            var dataToGetCaseworkerId = await client.GetAsync("/caseworkers?pageNumber=1").ConfigureAwait(false);
+            var dataToGetCaseworkerId = await client.GetAsync("v1/caseworkers?pageNumber=1").ConfigureAwait(false);
             var dataBody = await dataToGetCaseworkerId.Content.ReadAsStringAsync().ConfigureAwait(false);
             var actualData = JsonConvert.DeserializeObject<CaseworkerList>(dataBody);
             var caseworkerId = actualData.Result.Select(x => x.CaseworkerId).FirstOrDefault();
 
-            var requestUri = $"/caseworkers/{caseworkerId}/tasks?pageNumber=1";
+            var requestUri = $"v1/caseworkers/{caseworkerId}/tasks?pageNumber=1";
 
             //Act
             var response = await client.GetAsync(requestUri).ConfigureAwait(false);
@@ -151,7 +151,7 @@ namespace Kmd.Momentum.Mea.Integration.Tests.Caseworker
             //Arrange       
             var client = _factory.CreateClient();
             var caseworkerId = "70375a2b-14d2-4774-a9a2-ab123ebd2ff6";
-            var requestUri = $"/caseworker/{caseworkerId}/tasks?pageNumber=1";
+            var requestUri = $"v1/caseworker/{caseworkerId}/tasks?pageNumber=1";
             var tokenHelper = new TokenGenerator();
             var accessToken = await tokenHelper.GetToken().ConfigureAwait(false);
 
