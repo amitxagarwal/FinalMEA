@@ -32,7 +32,7 @@ namespace Kmd.Momentum.Mea.Integration.Tests.Citizens
             clientMoq.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
 
             //Act
-            var response = await clientMoq.GetAsync($"/citizens?pagenumber={pageNumber}").ConfigureAwait(false);
+            var response = await clientMoq.GetAsync($"v1/citizens?pagenumber={pageNumber}").ConfigureAwait(false);
             var result = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
             var actualResponse = JsonConvert.DeserializeObject<CitizenList>(result);
 
@@ -54,7 +54,7 @@ namespace Kmd.Momentum.Mea.Integration.Tests.Citizens
             clientMoq.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
 
             //Act
-            var response = await clientMoq.GetAsync($"/citizen").ConfigureAwait(false);
+            var response = await clientMoq.GetAsync($"v1/citizen").ConfigureAwait(false);
             var result = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
             //Assert
@@ -66,7 +66,7 @@ namespace Kmd.Momentum.Mea.Integration.Tests.Citizens
         {
             //Arrange
             var cprNumber = "0208682105";//we are hard coding the cpr number because we dont have any api in MEA which is returning cpr as response.
-            var requestUri = $"/citizens/cpr/{cprNumber}";
+            var requestUri = $"v1/citizens/cpr/{cprNumber}";
 
             var client = _factory.CreateClient();
 
@@ -91,7 +91,7 @@ namespace Kmd.Momentum.Mea.Integration.Tests.Citizens
         {
             //Arrange
             var cprNumber = "1234567890";
-            var requestUri = $"/citizens/cpr/{cprNumber}";
+            var requestUri = $"v1/citizens/cpr/{cprNumber}";
 
             var client = _factory.CreateClient();
 
@@ -123,12 +123,12 @@ namespace Kmd.Momentum.Mea.Integration.Tests.Citizens
 
             client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
 
-            var dataToGetCitizenId = await client.GetAsync($"/citizens?pagenumber={pageNumber}").ConfigureAwait(false);
+            var dataToGetCitizenId = await client.GetAsync($"v1/citizens?pagenumber={pageNumber}").ConfigureAwait(false);
             var dataBody = await dataToGetCitizenId.Content.ReadAsStringAsync().ConfigureAwait(false);
             var actualData = JsonConvert.DeserializeObject<CitizenList>(dataBody);
             var citizenId = actualData.Result.Select(x => x.CitizenId).FirstOrDefault();
 
-            var requestUri = $"/citizens/kss/{citizenId}";
+            var requestUri = $"v1/citizens/kss/{citizenId}";
 
 
             //Act
@@ -147,7 +147,7 @@ namespace Kmd.Momentum.Mea.Integration.Tests.Citizens
         {
             //Arrange
             var citizenId = "836e2ad4-d028-4e3d-bb01-fdd60bca9b81";
-            var requestUri = $"/citizens/kss/{citizenId}";
+            var requestUri = $"v1/citizens/kss/{citizenId}";
 
             var client = _factory.CreateClient();
 
@@ -178,12 +178,12 @@ namespace Kmd.Momentum.Mea.Integration.Tests.Citizens
 
             client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
 
-            var dataToGetCitizenId = await client.GetAsync($"/citizens?pagenumber={pageNumber}").ConfigureAwait(false);
+            var dataToGetCitizenId = await client.GetAsync($"v1/citizens?pagenumber={pageNumber}").ConfigureAwait(false);
             var dataBody = await dataToGetCitizenId.Content.ReadAsStringAsync().ConfigureAwait(false);
             var actualData = JsonConvert.DeserializeObject<CitizenList>(dataBody);
             var momentumCitizenId = actualData.Result.Select(x => x.CitizenId).FirstOrDefault();
 
-            var requestUri = $"/citizens/journal/{momentumCitizenId}";
+            var requestUri = $"v1/citizens/journal/{momentumCitizenId}";
 
             List<JournalNoteDocumentRequestModel> documentList = new List<JournalNoteDocumentRequestModel>()
             {
