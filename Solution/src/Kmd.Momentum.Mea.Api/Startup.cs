@@ -209,12 +209,12 @@ namespace Kmd.Momentum.Mea.Api
                     return versions.Any(v => $"v{v.ToString()}" == version)
                     && (!maps.Any() || maps.Any(v => $"v{v.ToString()}" == version));
                 });
+            });
 
-                services.AddHealthChecks().AddCheck("basic_readiness_check", () => new HealthCheckResult(status: HealthStatus.Healthy), new[] { "ready" });
-                services.Configure<HealthCheckPublisherOptions>(options =>
-                {
-                    options.Predicate = (check) => check.Tags.Contains("ready");
-                });
+            services.AddHealthChecks().AddCheck("basic_readiness_check", () => new HealthCheckResult(status: HealthStatus.Healthy), new[] { "ready" });
+            services.Configure<HealthCheckPublisherOptions>(options =>
+            {
+                options.Predicate = (check) => check.Tags.Contains("ready");
             });
         }
 

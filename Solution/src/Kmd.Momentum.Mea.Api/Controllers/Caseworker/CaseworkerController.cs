@@ -18,6 +18,7 @@ namespace Kmd.Momentum.Mea.Api.Controllers.Caseworker
     [ApiVersion("1")]
     [ApiController]
     [Route("v{version:apiVersion}/caseworkers")]
+    [Produces("application/json", "text/json")]
     [Authorize(MeaCustomClaimAttributes.CaseworkerRole)]
     public class CaseworkerController : ControllerBase
     {
