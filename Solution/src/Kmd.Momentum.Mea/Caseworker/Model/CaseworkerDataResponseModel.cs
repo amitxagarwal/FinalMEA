@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Kmd.Momentum.Mea.Common.Attributes;
+using System;
 
 namespace Kmd.Momentum.Mea.Caseworker.Model
 {
     public class CaseworkerDataResponseModel
     {
+        [ScrambleData]
         public Guid CaseworkerId { get; }
 
         public string DisplayName { get; }

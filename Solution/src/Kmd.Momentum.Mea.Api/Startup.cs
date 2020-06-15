@@ -5,6 +5,7 @@ using Kmd.Momentum.Mea.Common.Authorization.Citizen;
 using Kmd.Momentum.Mea.Common.Authorization.Journal;
 using Kmd.Momentum.Mea.Common.Authorization.Tasks;
 using Kmd.Momentum.Mea.Common.DatabaseStore;
+using Kmd.Momentum.Mea.Common.Middleware;
 using Kmd.Momentum.Mea.Common.Modules;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -255,7 +256,7 @@ namespace Kmd.Momentum.Mea.Api
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-
+            app.UseMiddleware<ScrambleDataMiddleware>();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
