@@ -77,7 +77,7 @@ namespace Kmd.Momentum.Mea.Api.Controllers.Caseworker
         [ProducesResponseType(401)]
         [Route("kss/{caseworkerId}")]
         [SwaggerOperation(OperationId = "getCaseworkerById")]
-        public async Task<ActionResult<CaseworkerData>> GetCaseworkerById([Required] [FromRoute] Guid caseworkerId)
+        public async Task<ActionResult<CaseworkerDataResponseModel>> GetCaseworkerById([Required] [FromRoute] Guid caseworkerId)
         {
             var result = await _caseworkerService.GetCaseworkerByIdAsync(caseworkerId).ConfigureAwait(false);
 
@@ -108,7 +108,7 @@ namespace Kmd.Momentum.Mea.Api.Controllers.Caseworker
         [ProducesResponseType(401)]
         [Route("{caseworkerId}/tasks")]
         [SwaggerOperation(OperationId = "getTasksbyCaseworker")]
-        public async Task<ActionResult<TaskData>> GetAllTasksByCaseworkerId([Required] [FromRoute] Guid caseworkerId, [FromQuery] int pageNumber = 0)
+        public async Task<ActionResult<TaskList>> GetAllTasksByCaseworkerId([Required] [FromRoute] Guid caseworkerId, [FromQuery] int pageNumber = 0)
         {
             var result = await _caseworkerService.GetAllTasksForCaseworkerIdAsync(caseworkerId, pageNumber).ConfigureAwait(false);
 
