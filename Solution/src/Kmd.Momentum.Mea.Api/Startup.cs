@@ -96,7 +96,7 @@ namespace Kmd.Momentum.Mea.Api
             var azureAdB2C = _configuration.GetSection("AzureAdB2C");
             services.AddSingleton(azureAdB2C);
             var azureAd = _configuration.GetSection("AzureAd");
-            services.AddSingleton(azureAd);          
+            services.AddSingleton(azureAd);
 
             services.AddHttpContextAccessor();
 
@@ -166,13 +166,13 @@ namespace Kmd.Momentum.Mea.Api
                 securityRequirement.Add(securityScheme, new[] { "Bearer" });
                 c.AddSecurityRequirement(securityRequirement);
                 c.EnableAnnotations();
-                
+
                 var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
                 //var commentsFileName = Assembly.GetExecutingAssembly().GetName().Name + ".XML";
                 var xmlFileName = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlFile = Path.Combine(baseDirectory, xmlFileName);
 
-                c.IncludeXmlComments(xmlFile);                
+                c.IncludeXmlComments(xmlFile);
             });
 
             services.AddHealthChecks().AddCheck("basic_readiness_check", () => new HealthCheckResult(status: HealthStatus.Healthy), new[] { "ready" });

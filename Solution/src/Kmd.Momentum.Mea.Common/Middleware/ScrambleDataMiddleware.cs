@@ -50,8 +50,6 @@ namespace Kmd.Momentum.Mea.Common.Middleware
                 if (httpContext.Response.StatusCode == 200)
                 {
                     var responseModelTypeString = (httpContext.GetEndpoint().Metadata.GetMetadata<Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor>()).MethodInfo.ReturnType.ToString();
-
-
                     var responseModelName = GetModelName(responseModelTypeString);
                     var responseModelType = GetModelType(responseModelName);
                     if (responseModelType != null)
