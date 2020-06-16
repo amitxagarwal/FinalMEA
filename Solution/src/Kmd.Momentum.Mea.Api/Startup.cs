@@ -256,7 +256,11 @@ namespace Kmd.Momentum.Mea.Api
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseMiddleware<ScrambleDataMiddleware>();
+            var _envName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
+            if (_envName == "Internal")
+            {
+                app.UseMiddleware<ScrambleDataMiddleware>();
+            }
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
