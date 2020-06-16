@@ -8,6 +8,7 @@ using System.IO;
 using System.Reflection;
 using System.Linq;
 using System.Threading.Tasks;
+using Serilog;
 
 namespace Kmd.Momentum.Mea.Common.Middleware
 {
@@ -87,7 +88,8 @@ namespace Kmd.Momentum.Mea.Common.Middleware
             }
             catch (Exception ex)
             {
-                throw;
+                Log.ForContext("CorrelationId", httpContext.TraceIdentifier)
+                .Error("An error occurred while doing scramble" + ex.Message);
             }
             finally
             {
