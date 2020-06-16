@@ -153,9 +153,13 @@ namespace Kmd.Momentum.Mea.Tests.Citizen
             var cpr = "1234567890";
             var configurationMoq = new Mock<IConfiguration>();
 
-            var citizenData = new CitizenDataResponseModelBuilder().Build();
+            var citizenData = new CitizenDataBuilder().Build();
 
             var httpClientCitizenDataResponse = JsonConvert.SerializeObject(citizenData);
+
+            var response = new CitizenDataResponseModel(citizenData.Id, citizenData.DisplayName, citizenData.GivenName, citizenData.MiddleName, citizenData.Initials,
+                citizenData.ContactInformation?.Email.Address, citizenData.ContactInformation?.Phone.Number,
+           citizenData.CaseworkerIdentifier, citizenData.Description, citizenData.IsActive, citizenData.IsBookable);
 
             helperHttpClientMoq.Setup(x => x.GetCitizenDataByCprOrCitizenIdFromMomentumCoreAsync($"citizens/{cpr}"))
                 .Returns(Task.FromResult(new ResultOrHttpError<string, Error>(httpClientCitizenDataResponse)));
@@ -168,7 +172,7 @@ namespace Kmd.Momentum.Mea.Tests.Citizen
             //Asert
             result.Should().NotBeNull();
             result.IsError.Should().BeFalse();
-            result.Result.Should().BeEquivalentTo(citizenData);
+            result.Result.Should().BeEquivalentTo(response);
         }
 
         [Fact]
@@ -203,25 +207,27 @@ namespace Kmd.Momentum.Mea.Tests.Citizen
             //Arrange
             var helperHttpClientMoq = new Mock<ICitizenHttpClientHelper>();
             var context = GetContext();
-            var citizenId = It.IsAny<Guid>();
             var configurationMoq = new Mock<IConfiguration>();
 
-            var citizenData = new CitizenDataResponseModelBuilder().Build();
-
+            var citizenData = new CitizenDataBuilder().Build();
             var httpClientCitizenDataResponse = JsonConvert.SerializeObject(citizenData);
 
-            helperHttpClientMoq.Setup(x => x.GetCitizenDataByCprOrCitizenIdFromMomentumCoreAsync($"citizens/{citizenId}"))
+            var response = new CitizenDataResponseModel(citizenData.Id, citizenData.DisplayName, citizenData.GivenName, citizenData.MiddleName, citizenData.Initials,
+                citizenData.ContactInformation?.Email.Address, citizenData.ContactInformation?.Phone.Number,
+            citizenData.CaseworkerIdentifier, citizenData.Description, citizenData.IsActive, citizenData.IsBookable);
+
+            helperHttpClientMoq.Setup(x => x.GetCitizenDataByCprOrCitizenIdFromMomentumCoreAsync($"citizens/{citizenData.Id}"))
                 .Returns(Task.FromResult(new ResultOrHttpError<string, Error>(httpClientCitizenDataResponse)));
 
             var citizenService = new CitizenService(helperHttpClientMoq.Object, configurationMoq.Object, context.Object);
 
             //Act
-            var result = await citizenService.GetCitizenByIdAsync(citizenId).ConfigureAwait(false);
+            var result = await citizenService.GetCitizenByIdAsync(citizenData.Id).ConfigureAwait(false);
 
             //Asert
             result.Should().NotBeNull();
             result.IsError.Should().BeFalse();
-            result.Result.Should().BeEquivalentTo(citizenData);
+            result.Result.Should().BeEquivalentTo((response));
         }
 
 

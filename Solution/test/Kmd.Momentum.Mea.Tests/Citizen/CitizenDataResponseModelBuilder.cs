@@ -1,80 +1,81 @@
 ﻿using Kmd.Momentum.Mea.Citizen.Model;
+using Moq;
 using System;
 
 namespace Kmd.Momentum.Mea.Tests.Citizen
 {
     public class CitizenDataResponseModelBuilder
     {
-        private Guid citizenId = Guid.NewGuid();
-        private string displayName = "testBody";
-        private string givenName = "testTitle";
-        private string middleName = "testType";
-        private string initials = "testType";
-        private string email = "testType";
-        private string phone = "testType";
-        private string caseworkerIdentifier = "testType";
-        private string description = "description";
-        private bool isBookable = true;
-        private bool isActive = true;
+        private Guid CitizenId = It.IsAny<Guid>();
+        private string DisplayName = "testBody";
+        private string GivenName = "testTitle";
+        private string MiddleName = "testType";
+        private string Initials = "testType";
+        private string Email = "test";
+        private string Phone = "test";
+        private string CaseworkerIdentifier = "testType";
+        private string Description = "description";
+        private bool IsBookable = true;
+        private bool IsActive = true;
 
         public CitizenDataResponseModel Build()
         {
-            return new CitizenDataResponseModel(citizenId, displayName, givenName, middleName, initials, email, phone, caseworkerIdentifier, description, true, true);
+            return new CitizenDataResponseModel(CitizenId, DisplayName, GivenName, MiddleName, Initials, Email, Phone, CaseworkerIdentifier, Description, true, true);
         }
 
-        public CitizenDataResponseModelBuilder WithCpr(Guid citizenId)
+        public CitizenDataResponseModelBuilder WithCitizenId(Guid citizenId)
         {
-            this.citizenId = citizenId;
+            this.CitizenId = citizenId;
             return this;
         }
         public CitizenDataResponseModelBuilder WithDisplayName(string displayName)
         {
-            this.displayName = displayName;
+            this.DisplayName = displayName;
             return this;
         }
         public CitizenDataResponseModelBuilder WithGivenName(string givenName)
         {
-            this.givenName = givenName;
+            this.GivenName = givenName;
             return this;
         }
         public CitizenDataResponseModelBuilder WithMiddleName(string middleName)
         {
-            this.middleName = middleName;
+            this.MiddleName = middleName;
             return this;
         }
         public CitizenDataResponseModelBuilder Withinitials(string initials)
         {
-            this.initials = initials;
+            this.Initials = initials;
             return this;
         }
         public CitizenDataResponseModelBuilder WithEmail(string email)
         {
-            this.email = email;
+            this.Email = email;
             return this;
         }
         public CitizenDataResponseModelBuilder WithPhone(string phone)
         {
-            this.phone = phone;
+            this.Phone = phone;
             return this;
         }
         public CitizenDataResponseModelBuilder WithCaseworkerIdentifier(string caseworkerIdentifier)
         {
-            this.caseworkerIdentifier = caseworkerIdentifier;
+            this.CaseworkerIdentifier = caseworkerIdentifier;
             return this;
         }
         public CitizenDataResponseModelBuilder WithDescription(string description)
         {
-            this.description = description;
+            this.Description = description;
             return this;
         }
         public CitizenDataResponseModelBuilder WithIsBookable(bool isBookable)
         {
-            this.isBookable = isBookable;
+            this.IsBookable = isBookable;
             return this;
         }
         public CitizenDataResponseModelBuilder WithIsActive(bool isActive)
         {
-            this.isActive = isActive;
+            this.IsActive = isActive;
             return this;
         }
     }
