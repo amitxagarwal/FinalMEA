@@ -73,11 +73,12 @@ namespace Kmd.Momentum.Mea.Common.Middleware
                             GetScrambleData(_obj, scrambledProperties);
                         }
                     }
+                    responseBody = JsonConvert.SerializeObject(_obj);
                 }
 
                 var memoryStreamModified = new MemoryStream();
                 var sw = new StreamWriter(memoryStreamModified);
-                sw.Write(JsonConvert.SerializeObject(_obj));
+                sw.Write(responseBody);
                 sw.Flush();
                 memoryStreamModified.Position = 0;
 
