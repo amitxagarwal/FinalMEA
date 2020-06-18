@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Kmd.Momentum.Mea.Tests.Citizen
 {
-    public class CitizenDataBuilder
+    public class CitizenDataModelBuilder
     {
         private Guid id = Guid.NewGuid();
         private string displayName = "testBody";
@@ -22,58 +22,58 @@ namespace Kmd.Momentum.Mea.Tests.Citizen
         private bool isBookable = true;
         private bool isActive = true;
 
-        public CitizenData Build()
+        public CitizenDataModel Build()
         {
-            return new CitizenData(id, displayName, givenName, middleName, initials, contactInformation, caseworkerIdentifier, description, true, true);
+            return new CitizenDataModel(id, displayName, givenName, middleName, initials, contactInformation, caseworkerIdentifier, description, true, true);
         }
 
-        public CitizenDataBuilder WithCpr(Guid id)
+        public CitizenDataModelBuilder WithCpr(Guid id)
         {
             this.id = id;
             return this;
         }
-        public CitizenDataBuilder WithDisplayName(string displayName)
+        public CitizenDataModelBuilder WithDisplayName(string displayName)
         {
             this.displayName = displayName;
             return this;
         }
-        public CitizenDataBuilder WithGivenName(string givenName)
+        public CitizenDataModelBuilder WithGivenName(string givenName)
         {
             this.givenName = givenName;
             return this;
         }
-        public CitizenDataBuilder WithMiddleName(string middleName)
+        public CitizenDataModelBuilder WithMiddleName(string middleName)
         {
             this.middleName = middleName;
             return this;
         }
-        public CitizenDataBuilder Withinitials(string initials)
+        public CitizenDataModelBuilder Withinitials(string initials)
         {
             this.initials = initials;
             return this;
         }
-        public CitizenDataBuilder WithContactInformation(ContactInformation contactInformation)
+        public CitizenDataModelBuilder WithContactInformation(ContactInformation contactInformation)
         {
             this.contactInformation = contactInformation;
             return this;
         }
       
-        public CitizenDataBuilder WithCaseworkerIdentifier(string caseworkerIdentifier)
+        public CitizenDataModelBuilder WithCaseworkerIdentifier(string caseworkerIdentifier)
         {
             this.caseworkerIdentifier = caseworkerIdentifier;
             return this;
         }
-        public CitizenDataBuilder WithDescription(string description)
+        public CitizenDataModelBuilder WithDescription(string description)
         {
             this.description = description;
             return this;
         }
-        public CitizenDataBuilder WithIsBookable(bool isBookable)
+        public CitizenDataModelBuilder WithIsBookable(bool isBookable)
         {
             this.isBookable = isBookable;
             return this;
         }
-        public CitizenDataBuilder WithIsActive(bool isActive)
+        public CitizenDataModelBuilder WithIsActive(bool isActive)
         {
             this.isActive = isActive;
             return this;

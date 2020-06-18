@@ -2,7 +2,7 @@
 
 namespace Kmd.Momentum.Mea.Citizen.Model
 {
-    public class CitizenData
+    public class CitizenDataModel
     {
         public Guid Id { get; }
 
@@ -24,7 +24,7 @@ namespace Kmd.Momentum.Mea.Citizen.Model
 
         public bool IsActive { get; }
 
-        public CitizenData(Guid id, string displayName, string givenName, string middleName, string initials,
+        public CitizenDataModel(Guid id, string displayName, string givenName, string middleName, string initials,
            ContactInformation contactInformation, string caseworkerIdentifier, string description,
            bool isActive = true, bool isBookable = true)
         {

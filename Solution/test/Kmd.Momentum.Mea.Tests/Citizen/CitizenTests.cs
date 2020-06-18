@@ -153,7 +153,7 @@ namespace Kmd.Momentum.Mea.Tests.Citizen
             var cpr = "1234567890";
             var configurationMoq = new Mock<IConfiguration>();
 
-            var citizenData = new CitizenDataBuilder().Build();
+            var citizenData = new CitizenDataModelBuilder().Build();
 
             var httpClientCitizenDataResponse = JsonConvert.SerializeObject(citizenData);
 
@@ -209,7 +209,7 @@ namespace Kmd.Momentum.Mea.Tests.Citizen
             var context = GetContext();
             var configurationMoq = new Mock<IConfiguration>();
 
-            var citizenData = new CitizenDataBuilder().Build();
+            var citizenData = new CitizenDataModelBuilder().Build();
             var httpClientCitizenDataResponse = JsonConvert.SerializeObject(citizenData);
 
             var response = new CitizenDataResponseModel(citizenData.Id, citizenData.DisplayName, citizenData.GivenName, citizenData.MiddleName, citizenData.Initials,

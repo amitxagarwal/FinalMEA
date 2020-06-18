@@ -77,7 +77,7 @@ namespace Kmd.Momentum.Mea.Citizen
             }
 
             var content = response.Result;
-            var citizenData = JsonConvert.DeserializeObject<CitizenData>(content);
+            var citizenData = JsonConvert.DeserializeObject<CitizenDataModel>(content);
 
             var dataToReturn = new CitizenDataResponseModel(citizenData.Id, citizenData.DisplayName, citizenData.GivenName,
                 citizenData.MiddleName, citizenData.Initials, citizenData.ContactInformation.Email?.Address, citizenData.ContactInformation.Phone?.Number, citizenData.CaseworkerIdentifier,
@@ -106,7 +106,7 @@ namespace Kmd.Momentum.Mea.Citizen
             }
 
             var content = response.Result;
-            var citizenData = JsonConvert.DeserializeObject<CitizenData>(content);
+            var citizenData = JsonConvert.DeserializeObject<CitizenDataModel>(content);
 
             var dataToReturn = new CitizenDataResponseModel(citizenData.Id, citizenData.DisplayName, citizenData.GivenName,
                 citizenData.MiddleName, citizenData.Initials, citizenData.ContactInformation.Email?.Address, citizenData.ContactInformation.Phone?.Number, citizenData.CaseworkerIdentifier,
