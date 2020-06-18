@@ -54,37 +54,21 @@ namespace Kmd.Momentum.Mea.Common.Middleware
                     var responseModelTypeString = (httpContext.GetEndpoint().Metadata.GetMetadata<Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor>()).MethodInfo.ReturnType.ToString();
                     var responseModelName = GetModelName(responseModelTypeString);
 
-                    Log.ForContext("CorrelationId", httpContext.TraceIdentifier)
-                        .Debug("scramble: response Model Name is " + responseModelName);
-
                     var responseModelType = GetModelType(responseModelName);
-
-                    Log.ForContext("CorrelationId", httpContext.TraceIdentifier)
-                        .Debug("scramble: response Model Type " + responseModelType);
 
                     if (responseModelType != null)
                     {
                         var resultProperty = responseModelType.GetProperties().Where(p => p.Name == "Result").FirstOrDefault();
                         if (resultProperty != null && _obj["result"] != null && _obj["result"].Count() > 0)
                         {
-                            Log.ForContext("CorrelationId", httpContext.TraceIdentifier)
-                                .Debug("scramble: Result property found");
-
                             var _modelTypeString = resultProperty.PropertyType.ToString();
                             var _modelName = GetModelName(_modelTypeString);
-
-                            Log.ForContext("CorrelationId", httpContext.TraceIdentifier)
-                                .Debug("scramble: Model Name is " + _modelName);
-
                             var _modelType = GetModelType(_modelName);
-
-                            Log.ForContext("CorrelationId", httpContext.TraceIdentifier)
-                                .Debug("scramble: Model Type " + _modelType);
 
                             var _scrambledProperties = GetScrambledProperties(_modelType);
 
                             Log.ForContext("CorrelationId", httpContext.TraceIdentifier)
-                                .Debug("scramble: Scrambled Properties: " + _scrambledProperties.Count());
+                                .Debug("scramble: response Model Name is " + responseModelName + " , model name is " + _modelName + " and Scrambled Properties " + _scrambledProperties.Count());
 
                             var _dataArray = _obj["result"];
                             foreach (var _data in _dataArray)
@@ -94,14 +78,10 @@ namespace Kmd.Momentum.Mea.Common.Middleware
                         }
                         else
                         {
-                            Log.ForContext("CorrelationId", httpContext.TraceIdentifier)
-                                .Debug("scramble: Result property not found");
-
                             var _scrambledProperties = GetScrambledProperties(responseModelType);
 
                             Log.ForContext("CorrelationId", httpContext.TraceIdentifier)
-                                .Debug("scramble: Scrambled Properties: " + _scrambledProperties.Count());
-
+                                .Debug("scramble: response Model Name is " + responseModelName + " and Scrambled Properties " + _scrambledProperties.Count());
                             GetScrambleData(_obj, _scrambledProperties);
                         }
                     }
