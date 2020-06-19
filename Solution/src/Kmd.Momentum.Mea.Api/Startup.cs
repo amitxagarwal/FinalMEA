@@ -5,6 +5,7 @@ using Kmd.Momentum.Mea.Common.Authorization.Citizen;
 using Kmd.Momentum.Mea.Common.Authorization.Journal;
 using Kmd.Momentum.Mea.Common.Authorization.Tasks;
 using Kmd.Momentum.Mea.Common.DatabaseStore;
+using Kmd.Momentum.Mea.Common.Middleware;
 using Kmd.Momentum.Mea.Common.Modules;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -95,7 +96,7 @@ namespace Kmd.Momentum.Mea.Api
             var azureAdB2C = _configuration.GetSection("AzureAdB2C");
             services.AddSingleton(azureAdB2C);
             var azureAd = _configuration.GetSection("AzureAd");
-            services.AddSingleton(azureAd);          
+            services.AddSingleton(azureAd);
 
             services.AddHttpContextAccessor();
 
@@ -165,13 +166,13 @@ namespace Kmd.Momentum.Mea.Api
                 securityRequirement.Add(securityScheme, new[] { "Bearer" });
                 c.AddSecurityRequirement(securityRequirement);
                 c.EnableAnnotations();
-                
+
                 var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
                 //var commentsFileName = Assembly.GetExecutingAssembly().GetName().Name + ".XML";
                 var xmlFileName = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlFile = Path.Combine(baseDirectory, xmlFileName);
 
-                c.IncludeXmlComments(xmlFile);                
+                c.IncludeXmlComments(xmlFile);
             });
 
             services.AddHealthChecks().AddCheck("basic_readiness_check", () => new HealthCheckResult(status: HealthStatus.Healthy), new[] { "ready" });
@@ -255,7 +256,11 @@ namespace Kmd.Momentum.Mea.Api
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-
+            var _envName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
+            if (_envName == "Internal")
+            {
+                app.UseMiddleware<ScrambleDataMiddleware>();
+            }
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
