@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Kmd.Momentum.Mea.TaskApi\Kmd.Momentum.Mea.TaskApi.csproj" />
+    <ProjectReference Include="..\src\Kmd.Momentum.Mea.Common\Kmd.Momentum.Mea.Common.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -9,7 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Citizen\Model\CitizenDataUploadModel.cs" />
     <Compile Remove="Class1.cs" />
     <Compile Remove="MeaServiceCollectionExtensions.cs" />
     <Compile Remove="RemoveModel.cs" />
@@ -25,6 +24,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Kmd.Momentum.Mea.Common\Kmd.Momentum.Mea.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Caseworker\" />
+    <Folder Include="Citizen\" />
+    <Folder Include="MeaHttpClientHelper\" />
+    <Folder Include="TaskApi\" />
   </ItemGroup>
 
 </Project>

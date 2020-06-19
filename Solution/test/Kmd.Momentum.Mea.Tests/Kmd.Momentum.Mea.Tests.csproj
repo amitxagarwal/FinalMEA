@@ -31,6 +31,7 @@
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
         <PackageReference Include="Moq" Version="4.13.1" />
         <PackageReference Include="SerilogAnalyzer" Version="0.15.0" />
+        <PackageReference Include="System.Threading.Tasks" Version="4.3.0" />
         <PackageReference Include="xunit" Version="2.4.1" />
         <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
           <PrivateAssets>all</PrivateAssets>
@@ -43,6 +44,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\Kmd.Momentum.Mea.Citizen\Kmd.Momentum.Mea.Citizen.csproj" />
+      <ProjectReference Include="..\..\Kmd.Momentum.Mea.TaskApi\Kmd.Momentum.Mea.TaskApi.csproj" />
+      <ProjectReference Include="..\..\KmdMomentum.Mea.Caseworker\Kmd.Momentum.Mea.Caseworker.csproj" />
       <ProjectReference Include="..\..\src\Kmd.Momentum.Mea.Api\Kmd.Momentum.Mea.Api.csproj" />
       <ProjectReference Include="..\..\src\Kmd.Momentum.Mea.Common\Kmd.Momentum.Mea.Common.csproj" />
       <ProjectReference Include="..\..\src\Kmd.Momentum.Mea\Kmd.Momentum.Mea.csproj" />

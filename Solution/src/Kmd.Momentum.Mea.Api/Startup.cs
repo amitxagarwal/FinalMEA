@@ -55,7 +55,10 @@ namespace Kmd.Momentum.Mea.Api
             new List<(Assembly assembly, string productPathName, string openApiProductName, Version apiVersion)>
             {
                 (typeof(Kmd.Momentum.Mea.Common.Modules.MeaAssemblyPart).Assembly, productPathName: "Common", openApiProductName: "Common", new Version("0.0.1")),
-                (typeof(Kmd.Momentum.Mea.Modules.MeaAssemblyPart).Assembly, productPathName: "Mea", openApiProductName: "Mea", new Version("0.0.1"))
+                (typeof(Kmd.Momentum.Mea.Modules.MeaAssemblyPart).Assembly, productPathName: "Mea", openApiProductName: "Mea", new Version("0.0.1")),
+                (typeof(Kmd.Momentum.Mea.Caseworker.Modules.MeaAssemblyPart).Assembly, productPathName: "Caseworker", openApiProductName: "Caseworker", new Version("0.0.1")),
+                (typeof(Kmd.Momentum.Mea.Citizen.Modules.MeaAssemblyPart).Assembly, productPathName: "Citizen", openApiProductName: "Citizen", new Version("0.0.1")),
+                (typeof(Kmd.Momentum.Mea.TaskApi.Modules.MeaAssemblyPart).Assembly, productPathName: "Task", openApiProductName: "Task", new Version("0.0.1"))
             };
 
         /// <summary>
