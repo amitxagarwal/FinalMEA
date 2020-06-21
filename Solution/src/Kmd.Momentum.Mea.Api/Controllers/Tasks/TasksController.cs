@@ -48,7 +48,7 @@ namespace Kmd.Momentum.Mea.Api.Controllers.Tasks
         [ProducesResponseType(401)]
         [Route("{taskId}/update")]
         [SwaggerOperation(OperationId = "UpdateTaskStatus")]
-        public async Task<ActionResult<TaskData>> UpdateTaskStatusById([Required] [FromRoute] Guid taskId, [Required] [FromBody] TaskUpdateStatus taskUpdateStatus)
+        public async Task<ActionResult<TaskDataResponseModel>> UpdateTaskStatusById([Required] [FromRoute] Guid taskId, [Required] [FromBody] TaskUpdateStatus taskUpdateStatus)
         {
             var result = await _taskService.UpdateTaskStatusByIdAsync(taskId, taskUpdateStatus).ConfigureAwait(false);
 

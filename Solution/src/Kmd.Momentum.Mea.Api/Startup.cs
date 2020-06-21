@@ -7,6 +7,7 @@ using Kmd.Momentum.Mea.Common.Authorization.Citizen;
 using Kmd.Momentum.Mea.Common.Authorization.Journal;
 using Kmd.Momentum.Mea.Common.Authorization.Tasks;
 using Kmd.Momentum.Mea.Common.DatabaseStore;
+using Kmd.Momentum.Mea.Common.Middleware;
 using Kmd.Momentum.Mea.Common.Modules;
 using Kmd.Momentum.Mea.TaskApi.Model;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -292,12 +293,15 @@ namespace Kmd.Momentum.Mea.Api
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-
+            var _envName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
+            if (_envName == "Internal")
+            {
+                app.UseMiddleware<ScrambleDataMiddleware>();
+            }
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
-
         }
     }
 }

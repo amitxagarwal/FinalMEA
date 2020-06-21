@@ -50,7 +50,7 @@ namespace Kmd.Momentum.Mea.Api.Controllers.Citizen
         public async Task<ActionResult<CitizenList>> GetAllActiveCitizens([FromQuery] int pageNumber = 1)
         {
             var result = await _citizenService.GetAllActiveCitizensAsync(pageNumber).ConfigureAwait(false);
-            
+
             if (result.IsError)
             {
                 return StatusCode((int)(result.StatusCode ?? HttpStatusCode.BadRequest), result.Error.Errors);
@@ -78,7 +78,7 @@ namespace Kmd.Momentum.Mea.Api.Controllers.Citizen
         [ProducesResponseType(401)]
         [Route("cpr/{cprNumber}")]
         [SwaggerOperation(OperationId = "GetCitizenByCpr")]
-        public async Task<ActionResult<CitizenDataResponseModel>> GetCitizenByCpr([Required] [FromRoute] string cprNumber)
+        public async Task<ActionResult<CitizenDataResponseModel>> GetCitizenByCpr([Required][FromRoute] string cprNumber)
         {
             var result = await _citizenService.GetCitizenByCprAsync(cprNumber).ConfigureAwait(false);
 
@@ -109,7 +109,7 @@ namespace Kmd.Momentum.Mea.Api.Controllers.Citizen
         [ProducesResponseType(401)]
         [Route("kss/{citizenId}")]
         [SwaggerOperation(OperationId = "GetCitizenById")]
-        public async Task<ActionResult<CitizenDataResponseModel>> GetCitizenById([Required] [FromRoute] Guid citizenId)
+        public async Task<ActionResult<CitizenDataResponseModel>> GetCitizenById([Required][FromRoute] Guid citizenId)
         {
             var result = await _citizenService.GetCitizenByIdAsync(citizenId).ConfigureAwait(false);
 
@@ -140,8 +140,8 @@ namespace Kmd.Momentum.Mea.Api.Controllers.Citizen
         [ProducesResponseType(404)]
         [ProducesResponseType(401)]
         [Route("journal/{momentumCitizenId}")]
-        [SwaggerOperation(OperationId = "CreateJournalNote",Tags =new[] { "Journal" })]        
-        public async Task<ActionResult> CreateJournalNote([Required] [FromRoute] Guid momentumCitizenId, [Required] [FromBody] JournalNoteRequestModel requestModel)
+        [SwaggerOperation(OperationId = "CreateJournalNote", Tags = new[] { "Journal" })]
+        public async Task<ActionResult> CreateJournalNote([Required][FromRoute] Guid momentumCitizenId, [Required][FromBody] JournalNoteRequestModel requestModel)
         {
             var result = await _citizenService.CreateJournalNoteAsync(momentumCitizenId, requestModel).ConfigureAwait(false);
 

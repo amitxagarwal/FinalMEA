@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Kmd.Momentum.Mea.Common.Attributes;
+using Newtonsoft.Json;
 using System;
 
 namespace Kmd.Momentum.Mea.Citizen.Model
@@ -6,6 +7,7 @@ namespace Kmd.Momentum.Mea.Citizen.Model
     public class CitizenDataResponseModel
     {
         [JsonProperty("id")]
+        [ScrambleData]
         public Guid CitizenId { get; }
 
         [JsonProperty("name")]
