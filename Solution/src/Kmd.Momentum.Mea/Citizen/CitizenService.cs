@@ -1,6 +1,7 @@
 ﻿using Kmd.Momentum.Mea.Citizen.Model;
 using Kmd.Momentum.Mea.Common.Exceptions;
 using Kmd.Momentum.Mea.MeaHttpClientHelper;
+using Marten.Linq.LastModified;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
@@ -75,14 +76,18 @@ namespace Kmd.Momentum.Mea.Citizen
                 return new ResultOrHttpError<CitizenDataResponseModel, Error>(response.Error, response.StatusCode.Value);
             }
 
-            var json = JObject.Parse(response.Result);
-            var citizenData = JsonConvert.DeserializeObject<CitizenDataResponseModel>(json.ToString());
+            var content = response.Result;
+            var citizenData = JsonConvert.DeserializeObject<CitizenDataModel>(content);
+
+            var dataToReturn = new CitizenDataResponseModel(citizenData.Id, citizenData.DisplayName, citizenData.GivenName,
+                citizenData.MiddleName, citizenData.Initials, citizenData.ContactInformation.Email?.Address, citizenData.ContactInformation.Phone?.Number, citizenData.CaseworkerIdentifier,
+                citizenData.Description, citizenData.IsActive, citizenData.IsBookable);
 
             Log.ForContext("CorrelationId", _correlationId)
-                .ForContext("CitizenId", citizenData.CitizenId)
+                .ForContext("CitizenId", citizenData.Id)
                 .Information("The citizen details by CPR number is returned successfully");
 
-            return new ResultOrHttpError<CitizenDataResponseModel, Error>(citizenData);
+            return new ResultOrHttpError<CitizenDataResponseModel, Error>(dataToReturn);
         }
 
         public async Task<ResultOrHttpError<CitizenDataResponseModel, Error>> GetCitizenByIdAsync(Guid citizenId)
@@ -100,15 +105,19 @@ namespace Kmd.Momentum.Mea.Citizen
                 return new ResultOrHttpError<CitizenDataResponseModel, Error>(response.Error, response.StatusCode.Value);
             }
 
-            var json = JObject.Parse(response.Result);
-            var citizenData = JsonConvert.DeserializeObject<CitizenDataResponseModel>(json.ToString());
+            var content = response.Result;
+            var citizenData = JsonConvert.DeserializeObject<CitizenDataModel>(content);
+
+            var dataToReturn = new CitizenDataResponseModel(citizenData.Id, citizenData.DisplayName, citizenData.GivenName,
+                citizenData.MiddleName, citizenData.Initials, citizenData.ContactInformation.Email?.Address, citizenData.ContactInformation.Phone?.Number, citizenData.CaseworkerIdentifier,
+                citizenData.Description, citizenData.IsActive, citizenData.IsBookable);
 
             Log.ForContext("CorrelationId", _correlationId)
                 .ForContext("Client", _clientId)
-                .ForContext("CitizenId", citizenData.CitizenId)
+                .ForContext("CitizenId", citizenData.Id)
                 .Information("The citizen details by CitizenId has been returned successfully");
 
-            return new ResultOrHttpError<CitizenDataResponseModel, Error>(citizenData);
+            return new ResultOrHttpError<CitizenDataResponseModel, Error>(dataToReturn);
         }
 
         public async Task<ResultOrHttpError<string, Error>> CreateJournalNoteAsync(Guid momentumCitizenId, JournalNoteRequestModel requestModel)
