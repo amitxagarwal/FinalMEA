@@ -14,8 +14,9 @@ namespace Kmd.Momentum.Mea.Api.Controllers.Citizen
     /// <summary>
     /// Controller to handle all the Citizen related API requests
     /// </summary>
+    [ApiVersion("1")]
     [ApiController]
-    [Route("citizens")]
+    [Route("v{version:apiVersion}/citizens")]
     [Produces("application/json", "text/json")]
     public class CitizenController : ControllerBase
     {
