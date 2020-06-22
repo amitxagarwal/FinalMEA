@@ -73,6 +73,8 @@ try {
     $_.Exception.Response
     $_.Exception.Response.RawContent
     $_.Exception.Response.Headers
+    Write-Host '',"##vso[task.LogIssue type=error;]"$_
+    Write-Host '',"##vso[task.complete result=Failed]"
     exit -1
 }
 
