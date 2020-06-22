@@ -61,7 +61,7 @@ Write-Host "Displaying the last sucessful deployment for $ResourceGroupName"
 $lastDeployment = Get-AzResourceGroupDeployment -ResourceGroupName $resourceGroupName | Where-Object {$_.ProvisioningState -eq "Succeeded"} | Sort-Object Timestamp -Descending | Select-Object -First 1
 $lastDeployment
 
-$readinessUri = "https://$WebAppName-$SlotName.azurewebsites.net/health/ready"
+$readinessUri = "https://$WebAppName-$SlotName.azurewebsites.net/v1/health/ready"
 Write-Host "Checking for a 200 response from $readinessUri"
 
 try {
