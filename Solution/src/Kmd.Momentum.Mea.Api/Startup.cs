@@ -164,6 +164,14 @@ namespace Kmd.Momentum.Mea.Api
                         Description = "Kmd Momentum External Api - v1",
                     });
 
+                c.SwaggerDoc("v2",
+                    new OpenApiInfo
+                    {
+                        Version = "v2",
+                        Title = "Kmd Momentum External Api",
+                        Description = "Kmd Momentum External Api - v2",
+                    });
+
                 var securityScheme = new OpenApiSecurityScheme
                 {
                     In = ParameterLocation.Header,
@@ -280,6 +288,8 @@ namespace Kmd.Momentum.Mea.Api
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Kmd Momentum External Api - v1");
+                c.SwaggerEndpoint("/swagger/v2/swagger.json", "Kmd Momentum External Api - v2");
+
                 //    c.SwaggerEndpoint($"/swagger/case/swagger.json", $"KMD Case Service API");
                 //    c.InjectStylesheet("https://fonts.googleapis.com/css?family=Roboto");
                 //    c.InjectStylesheet("/swagger-ui/custom.css");

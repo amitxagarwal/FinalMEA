@@ -16,6 +16,7 @@ namespace Kmd.Momentum.Mea.Api.Controllers.Caseworker
     /// Controller to handle all the caseworker related API requests
     /// </summary>
     [ApiVersion("1")]
+    [ApiVersion("2")]
     [ApiController]
     [Route("v{version:apiVersion}/caseworkers")]
     [Produces("application/json", "text/json")]
@@ -43,6 +44,7 @@ namespace Kmd.Momentum.Mea.Api.Controllers.Caseworker
         ///<param name="pageNumber">The PageNumber to access the records from Core system. Minimum Value is 0</param>
         ///<returns>List of caseworker</returns>
         [HttpGet]
+        [MapToApiVersion("1")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
@@ -60,6 +62,27 @@ namespace Kmd.Momentum.Mea.Api.Controllers.Caseworker
             {
                 return Ok(result.Result);
             }
+        }
+
+        ///<summary>
+        ///Get all the  caseworkers
+        ///</summary>
+        ///<response code="200">All the caseworkers data is loaded successfully</response>
+        ///<response code="400"> Bad request</response>
+        ///<response code="404">The caseworker data is not found</response>
+        ///<response code="401">Couldn't get authorization to access Momentum Core Api</response>
+        ///<param name="pageNumber">The PageNumber to access the records from Core system. Minimum Value is 0</param>
+        ///<returns>List of caseworker</returns>
+        [HttpGet]
+        [MapToApiVersion("2")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(401)]
+        [SwaggerOperation(OperationId = "GetAllCaseworkersV2")]
+        public string GetAllCaseworkersv2([FromQuery] int pageNumber = 0)
+        {
+             return "This method is v2 of GetAllCaseworkersv2";
         }
 
         ///<summary>
