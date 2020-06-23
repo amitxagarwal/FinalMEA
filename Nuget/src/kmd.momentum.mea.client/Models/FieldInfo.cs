@@ -33,30 +33,6 @@ namespace Kmd.Momentum.Mea.Client.Models
         /// 'NotSerialized', 'HasFieldRVA', 'SpecialName', 'RTSpecialName',
         /// 'HasFieldMarshal', 'PinvokeImpl', 'HasDefault',
         /// 'ReservedMask'</param>
-        /// <param name="fieldType"></param>
-        /// <param name="isInitOnly"></param>
-        /// <param name="isLiteral"></param>
-        /// <param name="isNotSerialized"></param>
-        /// <param name="isPinvokeImpl"></param>
-        /// <param name="isSpecialName"></param>
-        /// <param name="isStatic"></param>
-        /// <param name="isAssembly"></param>
-        /// <param name="isFamily"></param>
-        /// <param name="isFamilyAndAssembly"></param>
-        /// <param name="isFamilyOrAssembly"></param>
-        /// <param name="isPrivate"></param>
-        /// <param name="isPublic"></param>
-        /// <param name="isSecurityCritical"></param>
-        /// <param name="isSecuritySafeCritical"></param>
-        /// <param name="isSecurityTransparent"></param>
-        /// <param name="fieldHandle"></param>
-        /// <param name="name"></param>
-        /// <param name="declaringType"></param>
-        /// <param name="reflectedType"></param>
-        /// <param name="module"></param>
-        /// <param name="customAttributes"></param>
-        /// <param name="isCollectible"></param>
-        /// <param name="metadataToken"></param>
         public FieldInfo(string memberType = default(string), string attributes = default(string), Type fieldType = default(Type), bool? isInitOnly = default(bool?), bool? isLiteral = default(bool?), bool? isNotSerialized = default(bool?), bool? isPinvokeImpl = default(bool?), bool? isSpecialName = default(bool?), bool? isStatic = default(bool?), bool? isAssembly = default(bool?), bool? isFamily = default(bool?), bool? isFamilyAndAssembly = default(bool?), bool? isFamilyOrAssembly = default(bool?), bool? isPrivate = default(bool?), bool? isPublic = default(bool?), bool? isSecurityCritical = default(bool?), bool? isSecuritySafeCritical = default(bool?), bool? isSecurityTransparent = default(bool?), RuntimeFieldHandle fieldHandle = default(RuntimeFieldHandle), string name = default(string), Type declaringType = default(Type), Type reflectedType = default(Type), Module module = default(Module), IList<CustomAttributeData> customAttributes = default(IList<CustomAttributeData>), bool? isCollectible = default(bool?), int? metadataToken = default(int?))
         {
             MemberType = memberType;

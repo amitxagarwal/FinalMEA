@@ -27,22 +27,9 @@ namespace Kmd.Momentum.Mea.Client.Models
         /// <param name="memberType">Possible values include: 'Constructor',
         /// 'Event', 'Field', 'Method', 'Property', 'TypeInfo', 'Custom',
         /// 'NestedType', 'All'</param>
-        /// <param name="propertyType"></param>
         /// <param name="attributes">Possible values include: 'None',
         /// 'SpecialName', 'RTSpecialName', 'HasDefault', 'Reserved2',
         /// 'Reserved3', 'Reserved4', 'ReservedMask'</param>
-        /// <param name="isSpecialName"></param>
-        /// <param name="canRead"></param>
-        /// <param name="canWrite"></param>
-        /// <param name="getMethod"></param>
-        /// <param name="setMethod"></param>
-        /// <param name="name"></param>
-        /// <param name="declaringType"></param>
-        /// <param name="reflectedType"></param>
-        /// <param name="module"></param>
-        /// <param name="customAttributes"></param>
-        /// <param name="isCollectible"></param>
-        /// <param name="metadataToken"></param>
         public PropertyInfo(string memberType = default(string), Type propertyType = default(Type), string attributes = default(string), bool? isSpecialName = default(bool?), bool? canRead = default(bool?), bool? canWrite = default(bool?), MethodInfo getMethod = default(MethodInfo), MethodInfo setMethod = default(MethodInfo), string name = default(string), Type declaringType = default(Type), Type reflectedType = default(Type), Module module = default(Module), IList<CustomAttributeData> customAttributes = default(IList<CustomAttributeData>), bool? isCollectible = default(bool?), int? metadataToken = default(int?))
         {
             MemberType = memberType;

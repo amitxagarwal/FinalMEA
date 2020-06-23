@@ -58,7 +58,7 @@ namespace Kmd.Momentum.Mea.Client
             /// <param name='caseworkerId'>
             /// The caseworker id to access the records from Core system.
             /// </param>
-            public static object GetCaseworkerById(this IInternalClient operations, string caseworkerId)
+            public static object GetCaseworkerById(this IInternalClient operations, System.Guid caseworkerId)
             {
                 return operations.GetCaseworkerByIdAsync(caseworkerId).GetAwaiter().GetResult();
             }
@@ -75,7 +75,7 @@ namespace Kmd.Momentum.Mea.Client
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<object> GetCaseworkerByIdAsync(this IInternalClient operations, string caseworkerId, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<object> GetCaseworkerByIdAsync(this IInternalClient operations, System.Guid caseworkerId, CancellationToken cancellationToken = default(CancellationToken))
             {
                 using (var _result = await operations.GetCaseworkerByIdWithHttpMessagesAsync(caseworkerId, null, cancellationToken).ConfigureAwait(false))
                 {
@@ -95,7 +95,7 @@ namespace Kmd.Momentum.Mea.Client
             /// <param name='pageNumber'>
             /// The PageNumber to access the records from Core system. Minimum Value is 0
             /// </param>
-            public static object GetTasksbyCaseworker(this IInternalClient operations, string caseworkerId, int? pageNumber = 0)
+            public static object GetTasksbyCaseworker(this IInternalClient operations, System.Guid caseworkerId, int? pageNumber = 0)
             {
                 return operations.GetTasksbyCaseworkerAsync(caseworkerId, pageNumber).GetAwaiter().GetResult();
             }
@@ -115,7 +115,7 @@ namespace Kmd.Momentum.Mea.Client
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<object> GetTasksbyCaseworkerAsync(this IInternalClient operations, string caseworkerId, int? pageNumber = 0, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<object> GetTasksbyCaseworkerAsync(this IInternalClient operations, System.Guid caseworkerId, int? pageNumber = 0, CancellationToken cancellationToken = default(CancellationToken))
             {
                 using (var _result = await operations.GetTasksbyCaseworkerWithHttpMessagesAsync(caseworkerId, pageNumber, null, cancellationToken).ConfigureAwait(false))
                 {
@@ -200,7 +200,7 @@ namespace Kmd.Momentum.Mea.Client
             /// <param name='citizenId'>
             /// The Citizen ID or Momentum Id to search the record in the Core system
             /// </param>
-            public static object GetCitizenById(this IInternalClient operations, string citizenId)
+            public static object GetCitizenById(this IInternalClient operations, System.Guid citizenId)
             {
                 return operations.GetCitizenByIdAsync(citizenId).GetAwaiter().GetResult();
             }
@@ -217,7 +217,7 @@ namespace Kmd.Momentum.Mea.Client
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<object> GetCitizenByIdAsync(this IInternalClient operations, string citizenId, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<object> GetCitizenByIdAsync(this IInternalClient operations, System.Guid citizenId, CancellationToken cancellationToken = default(CancellationToken))
             {
                 using (var _result = await operations.GetCitizenByIdWithHttpMessagesAsync(citizenId, null, cancellationToken).ConfigureAwait(false))
                 {
@@ -238,7 +238,7 @@ namespace Kmd.Momentum.Mea.Client
             /// The MomentumCitizenID or CitizenId to Create the journal note record in the
             /// Core system
             /// </param>
-            public static ProblemDetails CreateJournalNote(this IInternalClient operations, JournalNoteRequestModel body, string momentumCitizenId)
+            public static ProblemDetails CreateJournalNote(this IInternalClient operations, JournalNoteRequestModel body, System.Guid momentumCitizenId)
             {
                 return operations.CreateJournalNoteAsync(body, momentumCitizenId).GetAwaiter().GetResult();
             }
@@ -259,7 +259,7 @@ namespace Kmd.Momentum.Mea.Client
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<ProblemDetails> CreateJournalNoteAsync(this IInternalClient operations, JournalNoteRequestModel body, string momentumCitizenId, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<ProblemDetails> CreateJournalNoteAsync(this IInternalClient operations, JournalNoteRequestModel body, System.Guid momentumCitizenId, CancellationToken cancellationToken = default(CancellationToken))
             {
                 using (var _result = await operations.CreateJournalNoteWithHttpMessagesAsync(body, momentumCitizenId, null, cancellationToken).ConfigureAwait(false))
                 {
@@ -335,6 +335,28 @@ namespace Kmd.Momentum.Mea.Client
                 }
             }
 
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            public static HealthReport HealthLiveDemo(this IInternalClient operations)
+            {
+                return operations.HealthLiveDemoAsync().GetAwaiter().GetResult();
+            }
+
+            /// <param name='operations'>
+            /// The operations group for this extension method.
+            /// </param>
+            /// <param name='cancellationToken'>
+            /// The cancellation token.
+            /// </param>
+            public static async Task<HealthReport> HealthLiveDemoAsync(this IInternalClient operations, CancellationToken cancellationToken = default(CancellationToken))
+            {
+                using (var _result = await operations.HealthLiveDemoWithHttpMessagesAsync(null, cancellationToken).ConfigureAwait(false))
+                {
+                    return _result.Body;
+                }
+            }
+
             /// <summary>
             /// Update Status
             /// </summary>
@@ -347,7 +369,7 @@ namespace Kmd.Momentum.Mea.Client
             /// <param name='taskId'>
             /// The TaskId to update the task in the Core system
             /// </param>
-            public static object UpdateTaskStatus(this IInternalClient operations, TaskUpdateStatus body, string taskId)
+            public static object UpdateTaskStatus(this IInternalClient operations, TaskUpdateStatus body, System.Guid taskId)
             {
                 return operations.UpdateTaskStatusAsync(body, taskId).GetAwaiter().GetResult();
             }
@@ -367,7 +389,7 @@ namespace Kmd.Momentum.Mea.Client
             /// <param name='cancellationToken'>
             /// The cancellation token.
             /// </param>
-            public static async Task<object> UpdateTaskStatusAsync(this IInternalClient operations, TaskUpdateStatus body, string taskId, CancellationToken cancellationToken = default(CancellationToken))
+            public static async Task<object> UpdateTaskStatusAsync(this IInternalClient operations, TaskUpdateStatus body, System.Guid taskId, CancellationToken cancellationToken = default(CancellationToken))
             {
                 using (var _result = await operations.UpdateTaskStatusWithHttpMessagesAsync(body, taskId, null, cancellationToken).ConfigureAwait(false))
                 {

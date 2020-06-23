@@ -24,36 +24,9 @@ namespace Kmd.Momentum.Mea.Client.Models
         /// <summary>
         /// Initializes a new instance of the Type class.
         /// </summary>
-        /// <param name="isInterface"></param>
         /// <param name="memberType">Possible values include: 'Constructor',
         /// 'Event', 'Field', 'Method', 'Property', 'TypeInfo', 'Custom',
         /// 'NestedType', 'All'</param>
-        /// <param name="namespaceProperty"></param>
-        /// <param name="assemblyQualifiedName"></param>
-        /// <param name="fullName"></param>
-        /// <param name="assembly"></param>
-        /// <param name="module"></param>
-        /// <param name="isNested"></param>
-        /// <param name="declaringType"></param>
-        /// <param name="declaringMethod"></param>
-        /// <param name="reflectedType"></param>
-        /// <param name="underlyingSystemType"></param>
-        /// <param name="isTypeDefinition"></param>
-        /// <param name="isArray"></param>
-        /// <param name="isByRef"></param>
-        /// <param name="isPointer"></param>
-        /// <param name="isConstructedGenericType"></param>
-        /// <param name="isGenericParameter"></param>
-        /// <param name="isGenericTypeParameter"></param>
-        /// <param name="isGenericMethodParameter"></param>
-        /// <param name="isGenericType"></param>
-        /// <param name="isGenericTypeDefinition"></param>
-        /// <param name="isSZArray"></param>
-        /// <param name="isVariableBoundArray"></param>
-        /// <param name="isByRefLike"></param>
-        /// <param name="hasElementType"></param>
-        /// <param name="genericTypeArguments"></param>
-        /// <param name="genericParameterPosition"></param>
         /// <param name="genericParameterAttributes">Possible values include:
         /// 'None', 'Covariant', 'Contravariant', 'VarianceMask',
         /// 'ReferenceTypeConstraint', 'NotNullableValueTypeConstraint',
@@ -68,47 +41,6 @@ namespace Kmd.Momentum.Mea.Client.Models
         /// 'WindowsRuntime', 'UnicodeClass', 'AutoClass', 'StringFormatMask',
         /// 'StringFormatMask', 'HasSecurity', 'ReservedMask',
         /// 'BeforeFieldInit', 'CustomFormatMask'</param>
-        /// <param name="isAbstract"></param>
-        /// <param name="isImport"></param>
-        /// <param name="isSealed"></param>
-        /// <param name="isSpecialName"></param>
-        /// <param name="isClass"></param>
-        /// <param name="isNestedAssembly"></param>
-        /// <param name="isNestedFamANDAssem"></param>
-        /// <param name="isNestedFamily"></param>
-        /// <param name="isNestedFamORAssem"></param>
-        /// <param name="isNestedPrivate"></param>
-        /// <param name="isNestedPublic"></param>
-        /// <param name="isNotPublic"></param>
-        /// <param name="isPublic"></param>
-        /// <param name="isAutoLayout"></param>
-        /// <param name="isExplicitLayout"></param>
-        /// <param name="isLayoutSequential"></param>
-        /// <param name="isAnsiClass"></param>
-        /// <param name="isAutoClass"></param>
-        /// <param name="isUnicodeClass"></param>
-        /// <param name="isCOMObject"></param>
-        /// <param name="isContextful"></param>
-        /// <param name="isEnum"></param>
-        /// <param name="isMarshalByRef"></param>
-        /// <param name="isPrimitive"></param>
-        /// <param name="isValueType"></param>
-        /// <param name="isSignatureType"></param>
-        /// <param name="isSecurityCritical"></param>
-        /// <param name="isSecuritySafeCritical"></param>
-        /// <param name="isSecurityTransparent"></param>
-        /// <param name="structLayoutAttribute"></param>
-        /// <param name="typeInitializer"></param>
-        /// <param name="typeHandle"></param>
-        /// <param name="guid"></param>
-        /// <param name="baseType"></param>
-        /// <param name="isSerializable"></param>
-        /// <param name="containsGenericParameters"></param>
-        /// <param name="isVisible"></param>
-        /// <param name="name"></param>
-        /// <param name="customAttributes"></param>
-        /// <param name="isCollectible"></param>
-        /// <param name="metadataToken"></param>
         public Type(bool? isInterface = default(bool?), string memberType = default(string), string namespaceProperty = default(string), string assemblyQualifiedName = default(string), string fullName = default(string), Assembly assembly = default(Assembly), Module module = default(Module), bool? isNested = default(bool?), Type declaringType = default(Type), MethodBase declaringMethod = default(MethodBase), Type reflectedType = default(Type), Type underlyingSystemType = default(Type), bool? isTypeDefinition = default(bool?), bool? isArray = default(bool?), bool? isByRef = default(bool?), bool? isPointer = default(bool?), bool? isConstructedGenericType = default(bool?), bool? isGenericParameter = default(bool?), bool? isGenericTypeParameter = default(bool?), bool? isGenericMethodParameter = default(bool?), bool? isGenericType = default(bool?), bool? isGenericTypeDefinition = default(bool?), bool? isSZArray = default(bool?), bool? isVariableBoundArray = default(bool?), bool? isByRefLike = default(bool?), bool? hasElementType = default(bool?), IList<Type> genericTypeArguments = default(IList<Type>), int? genericParameterPosition = default(int?), string genericParameterAttributes = default(string), string attributes = default(string), bool? isAbstract = default(bool?), bool? isImport = default(bool?), bool? isSealed = default(bool?), bool? isSpecialName = default(bool?), bool? isClass = default(bool?), bool? isNestedAssembly = default(bool?), bool? isNestedFamANDAssem = default(bool?), bool? isNestedFamily = default(bool?), bool? isNestedFamORAssem = default(bool?), bool? isNestedPrivate = default(bool?), bool? isNestedPublic = default(bool?), bool? isNotPublic = default(bool?), bool? isPublic = default(bool?), bool? isAutoLayout = default(bool?), bool? isExplicitLayout = default(bool?), bool? isLayoutSequential = default(bool?), bool? isAnsiClass = default(bool?), bool? isAutoClass = default(bool?), bool? isUnicodeClass = default(bool?), bool? isCOMObject = default(bool?), bool? isContextful = default(bool?), bool? isEnum = default(bool?), bool? isMarshalByRef = default(bool?), bool? isPrimitive = default(bool?), bool? isValueType = default(bool?), bool? isSignatureType = default(bool?), bool? isSecurityCritical = default(bool?), bool? isSecuritySafeCritical = default(bool?), bool? isSecurityTransparent = default(bool?), StructLayoutAttribute structLayoutAttribute = default(StructLayoutAttribute), ConstructorInfo typeInitializer = default(ConstructorInfo), RuntimeTypeHandle typeHandle = default(RuntimeTypeHandle), System.Guid? guid = default(System.Guid?), Type baseType = default(Type), bool? isSerializable = default(bool?), bool? containsGenericParameters = default(bool?), bool? isVisible = default(bool?), string name = default(string), IList<CustomAttributeData> customAttributes = default(IList<CustomAttributeData>), bool? isCollectible = default(bool?), int? metadataToken = default(int?))
         {
             IsInterface = isInterface;

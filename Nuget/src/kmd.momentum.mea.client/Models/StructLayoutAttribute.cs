@@ -24,7 +24,6 @@ namespace Kmd.Momentum.Mea.Client.Models
         /// </summary>
         /// <param name="value">Possible values include: 'Sequential',
         /// 'Explicit', 'Auto'</param>
-        /// <param name="typeId"></param>
         public StructLayoutAttribute(string value = default(string), object typeId = default(object))
         {
             Value = value;

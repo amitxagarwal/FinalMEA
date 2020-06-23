@@ -27,13 +27,6 @@ namespace Kmd.Momentum.Mea.Client.Models
         /// <param name="memberType">Possible values include: 'Constructor',
         /// 'Event', 'Field', 'Method', 'Property', 'TypeInfo', 'Custom',
         /// 'NestedType', 'All'</param>
-        /// <param name="declaringType"></param>
-        /// <param name="reflectedType"></param>
-        /// <param name="name"></param>
-        /// <param name="module"></param>
-        /// <param name="customAttributes"></param>
-        /// <param name="isCollectible"></param>
-        /// <param name="metadataToken"></param>
         public MemberInfo(string memberType = default(string), Type declaringType = default(Type), Type reflectedType = default(Type), string name = default(string), Module module = default(Module), IList<CustomAttributeData> customAttributes = default(IList<CustomAttributeData>), bool? isCollectible = default(bool?), int? metadataToken = default(int?))
         {
             MemberType = memberType;

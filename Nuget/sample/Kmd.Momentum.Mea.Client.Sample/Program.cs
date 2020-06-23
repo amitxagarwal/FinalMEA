@@ -159,7 +159,7 @@ namespace Kmd.Momentum.Mea.Client.Sample
 
         private static async Task GetCaseworkerById(CommandLineConfig config)
         {
-            ValidateParameter(Parameter.CaseworkerId, config.CaseworkerId);
+            ValidateParameter(Parameter.CaseworkerId, config.CaseworkerId.ToString());
 
             var client = await GetApiAsync(config);
             var response = client.GetCaseworkerById(config.CaseworkerId);
@@ -168,7 +168,7 @@ namespace Kmd.Momentum.Mea.Client.Sample
 
         private static async Task GetTasksbyCaseworker(CommandLineConfig config)
         {
-            ValidateParameter(Parameter.CaseworkerId, config.CaseworkerId);
+            ValidateParameter(Parameter.CaseworkerId, config.CaseworkerId.ToString());
 
             var client = await GetApiAsync(config);
             var response = client.GetTasksbyCaseworker(config.CaseworkerId, config.PageNo);
@@ -193,7 +193,7 @@ namespace Kmd.Momentum.Mea.Client.Sample
 
         private static async Task GetCitizenById(CommandLineConfig config)
         {
-            ValidateParameter(Parameter.CitizenId, config.CitizenId);
+            ValidateParameter(Parameter.CitizenId, config.CitizenId.ToString());
 
             var client = await GetApiAsync(config);
             var response = client.GetCitizenById(config.CitizenId);
@@ -214,7 +214,7 @@ namespace Kmd.Momentum.Mea.Client.Sample
                 throw new System.Exception("You must specify a Task Action and Task Context");
             }
 
-            ValidateParameter(Parameter.TaskId, config.TaskId);
+            ValidateParameter(Parameter.TaskId, config.TaskId.ToString());
 
             var client = await GetApiAsync(config);
             var response = client.UpdateTaskStatus(taskUpdateStatus, config.TaskId);
@@ -253,7 +253,7 @@ namespace Kmd.Momentum.Mea.Client.Sample
                 throw new System.Exception("You must specify a properties of JournalNoteDocumentRequestModel ");
             }
 
-            ValidateParameter(Parameter.MomentumCitizenId, config.MomentumCitizenId);
+            ValidateParameter(Parameter.MomentumCitizenId, config.MomentumCitizenId.ToString());
 
             var client = await GetApiAsync(config);
             var response = client.CreateJournalNote(journalNoteRequestModel, config.MomentumCitizenId);
