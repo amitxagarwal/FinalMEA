@@ -15,7 +15,7 @@
         "description": "Flag for keyVault required or not"
       }
     },
-    "optimumResourceName": {
+    "optimizedResourceName": {
       "type": "string",
       "metadata": {
         "description": "To create resource name"
@@ -202,12 +202,12 @@
     "stagingSlotName": "staging",
     "webAppStagingSlotName": "[concat(variables('webAppName'), '/', variables('stagingSlotName'))]",
     "hostingPlanName": "[concat(variables('resourceNamePrefixLower'),'-appsvcplan')]",
-    "azFunHostingPlanName": "[concat(variables('resourceNamePrefixLower'),'-azfun-appsvcplan')]",
-    "azFunName": "[concat(variables('resourceNamePrefixLower'),'-azfun')]",
-    "storageAccountName": "[concat(parameters('optimumResourceName'),'sa')]",
+    "funAppHostingPlanName": "[concat(variables('resourceNamePrefixLower'),'-funapp-appsvcplan')]",
+    "funAppName": "[concat(variables('resourceNamePrefixLower'),'-funapp')]",
+    "storageAccountName": "[concat(parameters('optimizedResourceName'),'sa')]",
     "storageAccountType": "Standard_LRS",
     "azureServicesAuthConnectionString": "RunAs=App",
-    "keyVaultName": "[concat(parameters('optimumResourceName'),'kv')]",
+    "keyVaultName": "[concat(parameters('optimizedResourceName'),'kv')]",
     "meaKeyVaultSecretStore": "[tolower(variables('keyVaultName'))]",
     "meaKeyVaultUri": "[concat('https://', variables('meaKeyVaultSecretStore'), '.vault.azure.net/')]",
     "secretName": "ClientSecret",
@@ -533,7 +533,7 @@
     {
       "type": "Microsoft.Web/serverfarms",
       "apiVersion": "2018-02-01",
-      "name": "[variables('azFunHostingPlanName')]",
+      "name": "[variables('funAppHostingPlanName')]",
       "location": "[resourceGroup().location]",
       "sku": {
         "name": "Y1",
@@ -543,15 +543,15 @@
     {
       "apiVersion": "2015-08-01",
       "type": "Microsoft.Web/sites",
-      "name": "[variables('azFunName')]",      
+      "name": "[variables('funAppName')]",      
       "location": "[resourceGroup().location]",
       "kind": "functionapp",
       "dependsOn": [
-        "[resourceId('Microsoft.Web/serverfarms', variables('azFunHostingPlanName'))]",
+        "[resourceId('Microsoft.Web/serverfarms', variables('funAppHostingPlanName'))]",
         "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
       ],
       "properties": {
-        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('azFunHostingPlanName'))]",
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('funAppHostingPlanName'))]",
         "siteConfig": {
           "appSettings": [
             {

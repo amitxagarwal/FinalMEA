@@ -141,15 +141,15 @@ try
     $DbServerName="$ResourceNamePrefix-dbsvr";
     $DbName="$ResourceNamePrefix-db";
     $DbConnection="Server=$($DbServerName).postgres.database.azure.com;Database=$($DbName);Port=5432;User Id=$($DbLoginId)@$($DbServerName);Password=$($DbLoginPassword);Ssl Mode=Require;"
-    $OptimumResourceName = "$($ResourceNamePrefix.replace('-',''))"
+    $OptimizedResourceName = "$($ResourceNamePrefix.replace('-',''))"
 
     Write-Host "Checking Resource Name Length"
 
-    if($OptimumResourceName.length -gt 22){
+    if($OptimizedResourceName.length -gt 22){
 
         Write-Host "Managing Resource Name Length"
 
-        $OptimumResourceName = $OptimumResourceName.substring($OptimumResourceName.length-22,22);
+        $OptimizedResourceName = $OptimizedResourceName.substring($OptimizedResourceName.length-22,22);
 
         Write-Host "Managing Resource Name Length completed"
     }
@@ -174,7 +174,7 @@ try
     dbConnection = $DbConnection;
     dbRequired = $DbRequired;
     keyVaultRequired = $KeyVaultRequired;
-    optimumResourceName = $OptimumResourceName;
+    optimizedResourceName = $OptimizedResourceName;
     meaAuthorizationAudience = $MeaAuthorizationAudience;
     isKeyVaultPolicyRequired = $IsKeyVaultPolicyRequired;
     appObjectId = $AppObjectId;
