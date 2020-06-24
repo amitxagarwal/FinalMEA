@@ -524,9 +524,6 @@
       "apiVersion": "2018-07-01",
       "name": "[variables('storageAccountName')]",
       "location": "[resourceGroup().location]",
-      "tags": {
-        "displayName": "storageFunc"
-      },
       "sku": {
         "name": "Standard_LRS"
       },
@@ -536,7 +533,7 @@
       "type": "Microsoft.Web/serverfarms",
       "apiVersion": "2018-02-01",
       "name": "[variables('azFunHostingPlanName')]",
-      "location": "[parameters('location')]",
+      "location": "[resourceGroup().location]",
       "sku": {
         "name": "Y1",
         "tier": "Dynamic"
