@@ -203,6 +203,7 @@
     "webAppStagingSlotName": "[concat(variables('webAppName'), '/', variables('stagingSlotName'))]",
     "hostingPlanName": "[concat(variables('resourceNamePrefixLower'),'-appsvcplan')]",
     "azFunHostingPlanName": "[concat(variables('resourceNamePrefixLower'),'-azfun-appsvcplan')]",
+    "azFunName": "[concat(variables('resourceNamePrefixLower'),'-azfun')]",
     "storageAccountName": "[concat(parameters('optimumResourceName'),'sa')]",
     "storageAccountType": "Standard_LRS",
     "azureServicesAuthConnectionString": "RunAs=App",
@@ -540,11 +541,11 @@
       }
     },
     {
-        "apiVersion": "2015-08-01",
-        "type": "Microsoft.Web/sites",
-        "name": "functionApp",
-        "location": "[resourceGroup().location]",
-        "kind": "functionapp",
+      "apiVersion": "2015-08-01",
+      "type": "Microsoft.Web/sites",
+      "name": "[variables('azFunName')]",      
+      "location": "[resourceGroup().location]",
+      "kind": "functionapp",
       "dependsOn": [
         "[resourceId('Microsoft.Web/serverfarms', variables('azFunHostingPlanName'))]",
         "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
