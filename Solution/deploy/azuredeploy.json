@@ -15,10 +15,10 @@
         "description": "Flag for keyVault required or not"
       }
     },
-    "keyVaultName": {
+    "optimumResourceName": {
       "type": "string",
       "metadata": {
-        "description": "KeyVaultName is required for keyVault"
+        "description": "To create resource name"
       }
     },
     "isKeyVaultPolicyRequired": {
@@ -203,10 +203,11 @@
     "webAppStagingSlotName": "[concat(variables('webAppName'), '/', variables('stagingSlotName'))]",
     "hostingPlanName": "[concat(variables('resourceNamePrefixLower'),'-appsvcplan')]",
     "azFunHostingPlanName": "[concat(variables('resourceNamePrefixLower'),'-azfun-appsvcplan')]",
-    "storageAccountName": "[concat(variables('resourceNamePrefixLower'),'-sa')]",
+    "storageAccountName": "[concat(parameters('optimumResourceName'),'sa')]",
     "storageAccountType": "Standard_LRS",
     "azureServicesAuthConnectionString": "RunAs=App",
-    "meaKeyVaultSecretStore": "[tolower(parameters('keyVaultName'))]",
+    "keyVaultName": "[concat(parameters('optimumResourceName'),'kv')]",
+    "meaKeyVaultSecretStore": "[tolower(variables('keyVaultName'))]",
     "meaKeyVaultUri": "[concat('https://', variables('meaKeyVaultSecretStore'), '.vault.azure.net/')]",
     "secretName": "ClientSecret",
     "secretValue": "[parameters('clientSecret')]"
