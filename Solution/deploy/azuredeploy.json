@@ -545,13 +545,13 @@
         "name": "functionApp",
         "location": "[resourceGroup().location]",
         "kind": "functionapp",
-        "dependsOn": [
-          "[resourceId('Microsoft.Web/serverfarms', variables('azFunHostingPlanName'))]",
-          "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
-        ],
-        "properties": {
-          "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', 'servicePlan')]"
-        }
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', variables('azFunHostingPlanName'))]",
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+      ],
+      "properties": {
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('azFunHostingPlanName'))]"
+      }
     }
   ]
 }
