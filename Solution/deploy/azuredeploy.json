@@ -552,8 +552,18 @@
       ],
       "properties": {
         "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('azFunHostingPlanName'))]",
-        "APPINSIGHTS_INSTRUMENTATIONKEY": "[reference(resourceId(resourceGroup().Name, 'Microsoft.Insights/components', parameters('applicationInsightsName')), '2015-05-01').InstrumentationKey]",
-        "APPLICATIONINSIGHTS_CONNECTION_STRING": "InstrumentationKey=[reference(resourceId(resourceGroup().Name, 'Microsoft.Insights/components', parameters('applicationInsightsName')), '2015-05-01').InstrumentationKey]"
+        "siteConfig": {
+          "appSettings": [
+            {
+              "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+              "value": "[reference(resourceId(resourceGroup().Name, 'Microsoft.Insights/components', parameters('applicationInsightsName')), '2015-05-01').InstrumentationKey]"
+            },
+            {
+              "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
+              "value": "InstrumentationKey=[reference(resourceId(resourceGroup().Name, 'Microsoft.Insights/components', parameters('applicationInsightsName')), '2015-05-01').InstrumentationKey]"
+            }
+          ]
+        }
       }      
     }
   ]
