@@ -202,6 +202,9 @@
     "stagingSlotName": "staging",
     "webAppStagingSlotName": "[concat(variables('webAppName'), '/', variables('stagingSlotName'))]",
     "hostingPlanName": "[concat(variables('resourceNamePrefixLower'),'-appsvcplan')]",
+    "azFunHostingPlanName": "[concat(variables('resourceNamePrefixLower'),'-azfun-appsvcplan')]",
+    "storageAccountName": "[concat(variables('resourceNamePrefixLower'),'-sa')]",
+    "storageAccountType": "Standard_LRS",
     "azureServicesAuthConnectionString": "RunAs=App",
     "meaKeyVaultSecretStore": "[tolower(parameters('keyVaultName'))]",
     "meaKeyVaultUri": "[concat('https://', variables('meaKeyVaultSecretStore'), '.vault.azure.net/')]",
@@ -514,6 +517,43 @@
           ]
         }
       ]
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2018-07-01",
+      "name": "[variables('storageAccountName')]",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "displayName": "storageFunc"
+      },
+      "sku": {
+        "name": "Standard_LRS"
+      },
+      "kind": "StorageV2"
+    },
+    {
+      "type": "Microsoft.Web/serverfarms",
+      "apiVersion": "2018-02-01",
+      "name": "[variables('azFunHostingPlanName')]",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "Y1",
+        "tier": "Dynamic"
+      }
+    },
+    {
+        "apiVersion": "2015-08-01",
+        "type": "Microsoft.Web/sites",
+        "name": "functionApp",
+        "location": "[resourceGroup().location]",
+        "kind": "functionapp",
+        "dependsOn": [
+          "[resourceId('Microsoft.Web/serverfarms', variables('azFunHostingPlanName'))]",
+          "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+        ],
+        "properties": {
+          "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', 'servicePlan')]"
+        }
     }
   ]
 }
