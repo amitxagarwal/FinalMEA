@@ -557,10 +557,6 @@
             {
               "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
               "value": "[reference(resourceId(resourceGroup().Name, 'Microsoft.Insights/components', parameters('applicationInsightsName')), '2015-05-01').InstrumentationKey]"
-            },
-            {
-              "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
-              "value": "[concat('InstrumentationKey=',reference(resourceId(resourceGroup().Name, 'Microsoft.Insights/components', parameters('applicationInsightsName')), '2015-05-01').InstrumentationKey)]"
             }
           ]
         }
