@@ -559,8 +559,16 @@
               "value": "[reference(resourceId(resourceGroup().Name, 'Microsoft.Insights/components', parameters('applicationInsightsName')), '2015-05-01').InstrumentationKey]"
             },
             {
-              "name": "AzureWebJobsStorage",              
+              "name": "AzureWebJobsStorage",
               "value": "[Concat('DefaultEndpointsProtocol=https;AccountName=', variables('StorageAccountName'),';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value)]"
+            },
+            {
+              "name": "FUNCTIONS_EXTENSION_VERSION",
+              "value": "~2"
+            },
+            {
+              "name": "FUNCTIONS_WORKER_RUNTIME",
+              "value": "dotnet"             
             }
           ]
         }
