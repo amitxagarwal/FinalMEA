@@ -57,8 +57,6 @@ try{
     $lastDeployment = Get-AzResourceGroupDeployment -ResourceGroupName $resourceGroupName | Where-Object {$_.ProvisioningState -eq "Succeeded"} | Sort-Object Timestamp -Descending | Select-Object -First 1
     $lastDeployment
 
-    Write-Host '-------',$lastDeployment
-    Write-Host '-------',$lastDeployment
 }
 catch{
     Write-Host '',"An error occurred:"
