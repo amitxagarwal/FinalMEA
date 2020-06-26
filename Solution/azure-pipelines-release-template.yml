@@ -29,6 +29,7 @@ jobs:
       DiagnosticSeqServerUrl: ${{ parameters.diagnosticSeqServerUrl }}
       DiagnosticSeqApiKey: ${{ parameters.diagnosticSeqApiKey }}
       WebAppName: kmd-momentum-mea-${{ parameters.instanceId }}-webapp
+      FunctionAppName: kmd-momentum-mea-${{ parameters.instanceId }}-funapp
       ResourceGroupName: kmd-momentum-mea-${{ parameters.instanceId }}-rg
       WebAppServicePlanSku: ${{ parameters.webAppServicePlanSku }}
       WebAppConfigAlwaysOn: ${{ parameters.webAppConfigAlwaysOn }}
@@ -75,5 +76,16 @@ jobs:
                 ScriptType: 'FilePath'
                 ScriptPath: '$(Pipeline.Workspace)/deploy/deploy-webapps.ps1'
                 ScriptArguments: -PublishedArtifactsPath '$(Pipeline.Workspace)/Applications' -WebAppName '$(WebAppName)' -ResourceGroupName '$(ResourceGroupName)' -AutoSwapSlots:("${{ parameters.autoSwapSlots }}" -eq "true")
+                azurePowerShellVersion: 'LatestVersion'
+                pwsh: true
+
+            - task: AzurePowerShell@4
+              condition: succeeded()
+              displayName: Deploy functionapp binaries
+              inputs:
+                azureSubscription: ${{ parameters.azureSubscription }}
+                ScriptType: 'FilePath'
+                ScriptPath: '$(Pipeline.Workspace)/deploy/deploy-functionapps.ps1'
+                ScriptArguments: -PublishedArtifactsPath '$(Pipeline.Workspace)/Applications' -FunctionAppName '$(FunctionAppName)' -ResourceGroupName '$(ResourceGroupName)'
                 azurePowerShellVersion: 'LatestVersion'
                 pwsh: true
