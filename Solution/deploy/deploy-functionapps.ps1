@@ -8,12 +8,11 @@
   you might need to use something like `Connect-AzAccount -Subscription "XXX" -TenantId "1aaaea9d-df3e-4ce7-a55d-43de56e79442"`.
 .PARAMETER $PublishedArtifactsPath
   The path of zip package to publish (e.g. "./PublishedArtifacts")
-.PARAMETER $WebAppName
+.PARAMETER $FunctionAppName
   The name of the web application  (e.g. "kmd-momentum-mea-shareddev-webapp")
 .PARAMETER $ResourceGroupName
   The name of the resource group to deploy to (e.g. "kmd-momentum-mea-shareddev-rg")
-.PARAMETER $AutoSwapSlots
-  If set, the deployed "staging" slot will be swapped to become the "production" slot via `deploy-swapslots.ps1`.
+
 .INPUTS
   none
 .OUTPUTS
@@ -37,7 +36,7 @@ Param(
     [string] $FunctionAppName,
 
     [Parameter(Mandatory=$true)]
-    [string] $ResourceGroupName,
+    [string] $ResourceGroupName
 
 )
 try{
@@ -58,8 +57,6 @@ try{
     $lastDeployment = Get-AzResourceGroupDeployment -ResourceGroupName $resourceGroupName | Where-Object {$_.ProvisioningState -eq "Succeeded"} | Sort-Object Timestamp -Descending | Select-Object -First 1
     $lastDeployment
 
-    Write-Host '-------',$lastDeployment
-    Write-Host '-------',$lastDeployment
 }
 catch{
     Write-Host '',"An error occurred:"

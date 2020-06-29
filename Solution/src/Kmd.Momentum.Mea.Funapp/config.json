@@ -1,0 +1,5 @@
+﻿{
+  "basePath": "../swaggerJson/v1.json",
+  "remotePath": "https://kmd-rct-momentum-159-api.azurewebsites.net/api/swagger/docs/v1",
+  "apiList": [ "/punits/{id}/caseworkers", "/employees/{id}" ]
+}
