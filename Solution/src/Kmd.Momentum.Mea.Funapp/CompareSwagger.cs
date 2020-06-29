@@ -40,7 +40,7 @@ namespace Kmd.Momentum.Mea.Funapp
                 return;
             }
 
-            _config.ApiList
+           // _config.ApiList
 
 
         }
