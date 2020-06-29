@@ -26,11 +26,6 @@ namespace Kmd.Momentum.Mea.Client.Models
         /// </summary>
         /// <param name="additionalProperties">Unmatched properties from the
         /// message are deserialized this collection</param>
-        /// <param name="type"></param>
-        /// <param name="title"></param>
-        /// <param name="status"></param>
-        /// <param name="detail"></param>
-        /// <param name="instance"></param>
         public ProblemDetails(IDictionary<string, object> additionalProperties = default(IDictionary<string, object>), string type = default(string), string title = default(string), int? status = default(int?), string detail = default(string), string instance = default(string))
         {
             AdditionalProperties = additionalProperties;

@@ -27,20 +27,6 @@ namespace Kmd.Momentum.Mea.Client.Models
         /// <param name="attributes">Possible values include: 'None', 'In',
         /// 'Out', 'Lcid', 'Retval', 'Optional', 'HasDefault',
         /// 'HasFieldMarshal', 'Reserved3', 'Reserved4', 'ReservedMask'</param>
-        /// <param name="member"></param>
-        /// <param name="name"></param>
-        /// <param name="parameterType"></param>
-        /// <param name="position"></param>
-        /// <param name="isIn"></param>
-        /// <param name="isLcid"></param>
-        /// <param name="isOptional"></param>
-        /// <param name="isOut"></param>
-        /// <param name="isRetval"></param>
-        /// <param name="defaultValue"></param>
-        /// <param name="rawDefaultValue"></param>
-        /// <param name="hasDefaultValue"></param>
-        /// <param name="customAttributes"></param>
-        /// <param name="metadataToken"></param>
         public ParameterInfo(string attributes = default(string), MemberInfo member = default(MemberInfo), string name = default(string), Type parameterType = default(Type), int? position = default(int?), bool? isIn = default(bool?), bool? isLcid = default(bool?), bool? isOptional = default(bool?), bool? isOut = default(bool?), bool? isRetval = default(bool?), object defaultValue = default(object), object rawDefaultValue = default(object), bool? hasDefaultValue = default(bool?), IList<CustomAttributeData> customAttributes = default(IList<CustomAttributeData>), int? metadataToken = default(int?))
         {
             Attributes = attributes;

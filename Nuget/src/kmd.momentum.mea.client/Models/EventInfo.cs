@@ -29,19 +29,6 @@ namespace Kmd.Momentum.Mea.Client.Models
         /// 'NestedType', 'All'</param>
         /// <param name="attributes">Possible values include: 'None',
         /// 'SpecialName', 'ReservedMask', 'ReservedMask'</param>
-        /// <param name="isSpecialName"></param>
-        /// <param name="addMethod"></param>
-        /// <param name="removeMethod"></param>
-        /// <param name="raiseMethod"></param>
-        /// <param name="isMulticast"></param>
-        /// <param name="eventHandlerType"></param>
-        /// <param name="name"></param>
-        /// <param name="declaringType"></param>
-        /// <param name="reflectedType"></param>
-        /// <param name="module"></param>
-        /// <param name="customAttributes"></param>
-        /// <param name="isCollectible"></param>
-        /// <param name="metadataToken"></param>
         public EventInfo(string memberType = default(string), string attributes = default(string), bool? isSpecialName = default(bool?), MethodInfo addMethod = default(MethodInfo), MethodInfo removeMethod = default(MethodInfo), MethodInfo raiseMethod = default(MethodInfo), bool? isMulticast = default(bool?), Type eventHandlerType = default(Type), string name = default(string), Type declaringType = default(Type), Type reflectedType = default(Type), Module module = default(Module), IList<CustomAttributeData> customAttributes = default(IList<CustomAttributeData>), bool? isCollectible = default(bool?), int? metadataToken = default(int?))
         {
             MemberType = memberType;

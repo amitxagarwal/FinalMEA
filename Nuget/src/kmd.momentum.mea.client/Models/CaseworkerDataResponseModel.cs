@@ -24,7 +24,7 @@ namespace Kmd.Momentum.Mea.Client.Models
         /// Initializes a new instance of the CaseworkerDataResponseModel
         /// class.
         /// </summary>
-        public CaseworkerDataResponseModel(string caseworkerId = default(string), string displayName = default(string), string givenName = default(string), string middleName = default(string), string initials = default(string), string email = default(string), string phone = default(string), string caseworkerIdentifier = default(string), string description = default(string), bool? isBookable = default(bool?), bool? isActive = default(bool?))
+        public CaseworkerDataResponseModel(System.Guid? caseworkerId = default(System.Guid?), string displayName = default(string), string givenName = default(string), string middleName = default(string), string initials = default(string), string email = default(string), string phone = default(string), string caseworkerIdentifier = default(string), string description = default(string), bool? isBookable = default(bool?), bool? isActive = default(bool?))
         {
             CaseworkerId = caseworkerId;
             DisplayName = displayName;
@@ -48,7 +48,7 @@ namespace Kmd.Momentum.Mea.Client.Models
         /// <summary>
         /// </summary>
         [JsonProperty(PropertyName = "caseworkerId")]
-        public string CaseworkerId { get; private set; }
+        public System.Guid? CaseworkerId { get; private set; }
 
         /// <summary>
         /// </summary>

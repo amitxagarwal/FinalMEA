@@ -16,15 +16,15 @@ namespace Kmd.Momentum.Mea.Client.Sample
 
         public int PageNo { get; set; } = 1;
 
-        public string MomentumCitizenId { get; set; }
+        public Guid MomentumCitizenId { get; set; }
 
-        public string TaskId { get; set; }
+        public Guid TaskId { get; set; }
 
-        public string CaseworkerId { get; set; }
+        public Guid CaseworkerId { get; set; }
 
         public string CprNumber { get; set; }
 
-        public string CitizenId { get; set; }
+        public Guid CitizenId { get; set; }
 
         public string Content { get; set; }
 

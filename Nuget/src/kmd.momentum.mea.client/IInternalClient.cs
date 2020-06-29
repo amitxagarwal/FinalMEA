@@ -15,6 +15,7 @@ namespace Kmd.Momentum.Mea.Client
     using System.Threading.Tasks;
 
     /// <summary>
+    /// Kmd Momentum External Api - v1
     /// </summary>
     public partial interface IInternalClient : System.IDisposable
     {
@@ -67,7 +68,7 @@ namespace Kmd.Momentum.Mea.Client
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<object>> GetCaseworkerByIdWithHttpMessagesAsync(string caseworkerId, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object>> GetCaseworkerByIdWithHttpMessagesAsync(System.Guid caseworkerId, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Get all tasks for the caseworkers
@@ -85,7 +86,7 @@ namespace Kmd.Momentum.Mea.Client
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<object>> GetTasksbyCaseworkerWithHttpMessagesAsync(string caseworkerId, int? pageNumber = 0, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object>> GetTasksbyCaseworkerWithHttpMessagesAsync(System.Guid caseworkerId, int? pageNumber = 0, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Get all active citizens
@@ -129,7 +130,7 @@ namespace Kmd.Momentum.Mea.Client
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<object>> GetCitizenByIdWithHttpMessagesAsync(string citizenId, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object>> GetCitizenByIdWithHttpMessagesAsync(System.Guid citizenId, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Create a Journal Note with attachment
@@ -148,7 +149,7 @@ namespace Kmd.Momentum.Mea.Client
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<ProblemDetails>> CreateJournalNoteWithHttpMessagesAsync(JournalNoteRequestModel body, string momentumCitizenId, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<ProblemDetails>> CreateJournalNoteWithHttpMessagesAsync(JournalNoteRequestModel body, System.Guid momentumCitizenId, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Get Health
@@ -178,6 +179,14 @@ namespace Kmd.Momentum.Mea.Client
         /// </param>
         Task<HttpOperationResponse<HealthReport>> HealthLiveWithHttpMessagesAsync(Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
+        /// <param name='customHeaders'>
+        /// The headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        Task<HttpOperationResponse<HealthReport>> HealthLiveDemoWithHttpMessagesAsync(Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+
         /// <summary>
         /// Update Status
         /// </summary>
@@ -193,7 +202,7 @@ namespace Kmd.Momentum.Mea.Client
         /// <param name='cancellationToken'>
         /// The cancellation token.
         /// </param>
-        Task<HttpOperationResponse<object>> UpdateTaskStatusWithHttpMessagesAsync(TaskUpdateStatus body, string taskId, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpOperationResponse<object>> UpdateTaskStatusWithHttpMessagesAsync(TaskUpdateStatus body, System.Guid taskId, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken));
 
     }
 }

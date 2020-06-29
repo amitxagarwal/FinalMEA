@@ -17,6 +17,9 @@ namespace Kmd.Momentum.Mea.Client
     using System.Threading;
     using System.Threading.Tasks;
 
+    /// <summary>
+    /// Kmd Momentum External Api - v1
+    /// </summary>
     public partial class InternalClient : ServiceClient<InternalClient>, IInternalClient
     {
         /// <summary>
@@ -344,7 +347,7 @@ namespace Kmd.Momentum.Mea.Client
             }
             // Construct URL
             var _baseUrl = BaseUri.AbsoluteUri;
-            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "caseworkers").ToString();
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "v1/caseworkers").ToString();
             List<string> _queryParameters = new List<string>();
             if (pageNumber != null)
             {
@@ -519,21 +522,11 @@ namespace Kmd.Momentum.Mea.Client
         /// <exception cref="SerializationException">
         /// Thrown when unable to deserialize the response
         /// </exception>
-        /// <exception cref="ValidationException">
-        /// Thrown when a required parameter is null
-        /// </exception>
-        /// <exception cref="System.ArgumentNullException">
-        /// Thrown when a required parameter is null
-        /// </exception>
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<HttpOperationResponse<object>> GetCaseworkerByIdWithHttpMessagesAsync(string caseworkerId, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<HttpOperationResponse<object>> GetCaseworkerByIdWithHttpMessagesAsync(System.Guid caseworkerId, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (caseworkerId == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "caseworkerId");
-            }
             // Tracing
             bool _shouldTrace = ServiceClientTracing.IsEnabled;
             string _invocationId = null;
@@ -547,8 +540,8 @@ namespace Kmd.Momentum.Mea.Client
             }
             // Construct URL
             var _baseUrl = BaseUri.AbsoluteUri;
-            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "caseworkers/kss/{caseworkerId}").ToString();
-            _url = _url.Replace("{caseworkerId}", System.Uri.EscapeDataString(caseworkerId));
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "v1/caseworkers/kss/{caseworkerId}").ToString();
+            _url = _url.Replace("{caseworkerId}", System.Uri.EscapeDataString(SafeJsonConvert.SerializeObject(caseworkerId, SerializationSettings).Trim('"')));
             // Create HTTP transport objects
             var _httpRequest = new HttpRequestMessage();
             HttpResponseMessage _httpResponse = null;
@@ -623,7 +616,7 @@ namespace Kmd.Momentum.Mea.Client
                 _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
                 try
                 {
-                    _result.Body = SafeJsonConvert.DeserializeObject<CaseworkerData>(_responseContent, DeserializationSettings);
+                    _result.Body = SafeJsonConvert.DeserializeObject<CaseworkerDataResponseModel>(_responseContent, DeserializationSettings);
                 }
                 catch (JsonException ex)
                 {
@@ -717,21 +710,11 @@ namespace Kmd.Momentum.Mea.Client
         /// <exception cref="SerializationException">
         /// Thrown when unable to deserialize the response
         /// </exception>
-        /// <exception cref="ValidationException">
-        /// Thrown when a required parameter is null
-        /// </exception>
-        /// <exception cref="System.ArgumentNullException">
-        /// Thrown when a required parameter is null
-        /// </exception>
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<HttpOperationResponse<object>> GetTasksbyCaseworkerWithHttpMessagesAsync(string caseworkerId, int? pageNumber = 0, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<HttpOperationResponse<object>> GetTasksbyCaseworkerWithHttpMessagesAsync(System.Guid caseworkerId, int? pageNumber = 0, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (caseworkerId == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "caseworkerId");
-            }
             // Tracing
             bool _shouldTrace = ServiceClientTracing.IsEnabled;
             string _invocationId = null;
@@ -746,8 +729,8 @@ namespace Kmd.Momentum.Mea.Client
             }
             // Construct URL
             var _baseUrl = BaseUri.AbsoluteUri;
-            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "caseworkers/{caseworkerId}/tasks").ToString();
-            _url = _url.Replace("{caseworkerId}", System.Uri.EscapeDataString(caseworkerId));
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "v1/caseworkers/{caseworkerId}/tasks").ToString();
+            _url = _url.Replace("{caseworkerId}", System.Uri.EscapeDataString(SafeJsonConvert.SerializeObject(caseworkerId, SerializationSettings).Trim('"')));
             List<string> _queryParameters = new List<string>();
             if (pageNumber != null)
             {
@@ -831,7 +814,7 @@ namespace Kmd.Momentum.Mea.Client
                 _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
                 try
                 {
-                    _result.Body = SafeJsonConvert.DeserializeObject<TaskData>(_responseContent, DeserializationSettings);
+                    _result.Body = SafeJsonConvert.DeserializeObject<TaskList>(_responseContent, DeserializationSettings);
                 }
                 catch (JsonException ex)
                 {
@@ -940,7 +923,7 @@ namespace Kmd.Momentum.Mea.Client
             }
             // Construct URL
             var _baseUrl = BaseUri.AbsoluteUri;
-            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "citizens").ToString();
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "v1/citizens").ToString();
             List<string> _queryParameters = new List<string>();
             if (pageNumber != null)
             {
@@ -1143,7 +1126,7 @@ namespace Kmd.Momentum.Mea.Client
             }
             // Construct URL
             var _baseUrl = BaseUri.AbsoluteUri;
-            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "citizens/cpr/{cprNumber}").ToString();
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "v1/citizens/cpr/{cprNumber}").ToString();
             _url = _url.Replace("{cprNumber}", System.Uri.EscapeDataString(cprNumber));
             // Create HTTP transport objects
             var _httpRequest = new HttpRequestMessage();
@@ -1310,21 +1293,11 @@ namespace Kmd.Momentum.Mea.Client
         /// <exception cref="SerializationException">
         /// Thrown when unable to deserialize the response
         /// </exception>
-        /// <exception cref="ValidationException">
-        /// Thrown when a required parameter is null
-        /// </exception>
-        /// <exception cref="System.ArgumentNullException">
-        /// Thrown when a required parameter is null
-        /// </exception>
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<HttpOperationResponse<object>> GetCitizenByIdWithHttpMessagesAsync(string citizenId, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<HttpOperationResponse<object>> GetCitizenByIdWithHttpMessagesAsync(System.Guid citizenId, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (citizenId == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "citizenId");
-            }
             // Tracing
             bool _shouldTrace = ServiceClientTracing.IsEnabled;
             string _invocationId = null;
@@ -1338,8 +1311,8 @@ namespace Kmd.Momentum.Mea.Client
             }
             // Construct URL
             var _baseUrl = BaseUri.AbsoluteUri;
-            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "citizens/kss/{citizenId}").ToString();
-            _url = _url.Replace("{citizenId}", System.Uri.EscapeDataString(citizenId));
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "v1/citizens/kss/{citizenId}").ToString();
+            _url = _url.Replace("{citizenId}", System.Uri.EscapeDataString(SafeJsonConvert.SerializeObject(citizenId, SerializationSettings).Trim('"')));
             // Create HTTP transport objects
             var _httpRequest = new HttpRequestMessage();
             HttpResponseMessage _httpResponse = null;
@@ -1518,15 +1491,11 @@ namespace Kmd.Momentum.Mea.Client
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<HttpOperationResponse<ProblemDetails>> CreateJournalNoteWithHttpMessagesAsync(JournalNoteRequestModel body, string momentumCitizenId, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<HttpOperationResponse<ProblemDetails>> CreateJournalNoteWithHttpMessagesAsync(JournalNoteRequestModel body, System.Guid momentumCitizenId, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (body == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "body");
-            }
-            if (momentumCitizenId == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "momentumCitizenId");
             }
             // Tracing
             bool _shouldTrace = ServiceClientTracing.IsEnabled;
@@ -1542,8 +1511,8 @@ namespace Kmd.Momentum.Mea.Client
             }
             // Construct URL
             var _baseUrl = BaseUri.AbsoluteUri;
-            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "citizens/journal/{momentumCitizenId}").ToString();
-            _url = _url.Replace("{momentumCitizenId}", System.Uri.EscapeDataString(momentumCitizenId));
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "v1/citizens/journal/{momentumCitizenId}").ToString();
+            _url = _url.Replace("{momentumCitizenId}", System.Uri.EscapeDataString(SafeJsonConvert.SerializeObject(momentumCitizenId, SerializationSettings).Trim('"')));
             // Create HTTP transport objects
             var _httpRequest = new HttpRequestMessage();
             HttpResponseMessage _httpResponse = null;
@@ -1714,7 +1683,7 @@ namespace Kmd.Momentum.Mea.Client
             }
             // Construct URL
             var _baseUrl = BaseUri.AbsoluteUri;
-            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "Health/Ready").ToString();
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "v1/Health/Ready").ToString();
             // Create HTTP transport objects
             var _httpRequest = new HttpRequestMessage();
             HttpResponseMessage _httpResponse = null;
@@ -1843,7 +1812,7 @@ namespace Kmd.Momentum.Mea.Client
             }
             // Construct URL
             var _baseUrl = BaseUri.AbsoluteUri;
-            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "Health/Live").ToString();
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "v1/Health/Live").ToString();
             // Create HTTP transport objects
             var _httpRequest = new HttpRequestMessage();
             HttpResponseMessage _httpResponse = null;
@@ -1937,6 +1906,129 @@ namespace Kmd.Momentum.Mea.Client
             return _result;
         }
 
+        /// <param name='customHeaders'>
+        /// Headers that will be added to request.
+        /// </param>
+        /// <param name='cancellationToken'>
+        /// The cancellation token.
+        /// </param>
+        /// <exception cref="HttpOperationException">
+        /// Thrown when the operation returned an invalid status code
+        /// </exception>
+        /// <exception cref="SerializationException">
+        /// Thrown when unable to deserialize the response
+        /// </exception>
+        /// <return>
+        /// A response object containing the response body and response headers.
+        /// </return>
+        public async Task<HttpOperationResponse<HealthReport>> HealthLiveDemoWithHttpMessagesAsync(Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            // Tracing
+            bool _shouldTrace = ServiceClientTracing.IsEnabled;
+            string _invocationId = null;
+            if (_shouldTrace)
+            {
+                _invocationId = ServiceClientTracing.NextInvocationId.ToString();
+                Dictionary<string, object> tracingParameters = new Dictionary<string, object>();
+                tracingParameters.Add("cancellationToken", cancellationToken);
+                ServiceClientTracing.Enter(_invocationId, this, "HealthLiveDemo", tracingParameters);
+            }
+            // Construct URL
+            var _baseUrl = BaseUri.AbsoluteUri;
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "v1/Health/LiveDemo").ToString();
+            // Create HTTP transport objects
+            var _httpRequest = new HttpRequestMessage();
+            HttpResponseMessage _httpResponse = null;
+            _httpRequest.Method = new HttpMethod("GET");
+            _httpRequest.RequestUri = new System.Uri(_url);
+            // Set Headers
+
+
+            if (customHeaders != null)
+            {
+                foreach(var _header in customHeaders)
+                {
+                    if (_httpRequest.Headers.Contains(_header.Key))
+                    {
+                        _httpRequest.Headers.Remove(_header.Key);
+                    }
+                    _httpRequest.Headers.TryAddWithoutValidation(_header.Key, _header.Value);
+                }
+            }
+
+            // Serialize Request
+            string _requestContent = null;
+            // Set Credentials
+            if (Credentials != null)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                await Credentials.ProcessHttpRequestAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            }
+            // Send Request
+            if (_shouldTrace)
+            {
+                ServiceClientTracing.SendRequest(_invocationId, _httpRequest);
+            }
+            cancellationToken.ThrowIfCancellationRequested();
+            _httpResponse = await HttpClient.SendAsync(_httpRequest, cancellationToken).ConfigureAwait(false);
+            if (_shouldTrace)
+            {
+                ServiceClientTracing.ReceiveResponse(_invocationId, _httpResponse);
+            }
+            HttpStatusCode _statusCode = _httpResponse.StatusCode;
+            cancellationToken.ThrowIfCancellationRequested();
+            string _responseContent = null;
+            if ((int)_statusCode != 200)
+            {
+                var ex = new HttpOperationException(string.Format("Operation returned an invalid status code '{0}'", _statusCode));
+                if (_httpResponse.Content != null) {
+                    _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                }
+                else {
+                    _responseContent = string.Empty;
+                }
+                ex.Request = new HttpRequestMessageWrapper(_httpRequest, _requestContent);
+                ex.Response = new HttpResponseMessageWrapper(_httpResponse, _responseContent);
+                if (_shouldTrace)
+                {
+                    ServiceClientTracing.Error(_invocationId, ex);
+                }
+                _httpRequest.Dispose();
+                if (_httpResponse != null)
+                {
+                    _httpResponse.Dispose();
+                }
+                throw ex;
+            }
+            // Create Result
+            var _result = new HttpOperationResponse<HealthReport>();
+            _result.Request = _httpRequest;
+            _result.Response = _httpResponse;
+            // Deserialize Response
+            if ((int)_statusCode == 200)
+            {
+                _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+                try
+                {
+                    _result.Body = SafeJsonConvert.DeserializeObject<HealthReport>(_responseContent, DeserializationSettings);
+                }
+                catch (JsonException ex)
+                {
+                    _httpRequest.Dispose();
+                    if (_httpResponse != null)
+                    {
+                        _httpResponse.Dispose();
+                    }
+                    throw new SerializationException("Unable to deserialize the response.", _responseContent, ex);
+                }
+            }
+            if (_shouldTrace)
+            {
+                ServiceClientTracing.Exit(_invocationId, _result);
+            }
+            return _result;
+        }
+
         /// <summary>
         /// Update Status
         /// </summary>
@@ -1967,15 +2059,11 @@ namespace Kmd.Momentum.Mea.Client
         /// <return>
         /// A response object containing the response body and response headers.
         /// </return>
-        public async Task<HttpOperationResponse<object>> UpdateTaskStatusWithHttpMessagesAsync(TaskUpdateStatus body, string taskId, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<HttpOperationResponse<object>> UpdateTaskStatusWithHttpMessagesAsync(TaskUpdateStatus body, System.Guid taskId, Dictionary<string, List<string>> customHeaders = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (body == null)
             {
                 throw new ValidationException(ValidationRules.CannotBeNull, "body");
-            }
-            if (taskId == null)
-            {
-                throw new ValidationException(ValidationRules.CannotBeNull, "taskId");
             }
             // Tracing
             bool _shouldTrace = ServiceClientTracing.IsEnabled;
@@ -1991,8 +2079,8 @@ namespace Kmd.Momentum.Mea.Client
             }
             // Construct URL
             var _baseUrl = BaseUri.AbsoluteUri;
-            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "tasks/{taskId}/update").ToString();
-            _url = _url.Replace("{taskId}", System.Uri.EscapeDataString(taskId));
+            var _url = new System.Uri(new System.Uri(_baseUrl + (_baseUrl.EndsWith("/") ? "" : "/")), "v1/tasks/{taskId}/update").ToString();
+            _url = _url.Replace("{taskId}", System.Uri.EscapeDataString(SafeJsonConvert.SerializeObject(taskId, SerializationSettings).Trim('"')));
             // Create HTTP transport objects
             var _httpRequest = new HttpRequestMessage();
             HttpResponseMessage _httpResponse = null;
@@ -2073,7 +2161,7 @@ namespace Kmd.Momentum.Mea.Client
                 _responseContent = await _httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
                 try
                 {
-                    _result.Body = SafeJsonConvert.DeserializeObject<TaskData>(_responseContent, DeserializationSettings);
+                    _result.Body = SafeJsonConvert.DeserializeObject<TaskDataResponseModel>(_responseContent, DeserializationSettings);
                 }
                 catch (JsonException ex)
                 {

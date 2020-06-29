@@ -39,37 +39,9 @@ namespace Kmd.Momentum.Mea.Client.Models
         /// 'MaxMethodImplVal'</param>
         /// <param name="callingConvention">Possible values include:
         /// 'Standard', 'VarArgs', 'Any', 'HasThis', 'ExplicitThis'</param>
-        /// <param name="isAbstract"></param>
-        /// <param name="isConstructor"></param>
-        /// <param name="isFinal"></param>
-        /// <param name="isHideBySig"></param>
-        /// <param name="isSpecialName"></param>
-        /// <param name="isStatic"></param>
-        /// <param name="isVirtual"></param>
-        /// <param name="isAssembly"></param>
-        /// <param name="isFamily"></param>
-        /// <param name="isFamilyAndAssembly"></param>
-        /// <param name="isFamilyOrAssembly"></param>
-        /// <param name="isPrivate"></param>
-        /// <param name="isPublic"></param>
-        /// <param name="isConstructedGenericMethod"></param>
-        /// <param name="isGenericMethod"></param>
-        /// <param name="isGenericMethodDefinition"></param>
-        /// <param name="containsGenericParameters"></param>
-        /// <param name="methodHandle"></param>
-        /// <param name="isSecurityCritical"></param>
-        /// <param name="isSecuritySafeCritical"></param>
-        /// <param name="isSecurityTransparent"></param>
         /// <param name="memberType">Possible values include: 'Constructor',
         /// 'Event', 'Field', 'Method', 'Property', 'TypeInfo', 'Custom',
         /// 'NestedType', 'All'</param>
-        /// <param name="name"></param>
-        /// <param name="declaringType"></param>
-        /// <param name="reflectedType"></param>
-        /// <param name="module"></param>
-        /// <param name="customAttributes"></param>
-        /// <param name="isCollectible"></param>
-        /// <param name="metadataToken"></param>
         public MethodBase(string attributes = default(string), string methodImplementationFlags = default(string), string callingConvention = default(string), bool? isAbstract = default(bool?), bool? isConstructor = default(bool?), bool? isFinal = default(bool?), bool? isHideBySig = default(bool?), bool? isSpecialName = default(bool?), bool? isStatic = default(bool?), bool? isVirtual = default(bool?), bool? isAssembly = default(bool?), bool? isFamily = default(bool?), bool? isFamilyAndAssembly = default(bool?), bool? isFamilyOrAssembly = default(bool?), bool? isPrivate = default(bool?), bool? isPublic = default(bool?), bool? isConstructedGenericMethod = default(bool?), bool? isGenericMethod = default(bool?), bool? isGenericMethodDefinition = default(bool?), bool? containsGenericParameters = default(bool?), RuntimeMethodHandle methodHandle = default(RuntimeMethodHandle), bool? isSecurityCritical = default(bool?), bool? isSecuritySafeCritical = default(bool?), bool? isSecurityTransparent = default(bool?), string memberType = default(string), string name = default(string), Type declaringType = default(Type), Type reflectedType = default(Type), Module module = default(Module), IList<CustomAttributeData> customAttributes = default(IList<CustomAttributeData>), bool? isCollectible = default(bool?), int? metadataToken = default(int?))
         {
             Attributes = attributes;

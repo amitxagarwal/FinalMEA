@@ -24,23 +24,6 @@ namespace Kmd.Momentum.Mea.Client.Models
         /// <summary>
         /// Initializes a new instance of the Assembly class.
         /// </summary>
-        /// <param name="definedTypes"></param>
-        /// <param name="exportedTypes"></param>
-        /// <param name="codeBase"></param>
-        /// <param name="entryPoint"></param>
-        /// <param name="fullName"></param>
-        /// <param name="imageRuntimeVersion"></param>
-        /// <param name="isDynamic"></param>
-        /// <param name="location"></param>
-        /// <param name="reflectionOnly"></param>
-        /// <param name="isCollectible"></param>
-        /// <param name="isFullyTrusted"></param>
-        /// <param name="customAttributes"></param>
-        /// <param name="escapedCodeBase"></param>
-        /// <param name="manifestModule"></param>
-        /// <param name="modules"></param>
-        /// <param name="globalAssemblyCache"></param>
-        /// <param name="hostContext"></param>
         /// <param name="securityRuleSet">Possible values include: 'None',
         /// 'Level1', 'Level2'</param>
         public Assembly(IList<TypeInfo> definedTypes = default(IList<TypeInfo>), IList<Type> exportedTypes = default(IList<Type>), string codeBase = default(string), MethodInfo entryPoint = default(MethodInfo), string fullName = default(string), string imageRuntimeVersion = default(string), bool? isDynamic = default(bool?), string location = default(string), bool? reflectionOnly = default(bool?), bool? isCollectible = default(bool?), bool? isFullyTrusted = default(bool?), IList<CustomAttributeData> customAttributes = default(IList<CustomAttributeData>), string escapedCodeBase = default(string), Module manifestModule = default(Module), IList<Module> modules = default(IList<Module>), bool? globalAssemblyCache = default(bool?), long? hostContext = default(long?), string securityRuleSet = default(string))
