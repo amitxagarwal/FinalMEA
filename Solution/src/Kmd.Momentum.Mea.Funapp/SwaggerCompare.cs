@@ -1,4 +1,6 @@
 ﻿using Microsoft.Azure.WebJobs;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,25 +17,26 @@ namespace Kmd.Momentum.Mea.Funapp
         {
             _context = context;
         }
-        public string GetJsonFromFolder()
+        public JObject GetJsonFromFolder()
         {
-
+            JObject apiData;
             //from folder
             var path = System.IO.Path.Combine(_context.FunctionDirectory, "jsconfig1.json");
             var p = Path.GetFullPath(Path.Combine(_context.FunctionDirectory, "..\\jsconfig1.json"));
             string st = File.ReadAllText(@p);
-            return st;
+            apiData = JsonConvert.DeserializeObject<JObject>(st);
+            return apiData;
         }
-        public async Task<string> GetJsonFromUrl()
+        public async Task<JObject> GetJsonFromUrl()
         {
-
+            JObject apiData;
             //from url
             var client = new HttpClient();
             var response =  await client.GetAsync("https://kmd-momentum-mea-internal-webapp.azurewebsites.net/swagger/v1/swagger.json");
             var json =  await response.Content.ReadAsStringAsync();
-           return json;
+            apiData = JsonConvert.DeserializeObject<JObject>(json);
+            return apiData;
         }
-
     }
 }
     
