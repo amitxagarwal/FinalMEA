@@ -13,4 +13,3 @@ namespace Kmd.Momentum.Mea.Funapp
         }
     }
 }
-
