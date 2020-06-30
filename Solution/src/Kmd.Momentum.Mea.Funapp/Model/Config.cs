@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Kmd.Momentum.Mea.Funapp.Model
 {
-    class Config
+    public class Config
     {
         public string BasePath { get; set; }
 

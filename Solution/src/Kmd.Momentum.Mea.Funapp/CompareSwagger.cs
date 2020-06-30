@@ -1,6 +1,9 @@
 ﻿using Kmd.Momentum.Mea.Funapp.Model;
 using Microsoft.Azure.WebJobs;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -40,9 +43,43 @@ namespace Kmd.Momentum.Mea.Funapp
                 return;
             }
 
-           // _config.ApiList
+            var baseJsonObj = JsonConvert.DeserializeObject<JToken>(baseJson);
+            var remoteJsonObj = JsonConvert.DeserializeObject<JToken>(remoteJson);
 
+            var baseJObject = baseJsonObj.ToObject<JObject>();
+            var remoteJOject = remoteJsonObj.ToObject<JObject>();
 
+            foreach(var _path in _config.ApiList)
+            {
+               if(baseJObject["paths"][_path] == null)
+                {
+                    //error
+                }
+                if (remoteJOject["paths"][_path] == null)
+                {
+                    //error
+                }
+                if(!JToken.DeepEquals(baseJObject["paths"][_path], remoteJOject["paths"][_path] == null))
+                {
+                    foreach (KeyValuePair<string, JToken> sourceProperty in baseJObject)
+                    {
+                        JProperty targetProp = remoteJOject.Property(sourceProperty.Key);
+                        if (!JToken.DeepEquals(sourceProperty.Value, targetProp.Value))
+                        {
+                            Console.WriteLine(string.Format("{0} property value is changed", sourceProperty.Key));
+                        }
+                        else
+                        {
+                            Console.WriteLine(string.Format("{0} property value didn't change", sourceProperty.Key));
+                        }
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Objects are same");
+                }
+
+            }
         }
 
         private string ReadFile(string path)
