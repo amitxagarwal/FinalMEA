@@ -1,7 +1,9 @@
 ﻿using Kmd.Momentum.Mea.Funapp.Model;
 using Microsoft.Azure.WebJobs;
+using Microsoft.Azure.WebJobs.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -29,13 +31,11 @@ namespace Kmd.Momentum.Mea.Funapp
             var remoteJson = ReadFile(_config.BasePath);
             if (string.IsNullOrEmpty(baseJson))
             {
-                //baseJson is Empty
-                return;
+                Log.Error("Base Json is null");
             }
             if (string.IsNullOrEmpty(remoteJson))
             {
-                //remoteJson is Empty
-                return;
+                Log.Error("Remote Json is null");
             }
             if (baseJson == remoteJson)
             {
@@ -53,11 +53,11 @@ namespace Kmd.Momentum.Mea.Funapp
             {
                if(baseJObject["paths"][_path] == null)
                 {
-                    //error
+                    Log.Error("Base Json path is null");
                 }
                 if (remoteJOject["paths"][_path] == null)
                 {
-                    //error
+                    Log.Error("Remote Json path is null");
                 }
                 if(!JToken.DeepEquals(baseJObject["paths"][_path], remoteJOject["paths"][_path] == null))
                 {
@@ -66,17 +66,17 @@ namespace Kmd.Momentum.Mea.Funapp
                         JProperty targetProp = remoteJOject.Property(sourceProperty.Key);
                         if (!JToken.DeepEquals(sourceProperty.Value, targetProp.Value))
                         {
-                            Console.WriteLine(string.Format("{0} property value is changed", sourceProperty.Key));
+                            Log.Information(string.Format("{0} property value is changed", sourceProperty.Key));
                         }
                         else
                         {
-                            Console.WriteLine(string.Format("{0} property value didn't change", sourceProperty.Key));
+                            Log.Information(string.Format("{0} property value didn't change", sourceProperty.Key));
                         }
                     }
                 }
                 else
                 {
-                    Console.WriteLine("Objects are same");
+                    Log.Information("Objects are same");
                 }
 
             }
