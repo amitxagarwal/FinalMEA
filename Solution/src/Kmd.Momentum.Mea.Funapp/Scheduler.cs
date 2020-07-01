@@ -11,7 +11,7 @@ namespace Kmd.Momentum.Mea.Funapp
         [FunctionName("CompareApplication")]
         public static void Run([TimerTrigger("0 */5 * * * *")]TimerInfo myTimer, ILogger log, ExecutionContext context)
         {
-            log.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
+            log.LogInformation($"CompareApplication executed at: {DateTime.Now}");
             var _compareSwager = new CompareSwagger(context);
             _compareSwager.CompareJson().ConfigureAwait(false);
 
