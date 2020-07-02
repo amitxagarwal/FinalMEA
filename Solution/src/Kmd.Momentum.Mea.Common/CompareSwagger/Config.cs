@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Kmd.Momentum.Mea.Funapp.Model
+namespace Kmd.Momentum.Mea.Common.CompareSwagger
 {
     public class Config
     {
@@ -11,6 +11,5 @@ namespace Kmd.Momentum.Mea.Funapp.Model
         public string RemotePath { get; set; }
 
         public string[] ApiList { get; set; }
-
     }
-}
+    }

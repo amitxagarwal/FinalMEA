@@ -1,5 +1,4 @@
-﻿using Kmd.Momentum.Mea.Funapp.Model;
-using Microsoft.Azure.WebJobs;
+﻿using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -11,9 +10,9 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Kmd.Momentum.Mea.Funapp
+namespace Kmd.Momentum.Mea.Common.CompareSwagger
 {
-    class CompareSwagger
+    public class CompareSwagger
     {
         private readonly Config _config;
 
@@ -49,9 +48,9 @@ namespace Kmd.Momentum.Mea.Funapp
             var baseJObject = baseJsonObj.ToObject<JObject>();
             var remoteJOject = remoteJsonObj.ToObject<JObject>();
 
-            foreach(var _path in _config.ApiList)
+            foreach (var _path in _config.ApiList)
             {
-               if(baseJObject["paths"][_path] == null)
+                if (baseJObject["paths"][_path] == null)
                 {
                     Log.Error("Base Json path is null");
                 }
@@ -59,7 +58,7 @@ namespace Kmd.Momentum.Mea.Funapp
                 {
                     Log.Error("Remote Json path is null");
                 }
-                if(!JToken.DeepEquals(baseJObject["paths"][_path], remoteJOject["paths"][_path] == null))
+                if (!JToken.DeepEquals(baseJObject["paths"][_path], remoteJOject["paths"][_path] == null))
                 {
                     foreach (KeyValuePair<string, JToken> sourceProperty in baseJObject)
                     {
@@ -111,3 +110,4 @@ namespace Kmd.Momentum.Mea.Funapp
         }
     }
 }
+    
