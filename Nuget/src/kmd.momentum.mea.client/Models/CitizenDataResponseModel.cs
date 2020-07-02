@@ -22,7 +22,7 @@ namespace Kmd.Momentum.Mea.Client.Models
         /// <summary>
         /// Initializes a new instance of the CitizenDataResponseModel class.
         /// </summary>
-        public CitizenDataResponseModel(string citizenId = default(string), string displayName = default(string), string givenName = default(string), string middleName = default(string), string initials = default(string), string email = default(string), string phone = default(string), string caseworkerIdentifier = default(string), string description = default(string), bool? isBookable = default(bool?), bool? isActive = default(bool?))
+        public CitizenDataResponseModel(System.Guid? citizenId = default(System.Guid?), string displayName = default(string), string givenName = default(string), string middleName = default(string), string initials = default(string), string email = default(string), string phone = default(string), string caseworkerIdentifier = default(string), string description = default(string), bool? isBookable = default(bool?), bool? isActive = default(bool?))
         {
             CitizenId = citizenId;
             DisplayName = displayName;
@@ -46,7 +46,7 @@ namespace Kmd.Momentum.Mea.Client.Models
         /// <summary>
         /// </summary>
         [JsonProperty(PropertyName = "citizenId")]
-        public string CitizenId { get; private set; }
+        public System.Guid? CitizenId { get; private set; }
 
         /// <summary>
         /// </summary>

@@ -24,11 +24,7 @@ namespace Kmd.Momentum.Mea.Client.Models
         /// <summary>
         /// Initializes a new instance of the JournalNoteRequestModel class.
         /// </summary>
-        /// <param name="cpr"></param>
-        /// <param name="title"></param>
         /// <param name="type">Possible values include: 'SMS', 'OTHER'</param>
-        /// <param name="body"></param>
-        /// <param name="documents"></param>
         public JournalNoteRequestModel(string cpr = default(string), string title = default(string), string type = default(string), string body = default(string), IList<JournalNoteDocumentRequestModel> documents = default(IList<JournalNoteDocumentRequestModel>))
         {
             Cpr = cpr;

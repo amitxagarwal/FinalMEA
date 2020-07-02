@@ -2,10 +2,11 @@
   "openapi": "3.0.1",
   "info": {
     "title": "Kmd Momentum External Api",
+    "description": "Kmd Momentum External Api - v1",
     "version": "v1"
   },
   "paths": {
-    "/caseworkers": {
+    "/v1/caseworkers": {
       "get": {
         "tags": [
           "Caseworker"
@@ -89,7 +90,7 @@
         }
       }
     },
-    "/caseworkers/kss/{caseworkerId}": {
+    "/v1/caseworkers/kss/{caseworkerId}": {
       "get": {
         "tags": [
           "Caseworker"
@@ -104,7 +105,8 @@
             "required": true,
             "schema": {
               "type": "string",
-              "description": "The caseworker id to access the records from Core system."
+              "description": "The caseworker id to access the records from Core system.",
+              "format": "uuid"
             }
           }
         ],
@@ -114,12 +116,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CaseworkerData"
+                  "$ref": "#/components/schemas/CaseworkerDataResponseModel"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CaseworkerData"
+                  "$ref": "#/components/schemas/CaseworkerDataResponseModel"
                 }
               }
             }
@@ -172,7 +174,7 @@
         }
       }
     },
-    "/caseworkers/{caseworkerId}/tasks": {
+    "/v1/caseworkers/{caseworkerId}/tasks": {
       "get": {
         "tags": [
           "Caseworker"
@@ -187,7 +189,8 @@
             "required": true,
             "schema": {
               "type": "string",
-              "description": "The caseworker id to access the records from Core system."
+              "description": "The caseworker id to access the records from Core system.",
+              "format": "uuid"
             }
           },
           {
@@ -208,12 +211,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TaskData"
+                  "$ref": "#/components/schemas/TaskList"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TaskData"
+                  "$ref": "#/components/schemas/TaskList"
                 }
               }
             }
@@ -266,7 +269,7 @@
         }
       }
     },
-    "/citizens": {
+    "/v1/citizens": {
       "get": {
         "tags": [
           "Citizen"
@@ -350,7 +353,7 @@
         }
       }
     },
-    "/citizens/cpr/{cprNumber}": {
+    "/v1/citizens/cpr/{cprNumber}": {
       "get": {
         "tags": [
           "Citizen"
@@ -433,7 +436,7 @@
         }
       }
     },
-    "/citizens/kss/{citizenId}": {
+    "/v1/citizens/kss/{citizenId}": {
       "get": {
         "tags": [
           "Citizen"
@@ -448,7 +451,8 @@
             "required": true,
             "schema": {
               "type": "string",
-              "description": "The Citizen ID or Momentum Id to search the record in the Core system"
+              "description": "The Citizen ID or Momentum Id to search the record in the Core system",
+              "format": "uuid"
             }
           }
         ],
@@ -516,7 +520,7 @@
         }
       }
     },
-    "/citizens/journal/{momentumCitizenId}": {
+    "/v1/citizens/journal/{momentumCitizenId}": {
       "post": {
         "tags": [
           "Journal"
@@ -531,7 +535,8 @@
             "required": true,
             "schema": {
               "type": "string",
-              "description": "The MomentumCitizenID or CitizenId to Create the journal note record in the Core system"
+              "description": "The MomentumCitizenID or CitizenId to Create the journal note record in the Core system",
+              "format": "uuid"
             }
           }
         ],
@@ -608,7 +613,7 @@
         }
       }
     },
-    "/Health/Ready": {
+    "/v1/Health/Ready": {
       "get": {
         "tags": [
           "Health"
@@ -638,7 +643,7 @@
         }
       }
     },
-    "/Health/Live": {
+    "/v1/Health/Live": {
       "get": {
         "tags": [
           "Health"
@@ -668,7 +673,32 @@
         }
       }
     },
-    "/tasks/{taskId}/update": {
+    "/v1/Health/LiveDemo": {
+      "get": {
+        "tags": [
+          "Health"
+        ],
+        "operationId": "HealthLiveDemo",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthReport"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthReport"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tasks/{taskId}/update": {
       "put": {
         "tags": [
           "Tasks"
@@ -683,7 +713,8 @@
             "required": true,
             "schema": {
               "type": "string",
-              "description": "The TaskId to update the task in the Core system"
+              "description": "The TaskId to update the task in the Core system",
+              "format": "uuid"
             }
           }
         ],
@@ -714,12 +745,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TaskData"
+                  "$ref": "#/components/schemas/TaskDataResponseModel"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TaskData"
+                  "$ref": "#/components/schemas/TaskDataResponseModel"
                 }
               }
             }
@@ -780,7 +811,7 @@
         "properties": {
           "caseworkerId": {
             "type": "string",
-            "nullable": true,
+            "format": "uuid",
             "readOnly": true
           },
           "displayName": {
@@ -886,89 +917,6 @@
           "type": "object"
         }
       },
-      "Email": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "nullable": true
-          },
-          "address": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "Phone": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "nullable": true
-          },
-          "number": {
-            "type": "string",
-            "nullable": true
-          },
-          "isMobile": {
-            "type": "boolean"
-          }
-        }
-      },
-      "CaseworkerData": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "nullable": true,
-            "readOnly": true
-          },
-          "displayName": {
-            "type": "string",
-            "nullable": true,
-            "readOnly": true
-          },
-          "givenName": {
-            "type": "string",
-            "nullable": true,
-            "readOnly": true
-          },
-          "middleName": {
-            "type": "string",
-            "nullable": true,
-            "readOnly": true
-          },
-          "initials": {
-            "type": "string",
-            "nullable": true,
-            "readOnly": true
-          },
-          "email": {
-            "$ref": "#/components/schemas/Email"
-          },
-          "phone": {
-            "$ref": "#/components/schemas/Phone"
-          },
-          "caseworkerIdentifier": {
-            "type": "string",
-            "nullable": true,
-            "readOnly": true
-          },
-          "description": {
-            "type": "string",
-            "nullable": true,
-            "readOnly": true
-          },
-          "isBookable": {
-            "type": "boolean",
-            "readOnly": true
-          },
-          "isActive": {
-            "type": "boolean",
-            "readOnly": true
-          }
-        }
-      },
       "TaskState": {
         "enum": [
           "Active",
@@ -1005,106 +953,76 @@
           }
         }
       },
-      "Participants": {
+      "TaskDataResponseModel": {
         "type": "object",
         "properties": {
-          "actorId": {
+          "taskId": {
             "type": "string",
-            "format": "uuid"
-          },
-          "responsibility": {
-            "type": "integer",
-            "format": "int32"
-          }
-        }
-      },
-      "TaskData": {
-        "type": "object",
-        "properties": {
-          "sicknessBenefitType": {
-            "type": "string",
-            "nullable": true
-          },
-          "id": {
-            "type": "string",
-            "format": "uuid"
+            "format": "uuid",
+            "readOnly": true
           },
           "title": {
             "type": "string",
-            "nullable": true
+            "nullable": true,
+            "readOnly": true
           },
           "description": {
             "type": "string",
-            "nullable": true
-          },
-          "state": {
-            "$ref": "#/components/schemas/TaskState"
+            "nullable": true,
+            "readOnly": true
           },
           "deadline": {
             "type": "string",
-            "format": "date-time"
+            "format": "date-time",
+            "readOnly": true
           },
-          "createdAt": {
+          "createAt": {
             "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedById": {
-            "type": "string",
-            "nullable": true
-          },
-          "createdById": {
-            "type": "string",
-            "nullable": true
+            "format": "date-time",
+            "readOnly": true
           },
           "stateChangedAt": {
             "type": "string",
             "format": "date-time",
-            "nullable": true
+            "nullable": true,
+            "readOnly": true
           },
-          "assignee": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "nullable": true
+          "taskState": {
+            "$ref": "#/components/schemas/TaskState"
           },
           "assignedActors": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/AssignedActors"
             },
-            "nullable": true
-          },
-          "subject": {
-            "type": "string",
-            "nullable": true
-          },
-          "type": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "relatedEntityId": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
+            "nullable": true,
+            "readOnly": true
           },
           "reference": {
             "$ref": "#/components/schemas/Reference"
+          }
+        }
+      },
+      "TaskList": {
+        "type": "object",
+        "properties": {
+          "totalNoOfPages": {
+            "type": "integer",
+            "format": "int32"
           },
-          "participants": {
+          "totalSearchCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageNo": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "result": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Participants"
+              "$ref": "#/components/schemas/TaskDataResponseModel"
             },
-            "nullable": true
-          },
-          "relatedEntityType": {
-            "type": "integer",
-            "format": "int32",
             "nullable": true
           }
         }
@@ -1114,7 +1032,7 @@
         "properties": {
           "citizenId": {
             "type": "string",
-            "nullable": true,
+            "format": "uuid",
             "readOnly": true
           },
           "displayName": {

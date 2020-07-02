@@ -24,10 +24,8 @@ namespace Kmd.Momentum.Mea.Client.Models
         /// <summary>
         /// Initializes a new instance of the HealthReport class.
         /// </summary>
-        /// <param name="entries"></param>
         /// <param name="status">Possible values include: 'Unhealthy',
         /// 'Degraded', 'Healthy'</param>
-        /// <param name="totalDuration"></param>
         public HealthReport(IDictionary<string, HealthReportEntry> entries = default(IDictionary<string, HealthReportEntry>), string status = default(string), TimeSpan totalDuration = default(TimeSpan))
         {
             Entries = entries;
