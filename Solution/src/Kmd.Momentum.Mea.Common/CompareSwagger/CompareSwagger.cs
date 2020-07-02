@@ -44,6 +44,16 @@ namespace Kmd.Momentum.Mea.Common.CompareSwagger
             var baseJsonObj = JsonConvert.DeserializeObject<JToken>(baseJson);
             var remoteJsonObj = JsonConvert.DeserializeObject<JToken>(remoteJson);
 
+            if (baseJsonObj == null)
+            {
+                Log.Error("Base Json object is null");
+            }
+
+            if (remoteJsonObj == null)
+            {
+                Log.Error("Remote Json object is null");
+            }
+
             var baseJObject = baseJsonObj.ToObject<JObject>();
             var remoteJOject = remoteJsonObj.ToObject<JObject>();
 
