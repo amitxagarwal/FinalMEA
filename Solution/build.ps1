@@ -255,7 +255,8 @@ try {
         Write-Host "build: Publish is started for Application"
         
         $PublishedApplications = $(
-            "Kmd.Momentum.Mea.Api"
+            "Kmd.Momentum.Mea.Api",
+            "Kmd.Momentum.Mea.Funapp"
         )
         
         foreach ($srcProjectName in $PublishedApplications) {

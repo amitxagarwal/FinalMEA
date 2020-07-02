@@ -15,10 +15,10 @@
         "description": "Flag for keyVault required or not"
       }
     },
-    "keyVaultName": {
+    "optimizedResourceName": {
       "type": "string",
       "metadata": {
-        "description": "KeyVaultName is required for keyVault"
+        "description": "To create resource name"
       }
     },
     "isKeyVaultPolicyRequired": {
@@ -202,8 +202,13 @@
     "stagingSlotName": "staging",
     "webAppStagingSlotName": "[concat(variables('webAppName'), '/', variables('stagingSlotName'))]",
     "hostingPlanName": "[concat(variables('resourceNamePrefixLower'),'-appsvcplan')]",
+    "funAppHostingPlanName": "[concat(variables('resourceNamePrefixLower'),'-funapp-appsvcplan')]",
+    "funAppName": "[concat(variables('resourceNamePrefixLower'),'-funapp')]",
+    "storageAccountName": "[concat(parameters('optimizedResourceName'),'sa')]",
+    "storageAccountType": "Standard_LRS",
     "azureServicesAuthConnectionString": "RunAs=App",
-    "meaKeyVaultSecretStore": "[tolower(parameters('keyVaultName'))]",
+    "keyVaultName": "[concat(parameters('optimizedResourceName'),'kv')]",
+    "meaKeyVaultSecretStore": "[tolower(variables('keyVaultName'))]",
     "meaKeyVaultUri": "[concat('https://', variables('meaKeyVaultSecretStore'), '.vault.azure.net/')]",
     "secretName": "ClientSecret",
     "secretValue": "[parameters('clientSecret')]"
@@ -514,6 +519,60 @@
           ]
         }
       ]
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2018-07-01",
+      "name": "[variables('storageAccountName')]",
+      "location": "[resourceGroup().location]",
+      "sku": {
+        "name": "Standard_LRS"
+      },
+      "kind": "StorageV2"
+    },
+    {
+      "type": "Microsoft.Web/serverfarms",
+      "apiVersion": "2018-02-01",
+      "name": "[variables('funAppHostingPlanName')]",
+      "location": "[resourceGroup().location]",
+      "sku": {
+        "name": "Y1",
+        "tier": "Dynamic"
+      }
+    },
+    {
+      "apiVersion": "2015-08-01",
+      "type": "Microsoft.Web/sites",
+      "name": "[variables('funAppName')]",      
+      "location": "[resourceGroup().location]",
+      "kind": "functionapp",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', variables('funAppHostingPlanName'))]",
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+      ],
+      "properties": {
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('funAppHostingPlanName'))]",
+        "siteConfig": {
+          "appSettings": [
+            {
+              "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+              "value": "[reference(resourceId(resourceGroup().Name, 'Microsoft.Insights/components', parameters('applicationInsightsName')), '2015-05-01').InstrumentationKey]"
+            },
+            {
+              "name": "AzureWebJobsStorage",
+              "value": "[Concat('DefaultEndpointsProtocol=https;AccountName=', variables('StorageAccountName'),';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value)]"
+            },
+            {
+              "name": "FUNCTIONS_EXTENSION_VERSION",
+              "value": "~2"
+            },
+            {
+              "name": "FUNCTIONS_WORKER_RUNTIME",
+              "value": "dotnet"             
+            }
+          ]
+        }
+      }      
     }
   ]
 }

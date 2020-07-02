@@ -141,17 +141,17 @@ try
     $DbServerName="$ResourceNamePrefix-dbsvr";
     $DbName="$ResourceNamePrefix-db";
     $DbConnection="Server=$($DbServerName).postgres.database.azure.com;Database=$($DbName);Port=5432;User Id=$($DbLoginId)@$($DbServerName);Password=$($DbLoginPassword);Ssl Mode=Require;"
-    $KeyVaultName = "$($ResourceNamePrefix.replace('-',''))kv"
+    $OptimizedResourceName = "$($ResourceNamePrefix.replace('-',''))"
 
-    Write-Host "Checking KeyVault Name Length"
+    Write-Host "Checking Resource Name Length"
 
-    if($KeyVaultName.length -gt 24){
+    if($OptimizedResourceName.length -gt 22){
 
-        Write-Host "Managing KeyVault Name Length"
+        Write-Host "Managing Resource Name Length"
 
-        $KeyVaultName = $KeyVaultName.substring($KeyVaultName.length-24,24);
+        $OptimizedResourceName = $OptimizedResourceName.substring($OptimizedResourceName.length-22,22);
 
-        Write-Host "Managing KeyVault Name Length completed"
+        Write-Host "Managing Resource Name Length completed"
     }
 
     Write-Host "Setting ARM Template parameters"
@@ -174,7 +174,7 @@ try
     dbConnection = $DbConnection;
     dbRequired = $DbRequired;
     keyVaultRequired = $KeyVaultRequired;
-    keyVaultName = $KeyVaultName;
+    optimizedResourceName = $OptimizedResourceName;
     meaAuthorizationAudience = $MeaAuthorizationAudience;
     isKeyVaultPolicyRequired = $IsKeyVaultPolicyRequired;
     appObjectId = $AppObjectId;
