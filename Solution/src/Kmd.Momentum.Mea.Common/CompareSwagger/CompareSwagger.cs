@@ -1,10 +1,7 @@
 ﻿using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Serilog;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -30,15 +27,15 @@ namespace Kmd.Momentum.Mea.Common.CompareSwagger
             var remoteJson = ReadFile(_config.BasePath);
             if (string.IsNullOrEmpty(baseJson))
             {
-                Log.Error("Base Json is null");
+                Log.Error("Base Json file is null");
             }
             if (string.IsNullOrEmpty(remoteJson))
             {
-                Log.Error("Remote Json is null");
+                Log.Error("Remote Json file is null");
             }
             if (baseJson == remoteJson)
             {
-                //Mea Application is using latest Mca Application
+                Log.Information("Both Json files are same");
                 return;
             }
 
@@ -58,20 +55,9 @@ namespace Kmd.Momentum.Mea.Common.CompareSwagger
                 {
                     Log.Error("Remote Json path is null");
                 }
-                if (!JToken.DeepEquals(baseJObject["paths"][_path], remoteJOject["paths"][_path] == null))
+                if (!JToken.DeepEquals(baseJObject["paths"][_path], remoteJOject["paths"][_path]))
                 {
-                    foreach (KeyValuePair<string, JToken> sourceProperty in baseJObject)
-                    {
-                        JProperty targetProp = remoteJOject.Property(sourceProperty.Key);
-                        if (!JToken.DeepEquals(sourceProperty.Value, targetProp.Value))
-                        {
-                            Log.Information(string.Format("{0} property value is changed", sourceProperty.Key));
-                        }
-                        else
-                        {
-                            Log.Information(string.Format("{0} property value didn't change", sourceProperty.Key));
-                        }
-                    }
+                    Log.Error($"{_path} not matched");
                 }
                 else
                 {
@@ -110,4 +96,4 @@ namespace Kmd.Momentum.Mea.Common.CompareSwagger
         }
     }
 }
-    
+
