@@ -29,10 +29,12 @@ namespace Kmd.Momentum.Mea.Common.CompareSwagger
             {
                 Log.Error("Base Json file is null");
             }
+
             if (string.IsNullOrEmpty(remoteJson))
             {
                 Log.Error("Remote Json file is null");
             }
+
             if (baseJson == remoteJson)
             {
                 Log.Information("Both Json files are same");
@@ -51,19 +53,21 @@ namespace Kmd.Momentum.Mea.Common.CompareSwagger
                 {
                     Log.Error("Base Json path is null");
                 }
+
                 if (remoteJOject["paths"][_path] == null)
                 {
                     Log.Error("Remote Json path is null");
                 }
+
                 if (!JToken.DeepEquals(baseJObject["paths"][_path], remoteJOject["paths"][_path]))
                 {
                     Log.Error($"{_path} not matched");
                 }
+
                 else
                 {
                     Log.Information("Objects are same");
                 }
-
             }
         }
 

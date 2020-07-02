@@ -2,15 +2,19 @@ using System;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 using Kmd.Momentum.Mea.Common.CompareSwagger;
+using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.AspNetCore.Http;
 
 namespace Kmd.Momentum.Mea.Funapp
 {
     public static class Scheduler
     {
-        [FunctionName("CompareApplication")]
-        public static void Run([TimerTrigger("0 0 0 * * *")] TimerInfo myTimer, ILogger log, ExecutionContext context)
+        [FunctionName("SwaggerComparer")]
+        public static string Run(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
+            ILogger log, ExecutionContext context)
         {
-            log.LogInformation($"CompareApplication executed at: {DateTime.Now}");
+            log.LogInformation($"SwaggerComparer function executed at: {DateTime.Now}");
             try
             {
                 var _compareSwager = new CompareSwagger(context);
@@ -20,6 +24,7 @@ namespace Kmd.Momentum.Mea.Funapp
             {
                 log.LogError("Error :" + e.Message);
             }
+            return "hi";
         }
     }
 }
