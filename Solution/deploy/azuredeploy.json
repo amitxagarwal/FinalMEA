@@ -564,11 +564,19 @@
             },
             {
               "name": "FUNCTIONS_EXTENSION_VERSION",
-              "value": "~2"
+              "value": "~3"
             },
             {
               "name": "FUNCTIONS_WORKER_RUNTIME",
-              "value": "dotnet"             
+              "value": "dotnet"
+            },
+            {
+              "name": "KMD_MOMENTUM_MEA_DiagnosticSeqServerUrl",
+              "value": "[parameters('diagnosticSeqServerUrl')]"
+            },
+            {
+              "name": "KMD_MOMENTUM_MEA_DiagnosticSeqApiKey",
+              "value": "[parameters('diagnosticSeqApiKey')]"
             }
           ]
         }
