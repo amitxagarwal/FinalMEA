@@ -83,7 +83,9 @@ namespace Kmd.Momentum.Mea.Common.CompareSwagger
 
         private static void SendNotification(ExecutionContext context, ILogger logger)
         {
+            if(errorList.Count>0)
             logger.Error("Error: instance Id id " + context.InvocationId);
+
             foreach (var error in errorList)
             {
                 logger.Error(error);
