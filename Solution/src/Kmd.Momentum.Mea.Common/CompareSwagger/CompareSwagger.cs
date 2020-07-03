@@ -11,24 +11,24 @@ namespace Kmd.Momentum.Mea.Common.CompareSwagger
 {
     public static class CompareSwagger
     {
-        public static async Task CompareJson(ExecutionContext context)
+        public static async Task CompareJson(ExecutionContext context, ILogger logger, Config config)
         {
-            var _config = GetConfig(context);
+            var _config = config ?? GetConfig(context);
             var baseJson = await ReadUrl(_config.RemotePath);
             var remoteJson = ReadFile(context, _config.BasePath);
             if (string.IsNullOrEmpty(baseJson))
             {
-                Log.Error("Base Json file is null");
+                logger.Error("Base Json file is null");
             }
 
             if (string.IsNullOrEmpty(remoteJson))
             {
-                Log.Error("Remote Json file is null");
+                logger.Error("Remote Json file is null");
             }
 
             if (baseJson == remoteJson)
             {
-                Log.Information("Both Json files are same");
+                logger.Information("Both Json files are same");
                 return;
             }
 
@@ -37,12 +37,12 @@ namespace Kmd.Momentum.Mea.Common.CompareSwagger
 
             if (baseJsonObj == null)
             {
-                Log.Error("Base Json object is null");
+                logger.Error("Base Json object is null");
             }
 
             if (remoteJsonObj == null)
             {
-                Log.Error("Remote Json object is null");
+                logger.Error("Remote Json object is null");
             }
 
             var baseJObject = baseJsonObj.ToObject<JObject>();
@@ -52,22 +52,22 @@ namespace Kmd.Momentum.Mea.Common.CompareSwagger
             {
                 if (baseJObject["paths"][_path] == null)
                 {
-                    Log.Error("Base Json path is null");
+                    logger.Error("Base Json path is null");
                 }
 
                 if (remoteJOject["paths"][_path] == null)
                 {
-                    Log.Error("Remote Json path is null");
+                    logger.Error("Remote Json path is null");
                 }
 
                 if (!JToken.DeepEquals(baseJObject["paths"][_path], remoteJOject["paths"][_path]))
                 {
-                    Log.Error($"{_path} not matched");
+                    logger.Error($"{_path} not matched");
                 }
 
                 else
                 {
-                    Log.Information("Objects are same");
+                    logger.Information("Objects are same");
                 }
             }
         }
