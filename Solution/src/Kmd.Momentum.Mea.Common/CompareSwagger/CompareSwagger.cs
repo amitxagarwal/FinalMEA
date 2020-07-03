@@ -81,12 +81,18 @@ namespace Kmd.Momentum.Mea.Common.CompareSwagger
                     CompareHelper(baseJsonObj["paths"][_path], remoteJsonObj["paths"][_path], baseJsonObj, remoteJsonObj);
                 }
             }
-            SendNotification();
+            SendNotification(context);
         }
 
-        private static void SendNotification()
+        private static void SendNotification(ExecutionContext context)
         {
             //TODO:
+            Log.Error("Error: instance Id id " + context.InvocationId);
+            foreach (var error in errorList)
+            {
+                Log.Error(error);
+            }
+            errorList.Clear();
         }
 
         private static void CompareHelper(JToken _base, JToken _remote, JObject baseJsonObject, JObject remoteJsonObject)
