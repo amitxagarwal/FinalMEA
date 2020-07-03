@@ -9,22 +9,13 @@ using System.Threading.Tasks;
 
 namespace Kmd.Momentum.Mea.Common.CompareSwagger
 {
-    public class CompareSwagger
+    public static class CompareSwagger
     {
-        private readonly Config _config;
-
-        private readonly ExecutionContext _context;
-
-        public CompareSwagger(ExecutionContext context)
+        public static async Task CompareJson(ExecutionContext context)
         {
-            _context = context;
-            _config = GetConfig();
-        }
-
-        public async Task CompareJson()
-        {
+            var _config = GetConfig(context);
             var baseJson = await ReadUrl(_config.RemotePath);
-            var remoteJson = ReadFile(_config.BasePath);
+            var remoteJson = ReadFile(context, _config.BasePath);
             if (string.IsNullOrEmpty(baseJson))
             {
                 Log.Error("Base Json file is null");
@@ -81,21 +72,21 @@ namespace Kmd.Momentum.Mea.Common.CompareSwagger
             }
         }
 
-        private string ReadFile(string path)
+        private static string ReadFile(ExecutionContext context, string path)
         {
-            var _path = Path.Combine(_context.FunctionDirectory, path);
+            var _path = Path.Combine(context.FunctionDirectory, path);
             var _fullPath = Path.GetFullPath(_path);
             var data = File.ReadAllText(_fullPath);
             return data;
         }
 
-        private Config GetConfig()
+        private static Config GetConfig(ExecutionContext context)
         {
-            var data = ReadFile("../config.json");
+            var data = ReadFile(context, "../config.json");
             return JsonConvert.DeserializeObject<Config>(data);
         }
 
-        private async Task<string> ReadUrl(string uri)
+        private static async Task<string> ReadUrl(string uri)
         {
             var data = string.Empty;
 

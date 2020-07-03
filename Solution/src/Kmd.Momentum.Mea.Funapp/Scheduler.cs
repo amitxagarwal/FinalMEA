@@ -13,8 +13,8 @@ namespace Kmd.Momentum.Mea.Funapp
             log.LogInformation($"SwaggerComparer function executed at: {DateTime.Now}");
             try
             {
-                var _compareSwager = new CompareSwagger(context);
-                _compareSwager.CompareJson().ConfigureAwait(false);
+                
+                CompareSwagger.CompareJson(context).ConfigureAwait(false);
             }
             catch (Exception e)
             {

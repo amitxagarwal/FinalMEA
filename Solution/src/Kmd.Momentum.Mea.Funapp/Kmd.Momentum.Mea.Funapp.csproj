@@ -4,8 +4,10 @@
 		<AzureFunctionsVersion>v3</AzureFunctionsVersion>
 	</PropertyGroup>
 	<ItemGroup>
+		<PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.0.0" />
 		<PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.7" />
 		<PackageReference Include="Serilog" Version="2.9.0" />
+		<PackageReference Include="Serilog.Sinks.Seq" Version="4.0.0" />
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\Kmd.Momentum.Mea.Common\Kmd.Momentum.Mea.Common.csproj" />
