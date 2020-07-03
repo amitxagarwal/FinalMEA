@@ -8,9 +8,11 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
+[assembly: FunctionsStartup(typeof(Kmd.Momentum.Mea.Funapp.Startup))]
+
 namespace Kmd.Momentum.Mea.Funapp
 {
-    public class Startup: FunctionsStartup
+    public class Startup : FunctionsStartup
     {
         public override void Configure(IFunctionsHostBuilder builder)
         {
@@ -23,8 +25,8 @@ namespace Kmd.Momentum.Mea.Funapp
                 .Enrich.WithProperty(name: "Application", value: GetType().Assembly.GetName().Name)
                 .Enrich.WithProperty(name: "ApplicationVersion", value: GetType().Assembly.GetName().Version.ToString())
                 .WriteTo.Seq(
-                    serverUrl: Environment.GetEnvironmentVariable("") ?? GetDefaultSeqServerUrl(),
-                    apiKey: Environment.GetEnvironmentVariable(""),
+                    serverUrl: Environment.GetEnvironmentVariable("KMD_MOMENTUM_MEA_DiagnosticSeqServerUrl") ?? GetDefaultSeqServerUrl(),
+                    apiKey: Environment.GetEnvironmentVariable("KMD_MOMENTUM_MEA_DiagnosticSeqApiKey"),
                     compact: true,
                     controlLevelSwitch: levelSwitch)
                 .CreateLogger();
