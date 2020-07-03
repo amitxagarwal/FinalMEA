@@ -4,9 +4,7 @@ using Serilog;
 using Serilog.Core;
 using Serilog.Events;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
 
 [assembly: FunctionsStartup(typeof(Kmd.Momentum.Mea.Funapp.Startup))]
 
