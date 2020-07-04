@@ -56,7 +56,7 @@ namespace Kmd.Momentum.Mea.Funcapp.Tests
 
             await CompareSwagger.CompareJson(executionContext, logger, config).ConfigureAwait(false);
 
-            Assert.Contains("Api '/punits/{id}/caseworkers' not found in Remote Swagger Json file", logger.Logs[0]);
+            Assert.Contains("Api '/punits/{id}/caseworkers' not found in Base Swagger Json file", logger.Logs[0]);
         }
     }
 }

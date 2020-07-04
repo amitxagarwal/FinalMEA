@@ -17,8 +17,8 @@ namespace Kmd.Momentum.Mea.Common.CompareSwagger
         public static async Task CompareJson(ExecutionContext context, ILogger logger, Config config)
         {
             var _config = config ?? GetConfig(context);
-            var baseJson = await ReadUrl(_config.RemotePath);
-            var remoteJson = ReadFile(context, _config.BasePath);
+            var baseJson = ReadFile(context, _config.BasePath);
+            var remoteJson = await ReadUrl(_config.RemotePath);
             if (string.IsNullOrEmpty(baseJson))
             {
                 logger.Error("Base Swagger Json file is null");
