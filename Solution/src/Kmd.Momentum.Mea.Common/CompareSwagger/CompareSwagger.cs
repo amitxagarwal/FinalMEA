@@ -83,9 +83,14 @@ namespace Kmd.Momentum.Mea.Common.CompareSwagger
 
         private static void SendNotification(ExecutionContext context, ILogger logger)
         {
-            if(errorList.Count>0)
-            logger.Error("Error: instance Id id " + context.InvocationId);
-
+            if (errorList.Count > 0)
+            {
+                logger.Error("Error: instance Id id " + context.InvocationId);
+            }
+            else
+            {
+                logger.Information("All Apis are udated");
+            }
             foreach (var error in errorList)
             {
                 logger.Error(error);
