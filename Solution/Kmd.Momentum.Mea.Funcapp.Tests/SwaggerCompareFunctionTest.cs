@@ -24,7 +24,7 @@ namespace Kmd.Momentum.Mea.Funcapp.Tests
             await Scheduler.Run(null, logger, executionContext);
 
             Assert.Contains("SwaggerComparer function executed at:", logger.Logs[0]);
-            Assert.Contains("Objects are same", logger.Logs[1]);
+            Assert.Contains("Both Json files are same", logger.Logs[1]);
         }
 
 
@@ -56,8 +56,7 @@ namespace Kmd.Momentum.Mea.Funcapp.Tests
 
             await CompareSwagger.CompareJson(executionContext, logger, config).ConfigureAwait(false);
 
-            Assert.Contains("Remote Json path is null", logger.Logs[0]);
-            Assert.Contains("/punits/{id}/caseworkers not matched", logger.Logs[1]);
+            Assert.Contains("Api '/punits/{id}/caseworkers' not found in Remote Swagger Json file", logger.Logs[0]);
         }
     }
 }
