@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Serilog;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -16,80 +17,87 @@ namespace Kmd.Momentum.Mea.Common.CompareSwagger
 
         public static async Task CompareJson(ExecutionContext context, ILogger logger, Config config)
         {
-            var _config = config ?? GetConfig(context);
-            var baseJson = ReadFile(context, _config.BasePath);
-            var remoteJson = await ReadUrl(_config.RemotePath);
-            if (string.IsNullOrEmpty(baseJson))
+            try
             {
-                logger.Error("Base Swagger Json file is null");
-                errorList.Add("Base Swagger Json file is null");
-            }
-
-            if (string.IsNullOrEmpty(remoteJson))
-            {
-                logger.Error("Remote Swagger Json file is null");
-                errorList.Add("Remote Swagger Json file is null");
-            }
-
-            if (baseJson == remoteJson)
-            {
-                logger.Information("Both Json files are same");
-                return;
-            }
-
-            var baseJsonObj = JsonConvert.DeserializeObject<JObject>(baseJson);
-            var remoteJsonObj = JsonConvert.DeserializeObject<JObject>(remoteJson);
-
-            if (baseJsonObj == null)
-            {
-                logger.Error("Base Swagger Json object is null");
-                errorList.Add("Base Swagger Json object is null");
-            }
-
-            if (remoteJsonObj == null)
-            {
-                logger.Error("Remote Swagger Json object is null");
-                errorList.Add("Remote Swagger Json object is null");
-            }
-
-            foreach (var _path in _config.ApiList)
-            {
-                if (baseJsonObj["paths"][_path] == null)
+                var _config = config ?? GetConfig(context);
+                var baseJson = ReadFile(context, _config.BasePath);
+                var remoteJson = await ReadUrl(_config.RemotePath);
+                if (string.IsNullOrEmpty(baseJson))
                 {
-                    logger.Error($"Api '{_path }' not found in Base Swagger Json file");
-                    errorList.Add($"Api '{_path }' not found in Base Swagger Json file");
-                    continue;
+                    logger.Error("Base Swagger Json file is null");
+                    errorList.Add("Base Swagger Json file is null");
                 }
 
-                if (remoteJsonObj["paths"][_path] == null)
+                if (string.IsNullOrEmpty(remoteJson))
                 {
-                    logger.Error($"Api '{_path }' not found in Remote Swagger Json file");
-                    errorList.Add($"Api '{_path }' not found in Remote Swagger Json file");
-                    continue;
+                    logger.Error("Remote Swagger Json file is null");
+                    errorList.Add("Remote Swagger Json file is null");
                 }
 
-                if (!JToken.DeepEquals(baseJsonObj["paths"][_path], remoteJsonObj["paths"][_path]))
+                if (baseJson == remoteJson)
                 {
-                    logger.Error($"Api '{_path}' is changed in Remote Swagger Json");
-                    errorList.Add($"Api '{_path}' is changed in Remote Swagger Json");
+                    logger.Information("Both Json files are same");
+                    return;
                 }
-                else
+
+                var baseJsonObj = JsonConvert.DeserializeObject<JObject>(baseJson);
+                var remoteJsonObj = JsonConvert.DeserializeObject<JObject>(remoteJson);
+
+                if (baseJsonObj == null)
                 {
-                    CompareHelper(baseJsonObj["paths"][_path], remoteJsonObj["paths"][_path], baseJsonObj, remoteJsonObj, logger);
+                    logger.Error("Base Swagger Json object is null");
+                    errorList.Add("Base Swagger Json object is null");
                 }
+
+                if (remoteJsonObj == null)
+                {
+                    logger.Error("Remote Swagger Json object is null");
+                    errorList.Add("Remote Swagger Json object is null");
+                }
+
+                foreach (var _path in _config.ApiList)
+                {
+                    if (baseJsonObj["paths"][_path] == null)
+                    {
+                        logger.Error($"Api '{_path }' not found in Base Swagger Json file");
+                        errorList.Add($"Api '{_path }' not found in Base Swagger Json file");
+                        continue;
+                    }
+
+                    if (remoteJsonObj["paths"][_path] == null)
+                    {
+                        logger.Error($"Api '{_path }' not found in Remote Swagger Json file");
+                        errorList.Add($"Api '{_path }' not found in Remote Swagger Json file");
+                        continue;
+                    }
+
+                    if (!JToken.DeepEquals(baseJsonObj["paths"][_path], remoteJsonObj["paths"][_path]))
+                    {
+                        logger.Error($"Api '{_path}' is changed in Remote Swagger Json");
+                        errorList.Add($"Api '{_path}' is changed in Remote Swagger Json");
+                    }
+                    else
+                    {
+                        CompareHelper(baseJsonObj["paths"][_path], remoteJsonObj["paths"][_path], baseJsonObj, remoteJsonObj, logger);
+                    }
+                }
+                SendNotification(context, logger);
             }
-            SendNotification(context, logger);
+            catch (Exception ex)
+            {
+                logger.Error($"Error Occured while comparing the Swagger json files: {ex.InnerException}");
+            }
         }
 
         private static void SendNotification(ExecutionContext context, ILogger logger)
         {
             if (errorList.Count > 0)
             {
-                logger.Error("Error: instance Id id " + context.InvocationId);
+                logger.Error("Error: instance Id is " + context.InvocationId);
             }
             else
             {
-                logger.Information("All Apis are udated");
+                logger.Information("No difference found in local MCA Swagger JSON and Online MCA Swagger JSON.");
             }
             foreach (var error in errorList)
             {

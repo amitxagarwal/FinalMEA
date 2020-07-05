@@ -1,4 +1,5 @@
-﻿using Kmd.Momentum.Mea.Common.CompareSwagger;
+﻿using FluentAssertions;
+using Kmd.Momentum.Mea.Common.CompareSwagger;
 using Kmd.Momentum.Mea.Funapp;
 using Microsoft.Azure.WebJobs;
 using System;
@@ -15,22 +16,26 @@ namespace Kmd.Momentum.Mea.Funcapp.Tests
         [Fact]
         public async Task SwaggerCompareTestForUnmodified()
         {
+            //Arrange
             var logger = new ListLogger();
             var executionContext = new ExecutionContext
             {
                 FunctionDirectory = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName,
             };
 
+            //Act
             await Scheduler.Run(null, logger, executionContext);
 
-            Assert.Contains("SwaggerComparer function executed at:", logger.Logs[0]);
-            Assert.Contains("Both Json files are same", logger.Logs[1]);
+            //Assert
+            logger.Logs[0].Should().Contain("SwaggerComparer function executed at:");
+            logger.Logs[1].Should().Contain("Both Json files are same");
         }
 
 
         [Fact]
         public async Task SwaggerCompareTestFormodified()
         {
+            //Arrange
             var logger = new ListLogger();
             var executionContext = new ExecutionContext
             {
@@ -54,9 +59,11 @@ namespace Kmd.Momentum.Mea.Funcapp.Tests
                 }
             };
 
+            //Act
             await CompareSwagger.CompareJson(executionContext, logger, config).ConfigureAwait(false);
 
-            Assert.Contains("Api '/punits/{id}/caseworkers' not found in Base Swagger Json file", logger.Logs[0]);
+            //Assert
+            logger.Logs[0].Should().Contain("Api '/punits/{id}/caseworkers' not found in Base Swagger Json file");
         }
     }
 }
