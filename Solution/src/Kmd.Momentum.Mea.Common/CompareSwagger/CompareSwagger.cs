@@ -14,7 +14,7 @@ namespace Kmd.Momentum.Mea.Common.CompareSwagger
     public static class CompareSwagger
     {
         private static ILogger _logger;
-        private static List<string> errorList = new List<string>();        
+        private static List<string> errorList = new List<string>();
 
         public static async Task CompareJson(ExecutionContext context, ILogger log, Config config)
         {
@@ -28,12 +28,14 @@ namespace Kmd.Momentum.Mea.Common.CompareSwagger
                 {
                     _logger.LogError("Base Swagger Json file is null");
                     errorList.Add("Base Swagger Json file is null");
+                    return;
                 }
 
                 if (string.IsNullOrEmpty(remoteJson))
                 {
                     _logger.LogError("Remote Swagger Json file is null");
                     errorList.Add("Remote Swagger Json file is null");
+                    return;
                 }
 
                 if (baseJson == remoteJson)
@@ -49,12 +51,14 @@ namespace Kmd.Momentum.Mea.Common.CompareSwagger
                 {
                     _logger.LogError("Base Swagger Json object is null");
                     errorList.Add("Base Swagger Json object is null");
+                    return;
                 }
 
                 if (remoteJsonObj == null)
                 {
                     _logger.LogError("Remote Swagger Json object is null");
                     errorList.Add("Remote Swagger Json object is null");
+                    return;
                 }
 
                 foreach (var _path in _config.ApiList)
@@ -88,10 +92,14 @@ namespace Kmd.Momentum.Mea.Common.CompareSwagger
             catch (Exception ex)
             {
                 _logger.LogError($"Error Occured while comparing the Swagger json files: {ex.InnerException}");
+                errorList = null;
             }
             finally
             {
-                errorList = null;
+                if (errorList.Count > 0)
+                {
+                    SendNotification(context);
+                }
             }
         }
 
