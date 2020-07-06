@@ -89,6 +89,10 @@ namespace Kmd.Momentum.Mea.Common.CompareSwagger
             {
                 _logger.LogError($"Error Occured while comparing the Swagger json files: {ex.InnerException}");
             }
+            finally
+            {
+                errorList = null;
+            }
         }
 
         private static void SendNotification(ExecutionContext context)
