@@ -26,12 +26,14 @@ namespace Kmd.Momentum.Mea.Common.CompareSwagger
                 {
                     logger.Error("Base Swagger Json file is null");
                     errorList.Add("Base Swagger Json file is null");
+                    return;
                 }
 
                 if (string.IsNullOrEmpty(remoteJson))
                 {
                     logger.Error("Remote Swagger Json file is null");
                     errorList.Add("Remote Swagger Json file is null");
+                    return;
                 }
 
                 if (baseJson == remoteJson)
@@ -80,12 +82,14 @@ namespace Kmd.Momentum.Mea.Common.CompareSwagger
                     {
                         CompareHelper(baseJsonObj["paths"][_path], remoteJsonObj["paths"][_path], baseJsonObj, remoteJsonObj, logger);
                     }
-                }
-                SendNotification(context, logger);
+                }                
             }
             catch (Exception ex)
             {
                 logger.Error($"Error Occured while comparing the Swagger json files: {ex.InnerException}");
+            }
+            finally {
+                SendNotification(context, logger);
             }
         }
 
