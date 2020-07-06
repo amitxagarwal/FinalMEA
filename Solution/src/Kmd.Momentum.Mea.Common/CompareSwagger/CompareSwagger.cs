@@ -99,7 +99,7 @@ namespace Kmd.Momentum.Mea.Common.CompareSwagger
             }
             finally
             {
-                errorList = null;
+                errorList.Clear();
             }
         }
 
