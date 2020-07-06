@@ -2,6 +2,7 @@
 using Kmd.Momentum.Mea.Common.CompareSwagger;
 using Kmd.Momentum.Mea.Funapp;
 using Microsoft.Azure.WebJobs;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,11 +14,14 @@ namespace Kmd.Momentum.Mea.Funcapp.Tests
 {
     public class SwaggerCompareFunctionTest
     {
+        private readonly ILogger logger = TestFactory.CreateLogger();
+
         [Fact]
         public async Task SwaggerCompareTestForUnmodified()
         {
             //Arrange
-            var logger = new ListLogger();
+            var logger = (ListLogger)TestFactory.CreateLogger(LoggerTypes.List);
+
             var executionContext = new ExecutionContext
             {
                 FunctionDirectory = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName,
@@ -36,7 +40,7 @@ namespace Kmd.Momentum.Mea.Funcapp.Tests
         public async Task SwaggerCompareTestFormodified()
         {
             //Arrange
-            var logger = new ListLogger();
+            var logger = (ListLogger)TestFactory.CreateLogger(LoggerTypes.List);
             var executionContext = new ExecutionContext
             {
                 FunctionDirectory = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName,
@@ -60,7 +64,7 @@ namespace Kmd.Momentum.Mea.Funcapp.Tests
             };
 
             //Act
-            await CompareSwagger.CompareJson(executionContext, logger, config).ConfigureAwait(false);
+            await CompareSwagger.CompareJson(executionContext,logger, config).ConfigureAwait(false);
 
             //Assert
             logger.Logs[0].Should().Contain("Api '/punits/{id}/caseworkers' not found in Base Swagger Json file");

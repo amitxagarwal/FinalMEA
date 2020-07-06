@@ -1,23 +1,36 @@
-﻿using Serilog;
-using Serilog.Events;
+﻿using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Kmd.Momentum.Mea.Funcapp.Tests
 {
+    public enum LoggerTypes
+    {
+        Null,
+        List
+    }
     public class ListLogger : ILogger
     {
         public IList<string> Logs;
+
+        public IDisposable BeginScope<TState>(TState state) => NullScope.Instance;
+
+        public bool IsEnabled(LogLevel logLevel) => false;
 
         public ListLogger()
         {
             this.Logs = new List<string>();
         }
 
-        public void Write(LogEvent logEvent)
+        public void Log<TState>(LogLevel logLevel,
+                                EventId eventId,
+                                TState state,
+                                Exception exception,
+                                Func<TState, Exception, string> formatter)
         {
-            this.Logs.Add(logEvent.MessageTemplate.Text);
+            string message = formatter(state, exception);
+            this.Logs.Add(message);
         }
     }
 }

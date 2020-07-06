@@ -1,4 +1,5 @@
-﻿using Microsoft.Azure.Functions.Extensions.DependencyInjection;
+﻿using Kmd.Momentum.Mea.Common.CompareSwagger;
+using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Serilog.Core;
@@ -16,7 +17,7 @@ namespace Kmd.Momentum.Mea.Funapp
         {
             var levelSwitch = new LoggingLevelSwitch(initialMinimumLevel: LogEventLevel.Verbose);
 
-            Log.Logger = new LoggerConfiguration()
+            var Logger = new LoggerConfiguration()
                 .MinimumLevel.ControlledBy(levelSwitch)
                 .Enrich.FromLogContext()
                 .Enrich.WithProperty(name: "EnvironmentSource", value: Environment.GetEnvironmentVariable("ENVIRONMENT_SOURCE") ?? "local")
@@ -29,7 +30,7 @@ namespace Kmd.Momentum.Mea.Funapp
                     controlLevelSwitch: levelSwitch)
                 .CreateLogger();
 
-            builder.Services.AddLogging(logging => logging.AddSerilog());
+            builder.Services.AddLogging(logging => logging.AddSerilog(Logger));
         }
 
         [SuppressMessage("Minor Code Smell", "S1075:URIs should not be hardcoded", Justification = "Use well-known location of Seq as default URI for Seq Server")]

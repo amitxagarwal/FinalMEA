@@ -1,7 +1,7 @@
 ﻿using Microsoft.Azure.WebJobs;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Serilog;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,10 +13,12 @@ namespace Kmd.Momentum.Mea.Common.CompareSwagger
 {
     public static class CompareSwagger
     {
-        static List<string> errorList = new List<string>();
+        private static ILogger _logger;
+        private static List<string> errorList = new List<string>();        
 
-        public static async Task CompareJson(ExecutionContext context, ILogger logger, Config config)
+        public static async Task CompareJson(ExecutionContext context, ILogger log, Config config)
         {
+            _logger = log;
             try
             {
                 var _config = config ?? GetConfig(context);
@@ -24,19 +26,19 @@ namespace Kmd.Momentum.Mea.Common.CompareSwagger
                 var remoteJson = await ReadUrl(_config.RemotePath);
                 if (string.IsNullOrEmpty(baseJson))
                 {
-                    logger.Error("Base Swagger Json file is null");
+                    _logger.LogError("Base Swagger Json file is null");
                     errorList.Add("Base Swagger Json file is null");
                 }
 
                 if (string.IsNullOrEmpty(remoteJson))
                 {
-                    logger.Error("Remote Swagger Json file is null");
+                    _logger.LogError("Remote Swagger Json file is null");
                     errorList.Add("Remote Swagger Json file is null");
                 }
 
                 if (baseJson == remoteJson)
                 {
-                    logger.Information("Both Json files are same");
+                    _logger.LogInformation("Both Json files are same");
                     return;
                 }
 
@@ -45,13 +47,13 @@ namespace Kmd.Momentum.Mea.Common.CompareSwagger
 
                 if (baseJsonObj == null)
                 {
-                    logger.Error("Base Swagger Json object is null");
+                    _logger.LogError("Base Swagger Json object is null");
                     errorList.Add("Base Swagger Json object is null");
                 }
 
                 if (remoteJsonObj == null)
                 {
-                    logger.Error("Remote Swagger Json object is null");
+                    _logger.LogError("Remote Swagger Json object is null");
                     errorList.Add("Remote Swagger Json object is null");
                 }
 
@@ -59,54 +61,54 @@ namespace Kmd.Momentum.Mea.Common.CompareSwagger
                 {
                     if (baseJsonObj["paths"][_path] == null)
                     {
-                        logger.Error($"Api '{_path }' not found in Base Swagger Json file");
+                        _logger.LogError($"Api '{_path }' not found in Base Swagger Json file");
                         errorList.Add($"Api '{_path }' not found in Base Swagger Json file");
                         continue;
                     }
 
                     if (remoteJsonObj["paths"][_path] == null)
                     {
-                        logger.Error($"Api '{_path }' not found in Remote Swagger Json file");
+                        _logger.LogError($"Api '{_path }' not found in Remote Swagger Json file");
                         errorList.Add($"Api '{_path }' not found in Remote Swagger Json file");
                         continue;
                     }
 
                     if (!JToken.DeepEquals(baseJsonObj["paths"][_path], remoteJsonObj["paths"][_path]))
                     {
-                        logger.Error($"Api '{_path}' is changed in Remote Swagger Json");
+                        _logger.LogError($"Api '{_path}' is changed in Remote Swagger Json");
                         errorList.Add($"Api '{_path}' is changed in Remote Swagger Json");
                     }
                     else
                     {
-                        CompareHelper(baseJsonObj["paths"][_path], remoteJsonObj["paths"][_path], baseJsonObj, remoteJsonObj, logger);
+                        CompareHelper(baseJsonObj["paths"][_path], remoteJsonObj["paths"][_path], baseJsonObj, remoteJsonObj);
                     }
                 }
-                SendNotification(context, logger);
+                SendNotification(context);
             }
             catch (Exception ex)
             {
-                logger.Error($"Error Occured while comparing the Swagger json files: {ex.InnerException}");
+                _logger.LogError($"Error Occured while comparing the Swagger json files: {ex.InnerException}");
             }
         }
 
-        private static void SendNotification(ExecutionContext context, ILogger logger)
+        private static void SendNotification(ExecutionContext context)
         {
             if (errorList.Count > 0)
             {
-                logger.Error("Error: instance Id is " + context.InvocationId);
+                _logger.LogError("Error: instance Id is " + context.InvocationId);
             }
             else
             {
-                logger.Information("No difference found in local MCA Swagger JSON and Online MCA Swagger JSON.");
+                _logger.LogInformation("No difference found in local MCA Swagger JSON and Online MCA Swagger JSON.");
             }
             foreach (var error in errorList)
             {
-                logger.Error(error);
+                _logger.LogError(error);
             }
             errorList.Clear();
         }
 
-        private static void CompareHelper(JToken _base, JToken _remote, JObject baseJsonObject, JObject remoteJsonObject, ILogger logger)
+        private static void CompareHelper(JToken _base, JToken _remote, JObject baseJsonObject, JObject remoteJsonObject)
         {
             if (_base.Type == JTokenType.Object)
             {
@@ -115,11 +117,11 @@ namespace Kmd.Momentum.Mea.Common.CompareSwagger
                     var _propName = ((JProperty)_val).Name;
                     if (_propName.ToLower() == "$ref")
                     {
-                        CompareRef(_base["$ref"], baseJsonObject, remoteJsonObject, logger);
+                        CompareRef(_base["$ref"], baseJsonObject, remoteJsonObject);
                     }
                     else
                     {
-                        CompareHelper(_base[_propName], _remote[_propName], baseJsonObject, remoteJsonObject, logger);
+                        CompareHelper(_base[_propName], _remote[_propName], baseJsonObject, remoteJsonObject);
                     }
                 }
             }
@@ -129,12 +131,12 @@ namespace Kmd.Momentum.Mea.Common.CompareSwagger
                 var _arrRemote = (JArray)(_remote);
                 for (int i = 0; i < _arrBase.Count; i++)
                 {
-                    CompareHelper(_arrBase[i], _arrRemote[i], baseJsonObject, remoteJsonObject, logger);
+                    CompareHelper(_arrBase[i], _arrRemote[i], baseJsonObject, remoteJsonObject);
                 }
             }
         }
 
-        private static void CompareRef(JToken refModel, JObject baseJsonObject, JObject remoteJsonObject, ILogger logger)
+        private static void CompareRef(JToken refModel, JObject baseJsonObject, JObject remoteJsonObject)
         {
             var _modelPathArr = refModel.ToString().Replace("#/", "").Split("/");
             var _baseModel = baseJsonObject;
@@ -143,13 +145,13 @@ namespace Kmd.Momentum.Mea.Common.CompareSwagger
             {
                 if (_baseModel[prop] == null)
                 {
-                    logger.Error($"Propery '{prop}' not found for model '{ refModel }' in Base Swagger Json file");
+                    _logger.LogError($"Propery '{prop}' not found for model '{ refModel }' in Base Swagger Json file");
                     errorList.Add($"Propery '{prop}' not found for model '{ refModel }' in Base Swagger Json file");
                     return;
                 }
                 if (_remoteModel[prop] == null)
                 {
-                    logger.Error($"Propery '{prop}' not found for model '{ refModel }' in Remote Swagger Json file");
+                    _logger.LogError($"Propery '{prop}' not found for model '{ refModel }' in Remote Swagger Json file");
                     errorList.Add($"Propery '{prop}' not found for model '{ refModel }' in Remote Swagger Json file");
                     return;
                 }
@@ -158,12 +160,12 @@ namespace Kmd.Momentum.Mea.Common.CompareSwagger
             }
             if (!JObject.DeepEquals(_baseModel, _remoteModel))
             {
-                logger.Error($"'{_modelPathArr[_modelPathArr.Length - 1] }' model is not matched");
+                _logger.LogError($"'{_modelPathArr[_modelPathArr.Length - 1] }' model is not matched");
                 errorList.Add($"'{_modelPathArr[_modelPathArr.Length - 1] }' model is not matched");
             }
             else
             {
-                CompareHelper(_baseModel, _remoteModel, baseJsonObject, remoteJsonObject, logger);
+                CompareHelper(_baseModel, _remoteModel, baseJsonObject, remoteJsonObject);
             }
         }
 
